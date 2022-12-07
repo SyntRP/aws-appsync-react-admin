@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { listSurveys } from "../../graphql/custom/queries";
+import { Loader } from "../common/Loader";
 import SurveyCard from "./SurveyCard";
 
 const Surveys = () => {
@@ -14,7 +15,7 @@ const Surveys = () => {
   }, [loading]);
   //   const
   if (loading) {
-    return <>loading</>;
+    return <Loader />;
   }
   if (error) {
     return <>error</>;

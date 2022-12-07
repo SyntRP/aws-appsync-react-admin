@@ -14,10 +14,10 @@ import ColorModeContextProvider from "./Theme";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
-    <AdminProvider>
-      <ColorModeContextProvider>
-        <App />
-      </ColorModeContextProvider>
-    </AdminProvider>
+    {/* <AdminProvider> */}
+    <ColorModeContextProvider>
+      <App />
+    </ColorModeContextProvider>
+    {/* </AdminProvider> */}
   </ApolloProvider>
 );

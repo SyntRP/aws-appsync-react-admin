@@ -8,7 +8,7 @@ import AppSyncConfig from "./aws-exports";
 import SideBar from "./components/header/SideBar";
 import TopBar from "./components/header/TopBar";
 import { DRAWER_WIDTH } from "./constants";
-import { useAdmin } from "./helpers/providers/AdminProvider";
+import { AdminProvider, useAdmin } from "./helpers/providers/AdminProvider";
 import DashboardPage from "./pages/Dashboard";
 import SurveysPage from "./pages/Surveys";
 Amplify.configure(AppSyncConfig);
@@ -24,12 +24,21 @@ const signOut = () => {
 };
 
 const App = () => {
+  return (
+    <AdminProvider>
+      <Layout />
+    </AdminProvider>
+  );
+};
+
+export default withAuthenticator(App);
+
+const Layout = () => {
   const { isAdmin } = useAdmin();
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
   return (
     <BrowserRouter>
       <CssBaseline />
@@ -88,5 +97,3 @@ const App = () => {
     </BrowserRouter>
   );
 };
-
-export default withAuthenticator(App);
