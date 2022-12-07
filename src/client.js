@@ -2,18 +2,22 @@ import {
   ApolloClient,
   ApolloLink,
   InMemoryCache,
-  HttpLink,
   createHttpLink,
 } from "@apollo/client";
+import { Auth } from "aws-amplify";
 import { createAuthLink } from "aws-appsync-auth-link";
-import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
 import AppSyncConfig from "./aws-exports";
 
 const url = AppSyncConfig.aws_appsync_graphqlEndpoint;
 const region = AppSyncConfig.aws_project_region;
+// const auth = {
+//   type: AppSyncConfig.aws_appsync_authenticationType,
+//   apiKey: AppSyncConfig.aws_appsync_apiKey,
+// };
 const auth = {
-  type: AppSyncConfig.aws_appsync_authenticationType,
-  apiKey: AppSyncConfig.aws_appsync_apiKey,
+  type: "AMAZON_COGNITO_USER_POOLS",
+  jwtToken: async () =>
+    (await Auth.currentSession()).getIdToken().getJwtToken(),
 };
 const link = ApolloLink.from([
   // @ts-ignore
@@ -21,12 +25,6 @@ const link = ApolloLink.from([
   // @ts-ignore
   createHttpLink({ uri: url }),
 ]);
-// const httpLink = new HttpLink({ uri: url });
-
-// const link = ApolloLink.from([
-//   createAuthLink({ url, region, auth }),
-//   createSubscriptionHandshakeLink({ url, region, auth }, httpLink),
-// ]);
 const client = new ApolloClient({
   link,
   cache: new InMemoryCache(),
