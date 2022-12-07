@@ -1,14 +1,16 @@
-import { withAuthenticator } from "@aws-amplify/ui-react";
+// import { withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { Amplify, Auth } from "aws-amplify";
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppSyncConfig from "./aws-exports";
+import AWSAuthenticator from "./AWSAuthenticator";
 import SideBar from "./components/header/SideBar";
 import TopBar from "./components/header/TopBar";
 import { DRAWER_WIDTH } from "./constants";
 import { AdminProvider, useAdmin } from "./helpers/providers/AdminProvider";
+import AnalyticsPage from "./pages/Analytics";
 import DashboardPage from "./pages/Dashboard";
 import SurveysPage from "./pages/Surveys";
 Amplify.configure(AppSyncConfig);
@@ -25,13 +27,15 @@ const signOut = () => {
 
 const App = () => {
   return (
-    <AdminProvider>
-      <Layout />
-    </AdminProvider>
+    <AWSAuthenticator>
+      <AdminProvider>
+        <Layout />
+      </AdminProvider>
+    </AWSAuthenticator>
   );
 };
 
-export default withAuthenticator(App);
+export default App;
 
 const Layout = () => {
   const { isAdmin } = useAdmin();
@@ -77,6 +81,7 @@ const Layout = () => {
               <Routes>
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/surveys" element={<SurveysPage />} />
+                <Route path="/analytics" element={<AnalyticsPage />} />
               </Routes>
             </Box>
           </Box>

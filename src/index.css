@@ -11,4 +11,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto !important;
+}
+[data-amplify-authenticator] {
+  min-height: 100vh;
 }
