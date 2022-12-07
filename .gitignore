@@ -105,3 +105,6 @@ dist
 
 #zip files
 *.zip
+
+#package-lock.json
+package-lock.json
