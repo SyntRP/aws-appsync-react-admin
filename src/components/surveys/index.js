@@ -13,7 +13,7 @@ const Surveys = () => {
   useEffect(() => {
     if (!loading && !error) setSurveys(data?.listSurveys?.items);
   }, [loading]);
-  //   const
+
   if (loading) {
     return <Loader />;
   }
