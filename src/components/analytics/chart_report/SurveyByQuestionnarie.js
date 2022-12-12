@@ -3,7 +3,7 @@ import SimpleDonutChart from "../../charts/donut";
 import { Loader } from "../../common/Loader";
 
 const CHART_ID = "survey_by_questionnaire";
-
+const TITLE = "Survey By Questionnarie";
 const SurveyByQuestionnarie = ({ data, questionariesName, loading, error }) => {
   const chartData = data?.reduce((chartData, { questionnaireId }) => {
     if (questionnaireId) {
@@ -26,7 +26,7 @@ const SurveyByQuestionnarie = ({ data, questionariesName, loading, error }) => {
           <SimpleDonutChart
             id={CHART_ID}
             data={chartData}
-            title="Survey By Questionnarie"
+            title={TITLE}
             labels={questionariesName.listQuestionnaires.items}
           />
         )

@@ -1,10 +1,22 @@
+/* eslint-disable no-undef */
+import { lazy, useEffect, useState } from "react";
+import moment from "moment";
 import withSuspense from "../../../helpers/hoc/withSuspense";
 import SimpleBarChart from "../../charts/bar";
+import { Title } from "@mui/icons-material";
+import { bindTitle } from "../../../config/ChartConfig";
 
 const CHART_ID = "survey_by_locations";
 const TITLE = "Survey By Locations";
 
-const SurveyByLocations = ({ data, setSelectedLocation }) => {
+const SurveyByLocations = ({
+  data,
+  setSelectedLocation,
+  fromDate,
+
+  endDate,
+}) => {
+  const [date, setDate] = useState(TITLE);
   const chartData = data?.reduce((chartData, { location }) => {
     if (location?.id) {
       const x = location?.id || "no-loc";
@@ -27,6 +39,14 @@ const SurveyByLocations = ({ data, setSelectedLocation }) => {
       data.find((d) => d?.location?.id === value)?.location?.location || value;
     return label;
   };
+  useEffect(() => {
+    const fullTitle = bindTitle({
+      TITLE,
+      fromDate,
+      endDate,
+    });
+    setDate(fullTitle);
+  }, [fromDate, endDate]);
 
   return (
     <>
@@ -35,7 +55,7 @@ const SurveyByLocations = ({ data, setSelectedLocation }) => {
         onClick={onClick}
         xAxisFormatter={xAxisFormatter}
         yAxisTitle="Count"
-        title={TITLE}
+        title={date}
         id={CHART_ID}
         seriesName="Survey"
       />
