@@ -28,7 +28,7 @@ const TopBar = ({ signOut, open, onClick }) => {
   };
   return (
     <AppBar
-      position="fixed"
+      position="sticky"
       sx={{
         width: { md: open ? `calc(100% - ${DRAWER_WIDTH}px)` : "100%" },
         ml: { md: open ? `${DRAWER_WIDTH}px` : 0 },

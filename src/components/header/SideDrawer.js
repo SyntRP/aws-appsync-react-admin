@@ -16,7 +16,7 @@ const SideDrawer = () => {
     <List sx={{ mx: 1 }}>
       {NavItems.map((item, i) => {
         if (item?.name === "Divider") {
-          return <Divider />;
+          return <Divider key={i} />;
         }
         const Icon = item?.icon;
         return (

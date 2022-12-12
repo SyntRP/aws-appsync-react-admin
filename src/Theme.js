@@ -1,6 +1,7 @@
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { DARK_THEME } from "./constants";
+import { BREAK_POINTS } from "./config/ThemeConfig";
 const darkMode = localStorage.getItem(DARK_THEME);
 
 const ColorModeContext = createContext({
@@ -58,16 +59,7 @@ const ColorModeContextProvider = ({ children }) => {
                   },
                 },
               },
-              breakpoints: {
-                values: {
-                  xs: 0,
-                  cm: 400,
-                  sm: 600,
-                  md: 900,
-                  lg: 1200,
-                  xl: 1536,
-                },
-              },
+              breakpoints: BREAK_POINTS,
             }
           : {
               palette: {
@@ -79,16 +71,7 @@ const ColorModeContextProvider = ({ children }) => {
                   main: "#6aa342",
                 },
               },
-              breakpoints: {
-                values: {
-                  xs: 0,
-                  cm: 400,
-                  sm: 600,
-                  md: 900,
-                  lg: 1200,
-                  xl: 1536,
-                },
-              },
+              breakpoints: BREAK_POINTS,
               components: {
                 MuiAppBar: {
                   styleOverrides: {
