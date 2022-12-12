@@ -23,6 +23,16 @@ export const NavItems = [
     name: "Divider",
   },
   {
+    path: "/users",
+    name: "Users",
+    icon: AnalyticsOutlinedIcon,
+  },
+  {
+    path: "/locations",
+    name: "Locations",
+    icon: AnalyticsOutlinedIcon,
+  },
+  {
     path: "/analytics",
     name: "Analytics",
     icon: AnalyticsOutlinedIcon,

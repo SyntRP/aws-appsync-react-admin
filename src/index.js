@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import {
@@ -15,15 +15,22 @@ import "./index.css";
 import App from "./App";
 import client from "./client";
 import ColorModeContextProvider from "./Theme";
-import DashboardPage from "./pages/Dashboard";
-import SurveysPage from "./pages/Surveys";
-import AnalyticsPage from "./pages/Analytics";
+import { Loader } from "./components/common/Loader";
+const DashboardPage = lazy(() => import("./pages/Dashboard"));
+const SurveysPage = lazy(() => import("./pages/Surveys"));
+const AnalyticsPage = lazy(() => import("./pages/Analytics"));
+const QuestionnariesPage = lazy(() => import("./pages/Questionnaries"));
+const UsersPage = lazy(() => import("./pages/Users"));
+const LocationsPage = lazy(() => import("./pages/Locations"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<DashboardPage />} />
       <Route path="surveys" element={<SurveysPage />} />
+      <Route path="questionnaries" element={<QuestionnariesPage />} />
+      <Route path="users" element={<UsersPage />} />
+      <Route path="locations" element={<LocationsPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
     </Route>
   )
@@ -33,7 +40,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
     <ColorModeContextProvider>
-      <RouterProvider router={router} />
+      <Suspense fallback={<Loader />}>
+        <RouterProvider router={router} fallbackElement={<Loader />} />
+      </Suspense>
     </ColorModeContextProvider>
   </ApolloProvider>
 );
