@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const listSurveys = /* GraphQL */ gql(`
+export const LIST_SURVEYS = /* GraphQL */ gql(`
   query ListSurveys(
     $filter: ModelSurveyFilterInput
     $limit: Int

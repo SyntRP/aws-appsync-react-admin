@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import Analytics from "../components/analytics";
 import { LIST_SURVEY_ENTRIES } from "../graphql/custom/queries";
 import { Loader } from "../components/common/Loader";
+import withSuspense from "../helpers/hoc/withSuspense";
 
 const AnalyticsPage = () => {
   let variables = {
@@ -63,4 +64,4 @@ const AnalyticsPage = () => {
   return <Analytics surveyEntriesData={surveyEntries} />;
 };
 
-export default AnalyticsPage;
+export default withSuspense(AnalyticsPage);
