@@ -133,6 +133,8 @@ const Analytics = ({ surveyEntriesData }) => {
           <SurveyByLocations
             data={surveyEntries}
             setSelectedLocation={setSelectedLocation}
+            fromDate={fromDate}
+            endDate={endDate}
           />,
 
           <QuestionnariesByLocation

@@ -41,6 +41,23 @@ const SimpleBarChart = ({
             },
           ],
         },
+        export: {
+          csv: {
+            filename: title,
+            columnDelimiter: ",",
+            headerCategory: title,
+            headerValue: yAxisTitle,
+            dateFormatter(timestamp) {
+              return new Date(timestamp).toDateString();
+            },
+          },
+          svg: {
+            filename: title,
+          },
+          png: {
+            filename: title,
+          },
+        },
       },
     },
     xaxis: {

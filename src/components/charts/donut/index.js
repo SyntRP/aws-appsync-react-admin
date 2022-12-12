@@ -25,7 +25,11 @@ const SimpleDonutChart = ({ id, data, title, labels, onDownload }) => {
             {
               ...CHART_PDF_DOWNLOAD_ICON,
               click: async () =>
-                await dowloadChartAsPDF({ ID: id, docName: title }),
+                await dowloadChartAsPDF({
+                  ID: id,
+                  docName: title,
+                  isCustom: true,
+                }),
             },
           ],
         },
@@ -65,6 +69,7 @@ const SimpleDonutChart = ({ id, data, title, labels, onDownload }) => {
       type: "gradient",
     },
     legend: {
+      position: "bottom",
       formatter: function (val, opts) {
         return val + " - " + opts.w.globals.series[opts.seriesIndex];
       },
@@ -76,16 +81,16 @@ const SimpleDonutChart = ({ id, data, title, labels, onDownload }) => {
     theme: {
       mode: CHART_THEME_MODE,
     },
-    responsive: [
-      {
-        breakpoint: 1200,
-        options: {
-          legend: {
-            position: "bottom",
-          },
-        },
-      },
-    ],
+    // responsive: [
+    //   {
+    //     breakpoint: 1200,
+    //     options: {
+    //       legend: {
+    //         position: "bottom",
+    //       },
+    //     },
+    //   },
+    // ],
   };
 
   return (
