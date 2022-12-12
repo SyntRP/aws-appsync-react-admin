@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { listSurveys } from "../../graphql/custom/queries";
@@ -6,7 +6,7 @@ import { Loader } from "../common/Loader";
 import SurveyCard from "./SurveyCard";
 
 const Surveys = () => {
-  const { loading, error, data } = useQuery(gql(listSurveys), {
+  const { loading, error, data } = useQuery(listSurveys, {
     variables: { limit: 10 },
   });
   const [surveys, setSurveys] = useState([]);

@@ -13,6 +13,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-y: auto !important;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 [data-amplify-authenticator] {
   min-height: 100vh;
+}
+.PDF_ICON_CLASS {
+  margin: 4px 6px;
+}
+
+@media only screen and (min-width: 600px) {
+  .apexcharts-svg {
+    height: 440px;
+  }
 }

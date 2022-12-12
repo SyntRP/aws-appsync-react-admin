@@ -10,10 +10,15 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.16",
+    "@mui/x-date-pickers": "^5.0.10",
+    "apexcharts": "^3.36.3",
     "aws-amplify": "^5.0.4",
     "aws-appsync-auth-link": "^3.0.7",
     "aws-appsync-subscription-link": "^3.1.2",
+    "jspdf": "^2.5.1",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
+    "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.4",
     "react-scripts": "4.0.3"
@@ -21,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-run": "react-scripts build && npx serve build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
