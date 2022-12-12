@@ -1,7 +1,8 @@
 import Dashboard from "../components/dashboard";
+import { Questionnaires } from "./Questionnaires";
 
 const DashboardPage = () => {
-  return <Dashboard />;
+  return <Questionnaires />;
 };
 
 export default DashboardPage;
