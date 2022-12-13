@@ -2,6 +2,10 @@ import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomi
 import StackedLineChartOutlinedIcon from "@mui/icons-material/StackedLineChartOutlined";
 import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
+import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
+import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
+import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 
 export const NavItems = [
   {
@@ -25,12 +29,28 @@ export const NavItems = [
   {
     path: "/users",
     name: "Users",
-    icon: AnalyticsOutlinedIcon,
+    icon: Person2OutlinedIcon,
   },
   {
     path: "/locations",
     name: "Locations",
-    icon: AnalyticsOutlinedIcon,
+    icon: PinDropOutlinedIcon,
+  },
+  {
+    name: "Divider",
+  },
+  {
+    path: "/qrcoderesponses",
+    name: "QR Responses",
+    icon: QrCode2OutlinedIcon,
+  },
+  {
+    path: "/linkresponses",
+    name: "Link Responses",
+    icon: InsertLinkOutlinedIcon,
+  },
+  {
+    name: "Divider",
   },
   {
     path: "/analytics",
