@@ -97,6 +97,48 @@ export const LIST_QUESTIONNARIES_NAME = /* GraphQL */ gql(`
   }
 `);
 
+export const LIST_SURVEY_USERS = /* GraphQL */ gql(`
+  query ListSurveyUsers(
+    $filter: ModelSurveyUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSurveyUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        email
+        deleted
+        archived
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`);
+
+export const LIST_SURVEY_LOCATIONS = /* GraphQL */ gql(`
+  query ListSurveyLocations(
+    $filter: ModelSurveyLocationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSurveyLocations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        location
+        inchargeEmail
+        deleted
+        archived
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`);
+
 export const LIST_QUESTIONNARIES = /* GraphQL */ gql(`
   query ListQuestionnaires(
     $filter: ModelQuestionnaireFilterInput
