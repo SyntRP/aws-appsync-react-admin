@@ -10,11 +10,9 @@ import {
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import DynamicModel from "../reusable/DynamicModel";
 
 const SurveyCard = ({ survey }) => {
   const { image, name, description, id } = survey;
