@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import {
@@ -40,9 +40,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
     <ColorModeContextProvider>
-      <Suspense fallback={<Loader />}>
-        <RouterProvider router={router} fallbackElement={<Loader />} />
-      </Suspense>
+      <RouterProvider router={router} fallbackElement={<Loader />} />
     </ColorModeContextProvider>
   </ApolloProvider>
 );

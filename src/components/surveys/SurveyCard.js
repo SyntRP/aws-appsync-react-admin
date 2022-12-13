@@ -16,7 +16,7 @@ const SurveyCard = ({ survey }) => {
         p: 1,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
       }}
     >
       <CardMedia
