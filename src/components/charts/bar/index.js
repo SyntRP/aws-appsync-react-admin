@@ -1,6 +1,5 @@
 import { useTheme } from "@mui/system";
 import Chart from "react-apexcharts";
-import PDFICON from "../../../assets/images/PDF_ICON.svg";
 import {
   CHART_FORECOLOR,
   CHART_HEIGHT,

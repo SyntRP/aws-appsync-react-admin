@@ -2,10 +2,11 @@
 import "@aws-amplify/ui-react/styles.css";
 import { Box, Toolbar, useTheme } from "@mui/material";
 import { Amplify, Auth } from "aws-amplify";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Outlet } from "react-router-dom";
 import AppSyncConfig from "./aws-exports";
 import AWSAuthenticator from "./AWSAuthenticator";
+import { Loader } from "./components/common/Loader";
 import SideBar from "./components/header/SideBar";
 import TopBar from "./components/header/TopBar";
 import { DRAWER_WIDTH } from "./constants";
@@ -64,7 +65,7 @@ const Layout = () => {
                 },
                 ml: { md: mobileOpen ? `${DRAWER_WIDTH}px` : "auto" },
                 mr: "auto",
-                maxWidth: 1600,
+                maxWidth: 1900,
                 minHeight: `calc(100vh - ${60}px)`,
               }}
             >
@@ -74,9 +75,12 @@ const Layout = () => {
                   width: "100%",
                   borderRadius: 1,
                   // p: 1,
+                  height: "100%",
                 }}
               >
-                <Outlet />
+                <Suspense fallback={<Loader />}>
+                  <Outlet />
+                </Suspense>
               </Box>
             </Box>
           </div>

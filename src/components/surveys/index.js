@@ -7,7 +7,7 @@ import SurveyCard from "./SurveyCard";
 
 const Surveys = () => {
   const { loading, error, data } = useQuery(LIST_SURVEYS, {
-    variables: { limit: 10 },
+    variables: { filter: { archived: { ne: true } }, limit: 10 },
   });
   const [surveys, setSurveys] = useState([]);
   useEffect(() => {
