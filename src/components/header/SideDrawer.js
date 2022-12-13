@@ -1,4 +1,5 @@
 import {
+  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -14,6 +15,9 @@ const SideDrawer = () => {
   return (
     <List sx={{ mx: 1 }}>
       {NavItems.map((item, i) => {
+        if (item?.name === "Divider") {
+          return <Divider key={i} />;
+        }
         const Icon = item?.icon;
         return (
           <NavLink

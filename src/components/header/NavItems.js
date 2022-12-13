@@ -1,6 +1,7 @@
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import StackedLineChartOutlinedIcon from "@mui/icons-material/StackedLineChartOutlined";
 import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
+import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
 
 export const NavItems = [
   {
@@ -17,5 +18,23 @@ export const NavItems = [
     path: "/questionnaries",
     name: "Questionnaries",
     icon: QuestionAnswerOutlinedIcon,
+  },
+  {
+    name: "Divider",
+  },
+  {
+    path: "/users",
+    name: "Users",
+    icon: AnalyticsOutlinedIcon,
+  },
+  {
+    path: "/locations",
+    name: "Locations",
+    icon: AnalyticsOutlinedIcon,
+  },
+  {
+    path: "/analytics",
+    name: "Analytics",
+    icon: AnalyticsOutlinedIcon,
   },
 ];
