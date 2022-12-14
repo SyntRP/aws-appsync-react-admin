@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import { Loader } from "../common/Loader";
@@ -7,7 +7,7 @@ import SurveyCard from "./SurveyCard";
 
 const Surveys = () => {
   const { loading, error, data } = useQuery(LIST_SURVEYS, {
-    variables: { limit: 10 },
+    variables: { filter: { archived: { ne: true } }, limit: 10 },
   });
   const [surveys, setSurveys] = useState([]);
   useEffect(() => {

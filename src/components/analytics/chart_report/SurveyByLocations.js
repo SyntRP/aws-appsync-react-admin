@@ -1,9 +1,7 @@
 /* eslint-disable no-undef */
-import { lazy, useEffect, useState } from "react";
-import moment from "moment";
+import { useEffect, useState } from "react";
 import withSuspense from "../../../helpers/hoc/withSuspense";
 import SimpleBarChart from "../../charts/bar";
-import { Title } from "@mui/icons-material";
 import { bindTitle } from "../../../config/ChartConfig";
 
 const CHART_ID = "survey_by_locations";

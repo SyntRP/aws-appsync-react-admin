@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import {
@@ -22,6 +22,8 @@ const AnalyticsPage = lazy(() => import("./pages/Analytics"));
 const QuestionnariesPage = lazy(() => import("./pages/Questionnaries"));
 const UsersPage = lazy(() => import("./pages/Users"));
 const LocationsPage = lazy(() => import("./pages/Locations"));
+const QrCodeResponsesPage = lazy(() => import("./pages/QrCodeResponses"));
+const LinkResponsesPage = lazy(() => import("./pages/LinkResponses"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +33,8 @@ const router = createBrowserRouter(
       <Route path="questionnaries" element={<QuestionnariesPage />} />
       <Route path="users" element={<UsersPage />} />
       <Route path="locations" element={<LocationsPage />} />
+      <Route path="qrcoderesponses" element={<QrCodeResponsesPage />} />
+      <Route path="linkresponses" element={<LinkResponsesPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
     </Route>
   )
@@ -40,9 +44,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
     <ColorModeContextProvider>
-      <Suspense fallback={<Loader />}>
-        <RouterProvider router={router} fallbackElement={<Loader />} />
-      </Suspense>
+      <RouterProvider router={router} fallbackElement={<Loader />} />
     </ColorModeContextProvider>
   </ApolloProvider>
 );
