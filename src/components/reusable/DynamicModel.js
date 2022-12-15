@@ -1,45 +1,51 @@
 import {
   Dialog,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   DialogActions,
   Button,
+  IconButton,
 } from "@mui/material";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 const DynamicModel = ({
   open,
   toggle,
   dialogTitle,
-  dialogContentText,
   children,
   confirmText,
   cancelText,
+  onClickConfirm,
   isClose = false,
 }) => {
   return (
-    <div>
-      <Dialog isOpen={open} toggle={toggle}>
-        <DialogTitle>{dialogTitle}</DialogTitle>
-
-        <DialogContent>
-          <DialogContentText>{dialogContentText}</DialogContentText>
-          {children}
-        </DialogContent>
-        <DialogActions>
-          {isClose && (
-            <Button
-              onClick={() => {
-                toggle();
-              }}
-            >
-              {cancelText}
-            </Button>
-          )}
-          <Button>{confirmText}</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog open={open} toggle={toggle} fullWidth maxWidth="md">
+      <DialogTitle
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        {dialogTitle}
+        <IconButton
+          aria-label="close"
+          onClick={toggle}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CancelOutlinedIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>{children}</DialogContent>
+      <DialogActions>
+        {isClose && <Button onClick={toggle}>{cancelText}</Button>}
+        <Button onClick={onClickConfirm}>{confirmText}</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
