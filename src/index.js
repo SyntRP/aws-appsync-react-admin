@@ -25,6 +25,8 @@ const LocationsPage = lazy(() => import("./pages/Locations"));
 const QrCodeResponsesPage = lazy(() => import("./pages/QrCodeResponses"));
 const LinkResponsesPage = lazy(() => import("./pages/LinkResponses"));
 const QuestionnariesQuestionPage = lazy(() => import("./pages/QuestionnariesQuestion"));
+const TestResponsesPage = lazy(() => import("./pages/TestResponses"));
+const SurveyResponsesPage = lazy(() => import("./pages/SurveyResponses"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +38,8 @@ const router = createBrowserRouter(
       <Route path="locations" element={<LocationsPage />} />
       <Route path="qrcoderesponses" element={<QrCodeResponsesPage />} />
       <Route path="linkresponses" element={<LinkResponsesPage />} />
+      <Route path="testresponses" element={<TestResponsesPage />} />
+      <Route path="surveyresponses" element={<SurveyResponsesPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
       <Route path="questionnariesquestion/:questionnaireID" element={<QuestionnariesQuestionPage />} />
     </Route>

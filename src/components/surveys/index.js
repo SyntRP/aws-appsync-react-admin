@@ -1,8 +1,9 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import { Loader } from "../common/Loader";
+import CreateCard from "../reusable/CreateCard";
 import SurveyCard from "./SurveyCard";
 
 const Surveys = () => {
@@ -24,6 +25,9 @@ const Surveys = () => {
     <div>
       {surveys.length > 0 ? (
         <Grid container spacing={2} alignItems="stretch">
+          <Grid item xs={12} cm={6} md={4}>
+            <CreateCard title="Create Survey" />
+          </Grid>
           {surveys.map((survey, i) => (
             <Grid item xs={12} cm={6} md={4} key={i}>
               <SurveyCard survey={survey} sx={{ height: "100%" }} />

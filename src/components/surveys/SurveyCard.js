@@ -8,7 +8,7 @@ import {
   CardHeader,
   IconButton,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
+
 import React from "react";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
@@ -29,14 +29,14 @@ const SurveyCard = ({ survey }) => {
       >
         <CardHeader
           action={
-            <IconButton aria-label="delete" sx={{ color: red[500] }}>
-              <DeleteForeverOutlinedIcon />
+            <IconButton aria-label="delete">
+              <DeleteForeverOutlinedIcon color="error" />
             </IconButton>
           }
         />
         <CardMedia
           component="img"
-          height="100"
+          height="70"
           src={image}
           alt="Survey Logo"
           sx={{ p: 0.5, objectFit: "contain" }}

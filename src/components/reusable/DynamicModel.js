@@ -9,17 +9,19 @@ import {
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 const DynamicModel = ({
-  open,
+  open = false,
   toggle,
   dialogTitle,
   children,
-  confirmText,
-  cancelText,
+  confirmText = "Create",
+  cancelText = "Close",
   onClickConfirm,
-  isClose = true,
+  isClose = false,
+  maxWidth = "md",
+  isActions = true,
 }) => {
   return (
-    <Dialog open={open} toggle={toggle} fullWidth maxWidth="md">
+    <Dialog open={open} fullWidth maxWidth={maxWidth}>
       <DialogTitle
         sx={{
           display: "flex",
@@ -41,21 +43,18 @@ const DynamicModel = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
-      <DialogActions>
-        {isClose && (
-          <Button onClick={toggle} color="error" variant="contained">
-            {cancelText}
+      {isActions && (
+        <DialogActions>
+          {isClose && (
+            <Button onClick={toggle} variant="text" color="info">
+              {cancelText}
+            </Button>
+          )}
+          <Button onClick={onClickConfirm} variant="contained" color="primary">
+            {confirmText}
           </Button>
-        )}
-        <Button 
-          onClick={onClickConfirm}
-          type="submit"
-          color="primary"
-          variant="contained"
-        >
-          {confirmText}
-        </Button>
-      </DialogActions>
+        </DialogActions>
+      )}
     </Dialog>
   );
 };

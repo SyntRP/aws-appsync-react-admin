@@ -74,7 +74,7 @@ const Layout = () => {
                   // display: "flex",
                   width: "100%",
                   borderRadius: 1,
-                  // p: 1,
+                  px: 2,
                   height: "100%",
                 }}
               >

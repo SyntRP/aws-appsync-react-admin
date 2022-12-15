@@ -13,11 +13,11 @@ import {
   Button,
   TablePagination,
 } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { styled } from "@mui/material/styles";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useQuery } from "@apollo/client";
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader } from "../common/Loader";
 import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
 
@@ -45,9 +45,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const Users = () => {
-  const { loading, error, data } = useQuery(LIST_SURVEY_USERS, {
-    variables: { limit: 10 },
-  });
+  const { loading, error, data } = useQuery(LIST_SURVEY_USERS);
   const [users, setUsers] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -60,7 +58,7 @@ const Users = () => {
 
   useEffect(() => {
     if (!loading && !error) setUsers(data?.listSurveyUsers?.items);
-  }, [loading]);
+  }, [loading, data?.listSurveyUsers?.items]);
 
   if (loading) {
     return <Loader />;
@@ -75,69 +73,54 @@ const Users = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // console.log("DK:", data);
-  // console.log("users:", users);
 
   return (
     <>
-      {/* <div>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Typography color="primary">Survey Users</Typography>
-        </Breadcrumbs>
-      </div> */}
-      <div>
-        {/* <Box display="flex">
-          <Box flexGrow={1} p={1}>
-            <Typography variant="h5">Manage Surveys</Typography>
-          </Box>
-        </Box> */}
-        {users.length > 0 ? (
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>S No</StyledTableCell>
-                  <StyledTableCell>Name</StyledTableCell>
-                  <StyledTableCell>Email</StyledTableCell>
-                  <StyledTableCell>Manage</StyledTableCell>
-                  <StyledTableCell>Remove</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map((user,i) => (
-                  <StyledTableRow key={i}>
-                    <StyledTableCell component="th" scope="row">
-                      {i+1}
-                    </StyledTableCell>
-                    <StyledTableCell >
-                      {user?.name}
-                    </StyledTableCell>
-                    <StyledTableCell>{user?.email}</StyledTableCell>
-                    <StyledTableCell>
+      {users.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>S No</StyledTableCell>
+                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>Email</StyledTableCell>
+                <StyledTableCell>Manage</StyledTableCell>
+                <StyledTableCell>Remove</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user, i) => (
+                <StyledTableRow key={i}>
+                  <StyledTableCell component="th" scope="row">
+                    {i + 1}
+                  </StyledTableCell>
+                  <StyledTableCell>{user?.name}</StyledTableCell>
+                  <StyledTableCell>{user?.email}</StyledTableCell>
+                  <StyledTableCell>
                     <Button
-                          size="small"
-                          color="primary"
-                          // onClick={() =>
-                          //   handleopeninguypdatesurveyUserDialog(user)
-                          // }
-                        >
-                          <EditOutlinedIcon />
-                        </Button>
-                    </StyledTableCell>
-                    <StyledTableCell>
+                      size="small"
+                      color="secondary"
+                      // onClick={() =>
+                      //   handleopeninguypdatesurveyUserDialog(user)
+                      // }
+                    >
+                      <EditOutlinedIcon />
+                    </Button>
+                  </StyledTableCell>
+                  <StyledTableCell>
                     <Button
-                          // onClick={() => handleOpenDeleteDialog(user)}
-                          size="small"
-                          color="error"
-                        >
-                          <DeleteForeverOutlinedIcon />
-                        </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <TablePagination
+                      // onClick={() => handleOpenDeleteDialog(user)}
+                      size="small"
+                      color="error"
+                    >
+                      <DeleteForeverOutlinedIcon />
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
             component="div"
             count={surveyUserOrder?.length}
             page={page}
@@ -145,11 +128,10 @@ const Users = () => {
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          </TableContainer>
-        ) : (
-          <p>NO USERS FOUND !</p>
-        )}
-      </div>
+        </TableContainer>
+      ) : (
+        <p>NO USERS FOUND !</p>
+      )}
     </>
   );
 };

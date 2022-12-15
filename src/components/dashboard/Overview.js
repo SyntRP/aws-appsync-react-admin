@@ -7,7 +7,7 @@ const Overview = ({
   surveyLocationsCount,
 }) => {
   return (
-    <Grid container px={1}>
+    <Grid container my={1}>
       <Wrapper title="Total Survey" count={surveyCount} />
       <Wrapper title="Total Entries" count={surveyEntriesCount} secondary />
       <Wrapper title="Total Location" count={surveyLocationsCount} />
@@ -19,12 +19,11 @@ export default Overview;
 
 const Wrapper = ({ count, title = "Total", secondary = false }) => {
   return (
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={12} sm={6} p={0.5}>
       <Paper
         sx={{
           borderRadius: 1,
           bgcolor: secondary ? "secondary.main" : "primary.main",
-          m: 1,
           color: "white",
         }}
       >

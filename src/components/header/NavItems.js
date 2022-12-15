@@ -6,6 +6,7 @@ import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 
 export const NavItems = [
   {
@@ -48,6 +49,11 @@ export const NavItems = [
     path: "/linkresponses",
     name: "Link Responses",
     icon: InsertLinkOutlinedIcon,
+  },
+  {
+    path: "/testresponses",
+    name: "Test Responses",
+    icon: InventoryOutlinedIcon,
   },
   {
     name: "Divider",
