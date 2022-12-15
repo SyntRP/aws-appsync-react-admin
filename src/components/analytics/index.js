@@ -14,7 +14,7 @@ const SurveyByLocations = lazy(() =>
 );
 
 const TabPanel = (props) => {
-  const { value, index, items, children, ...other } = props;
+  const { value, index, children, ...other } = props;
 
   return (
     <div
@@ -24,19 +24,7 @@ const TabPanel = (props) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <>
-          {children}
-          {/* <Grid container spacing={2} alignItems="stretch">
-            {items?.length > 0 &&
-              items?.map((Item, i) => (
-                <Grid item xs={12} sm={6} key={i}>
-                  {Item}
-                </Grid>
-              ))}
-          </Grid> */}
-        </>
-      )}
+      {value === index && children}
     </div>
   );
 };
@@ -90,9 +78,6 @@ const Analytics = ({ surveyEntriesData }) => {
         sx={{
           width: "100%",
           bgcolor: "background.paper",
-          //   display: "flex",
-          //   justifyContent: "center",
-          //   alignItems: "center",
         }}
       >
         <Tabs
@@ -126,45 +111,7 @@ const Analytics = ({ surveyEntriesData }) => {
           </Grid>
         </Grid>
       </Box>
-      <TabPanel
-        value={tabValue}
-        index={0}
-        // items={[
-        //   <SurveyByLocations
-        //     data={surveyEntries}
-        //     setSelectedLocation={setSelectedLocation}
-        //     fromDate={fromDate}
-        //     endDate={endDate}
-        //   />,
-
-        //   <QuestionnariesByLocation
-        //     data={surveyEntries}
-        //     questionariesName={questionariesName}
-        //     loading={loading}
-        //     error={error}
-        //     selectedLocation={selectedLocation}
-        //   />,
-        //   <QuestionnariesByLocation
-        //     data={surveyEntries}
-        //     questionariesName={questionariesName}
-        //     loading={loading}
-        //     error={error}
-        //     selectedLocation={selectedLocation}
-        //   />,
-        //   <SurveyByLocations
-        //     data={surveyEntries}
-        //     setSelectedLocation={setSelectedLocation}
-        //     fromDate={fromDate}
-        //     endDate={endDate}
-        //   />,
-        //   // <SurveyByQuestionnarie
-        //   //   data={surveyEntries}
-        //   //   questionariesName={questionariesName}
-        //   //   loading={loading}
-        //   //   error={error}
-        //   // />,
-        // ]}
-      >
+      <TabPanel value={tabValue} index={0}>
         <Grid container spacing={2} alignItems="stretch">
           <Grid item xs={12} sm={6}>
             <SurveyByLocations
@@ -185,6 +132,14 @@ const Analytics = ({ surveyEntriesData }) => {
               />
             </Grid>
           )}
+          <Grid item xs={12} sm={6}>
+            <SurveyByQuestionnarie
+              data={surveyEntries}
+              questionariesName={questionariesName}
+              loading={loading}
+              error={error}
+            />
+          </Grid>
         </Grid>
       </TabPanel>
 
