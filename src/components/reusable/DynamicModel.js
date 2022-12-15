@@ -16,7 +16,7 @@ const DynamicModel = ({
   confirmText,
   cancelText,
   onClickConfirm,
-  isClose = false,
+  isClose = true,
 }) => {
   return (
     <Dialog open={open} toggle={toggle} fullWidth maxWidth="md">
@@ -42,8 +42,19 @@ const DynamicModel = ({
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
-        {isClose && <Button onClick={toggle}>{cancelText}</Button>}
-        <Button onClick={onClickConfirm}>{confirmText}</Button>
+        {isClose && (
+          <Button onClick={toggle} color="error" variant="contained">
+            {cancelText}
+          </Button>
+        )}
+        <Button 
+          onClick={onClickConfirm}
+          type="submit"
+          color="primary"
+          variant="contained"
+        >
+          {confirmText}
+        </Button>
       </DialogActions>
     </Dialog>
   );
