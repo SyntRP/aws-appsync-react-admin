@@ -79,7 +79,6 @@ const QrCodeResponses = () => {
 
     return que?.name ?? id;
   };
-  console.log("linkResponses", listLinkResponsesData);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

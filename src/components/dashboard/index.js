@@ -1,5 +1,6 @@
 import { Grid, Paper } from "@mui/material";
 import SurveyByLocations from "../analytics/chart_report/SurveyByLocations";
+import BreadCrumbs from "../reusable/BreadCrumbs";
 import DynamicModel from "../reusable/DynamicModel";
 import Overview from "./Overview";
 import WelcomeAdmin from "./WelcomeAdmin";
@@ -11,9 +12,11 @@ const Dashboard = ({
   surveyLocationsCount,
 }) => {
   return (
-    <Grid container>
-      <Grid item xs={12} lg={6}>
+    <Grid container gap={3} columns={13} justifyItems="center" py={1}>
+      <Grid item xs={13} lg={6}>
         <WelcomeAdmin />
+      </Grid>
+      <Grid item xs={13} lg={6}>
         {!overviewReady && (
           <Overview
             surveyCount={surveyCount}
@@ -21,9 +24,8 @@ const Dashboard = ({
             surveyEntriesCount={surveyEntries?.length || 0}
           />
         )}
-        <DynamicModel />
       </Grid>
-      <Grid item xs={12} lg={6}>
+      <Grid item xs={13} lg={6}>
         <SurveyByLocations
           data={surveyEntries}
           setSelectedLocation={() => null}
