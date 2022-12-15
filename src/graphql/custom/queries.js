@@ -177,3 +177,46 @@ export const COUNT_SURVEY_LOCATIONS = /* GraphQL */ gql(`
     }
   }
 `);
+export const LIST_RESPONSESS = /* GraphQL */ gql(`
+  query ListResponsess(
+    $filter: ModelResponsesFilterInput
+    $limit: Int =10000000
+    $nextToken: String
+  ) {
+    listResponsess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        res
+        deleted
+        archived
+        createdAt
+        updatedAt
+        qu {
+          id
+          qu
+          type
+          isSelf
+          isDependent
+          deleted
+          archived
+          order
+          createdAt
+          updatedAt
+        }
+        group {
+          id
+          startTime
+          finishTime
+          questionnaireId
+          deleted
+          archived
+          testing
+          complete
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`);

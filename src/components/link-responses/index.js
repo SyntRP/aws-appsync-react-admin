@@ -80,6 +80,9 @@ const LinkResponses = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
+  const LinkResponsesData = listLinkResponsesData?.filter(
+    (user) => user?.testing === null || user?.testing === false
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -95,7 +98,7 @@ const LinkResponses = () => {
 
   return (
     <>
-      {listLinkResponsesData?.length > 0 && (
+      {LinkResponsesData?.length > 0 && (
         <Paper elevation={10}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -111,37 +114,37 @@ const LinkResponses = () => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {listLinkResponsesData
-
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((res, u) => (
-                  <StyledTableRow key={u}>
-                    <StyledTableCell>{u + 1}</StyledTableCell>
-                    <StyledTableCell>{res?.by?.name}</StyledTableCell>
-                    <StyledTableCell>{res?.by?.email}</StyledTableCell>
-                    <StyledTableCell>
-                      {onGettingQuestionnaireById(res?.questionnaireId)}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {moment(res?.startTime).format("DD-MM-YYYY hh:mm A")}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {" "}
-                      {moment(res?.finishTime).format("DD-MM-YYYY hh:mm A")}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      <Button size="small" color="secondary">
-                        <VisibilityOutlinedIcon color="inherit" />
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+              {LinkResponsesData?.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              ).map((res, u) => (
+                <StyledTableRow key={u}>
+                  <StyledTableCell>{u + 1}</StyledTableCell>
+                  <StyledTableCell>{res?.by?.name}</StyledTableCell>
+                  <StyledTableCell>{res?.by?.email}</StyledTableCell>
+                  <StyledTableCell>
+                    {onGettingQuestionnaireById(res?.questionnaireId)}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {moment(res?.startTime).format("DD-MM-YYYY hh:mm A")}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {" "}
+                    {moment(res?.finishTime).format("DD-MM-YYYY hh:mm A")}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Button size="small" color="secondary">
+                      <VisibilityOutlinedIcon color="inherit" />
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
             </TableBody>
           </Table>
 
           <TablePagination
             component="div"
-            count={listLinkResponsesData?.length}
+            count={LinkResponsesData?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
