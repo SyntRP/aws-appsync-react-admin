@@ -10,7 +10,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 
 const CreateCard = ({ title = "Add", onClick }) => {
   return (
-    <Card>
+    <Card onClick={onClick} sx={{ cursor: "pointer" }}>
       <CardContent
         sx={{
           display: "flex",
