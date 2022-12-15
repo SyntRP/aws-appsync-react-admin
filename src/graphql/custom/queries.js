@@ -177,6 +177,51 @@ export const COUNT_SURVEY_LOCATIONS = /* GraphQL */ gql(`
     }
   }
 `);
+export const LISTQUESTIONS = /* GraphQL */ gql(`
+  query ListQuestions(
+    $filter: ModelQuestionFilterInput
+    $limit: Int = 30000
+    $nextToken: String
+  ) {
+    listQuestions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        qu
+        type
+        isSelf
+        isDependent
+        listOptions {
+          listValue
+          nextQuestion
+          isText
+          isMultiple
+        }
+        deleted
+        archived
+        order
+        dependent {
+          id
+        }
+        createdAt
+        updatedAt
+        questionnaire {
+          id
+          name
+          description
+          image
+          type
+          introMsg
+          deleted
+          archived
+          endMsg
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`);
 export const LIST_RESPONSESS = /* GraphQL */ gql(`
   query ListResponsess(
     $filter: ModelResponsesFilterInput
@@ -217,6 +262,103 @@ export const LIST_RESPONSESS = /* GraphQL */ gql(`
         }
       }
       nextToken
+    }
+  }
+`);
+
+export const GET_QUESTIONNAIRES= /* GraphQL */ gql(`
+  query GetQuestionnaire($id: ID!) {
+    getQuestionnaire(id: $id) {
+      id
+      name
+      description
+      image
+      type
+      introMsg
+      deleted
+      archived
+      endMsg
+      createdAt
+      updatedAt
+      survey {
+        id
+        name
+        description
+        image
+        archived
+        deleted
+        groups
+        createdAt
+        updatedAt
+        preQuestionnaire {
+          id
+          name
+          description
+          image
+          type
+          introMsg
+          deleted
+          archived
+          endMsg
+          createdAt
+          updatedAt
+        }
+        mainQuestionnaire {
+          id
+          name
+          description
+          image
+          type
+          introMsg
+          deleted
+          archived
+          endMsg
+          createdAt
+          updatedAt
+        }
+        postQuestionnaire {
+          id
+          name
+          description
+          image
+          type
+          introMsg
+          deleted
+          archived
+          endMsg
+          createdAt
+          updatedAt
+        }
+        questionnaire {
+          nextToken
+        }
+      }
+      question(limit: 200) {
+        items {
+          id
+          qu
+          type
+          isSelf
+          isDependent
+          listOptions {
+            listValue
+            nextQuestion
+            isText
+            isMultiple
+          }
+          dependent {
+            id
+            options {
+              dependentValue
+              nextQuestion
+            }
+          }
+          order
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `);
