@@ -28,3 +28,33 @@ body {
     height: 440px;
   }
 }
+.apexcharts-svg {
+  background: transparent !important;
+}
+.apexcharts-tooltip-title {
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-bottom: 1px solid #333 !important;
+  margin: 0 !important;
+}
+.apexcharts-text {
+  fill: rgb(168, 170, 176) !important;
+}
+.apexcharts-title-text {
+  fill: rgba(116, 116, 116, 0.893) !important;
+}
+.apexcharts-theme-dark .apexcharts-menu-icon svg,
+.apexcharts-theme-dark .apexcharts-pan-icon svg,
+.apexcharts-theme-dark .apexcharts-reset-icon svg,
+.apexcharts-theme-dark .apexcharts-selection-icon svg,
+.apexcharts-theme-dark .apexcharts-toolbar-custom-icon svg,
+.apexcharts-theme-dark .apexcharts-zoom-icon svg,
+.apexcharts-theme-dark .apexcharts-zoomin-icon svg,
+.apexcharts-theme-dark .apexcharts-zoomout-icon svg {
+  fill: rgba(116, 116, 116, 0.893) !important;
+}
+.apexcharts-legend-text {
+  color: rgba(116, 116, 116, 0.893) !important;
+}
+.apexcharts-pie-label {
+  fill: white !important;
+}

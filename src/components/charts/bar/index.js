@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import { useTheme } from "@mui/system";
 import Chart from "react-apexcharts";
 import {
@@ -98,13 +99,15 @@ const SimpleBarChart = ({
   ];
 
   return (
-    <Chart
-      options={options}
-      series={series}
-      type="bar"
-      width="100%"
-      height={CHART_HEIGHT}
-    />
+    <Paper variant="elevation" elevation={8} sx={{ p: 0.35 }}>
+      <Chart
+        options={options}
+        series={series}
+        type="bar"
+        width="100%"
+        height={CHART_HEIGHT}
+      />
+    </Paper>
   );
 };
 

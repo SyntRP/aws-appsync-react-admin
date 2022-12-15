@@ -27,14 +27,14 @@ const TabPanel = (props) => {
       {value === index && (
         <>
           {children}
-          <Grid container spacing={2} alignItems="stretch">
+          {/* <Grid container spacing={2} alignItems="stretch">
             {items?.length > 0 &&
               items?.map((Item, i) => (
                 <Grid item xs={12} sm={6} key={i}>
                   {Item}
                 </Grid>
               ))}
-          </Grid>
+          </Grid> */}
         </>
       )}
     </div>
@@ -129,29 +129,64 @@ const Analytics = ({ surveyEntriesData }) => {
       <TabPanel
         value={tabValue}
         index={0}
-        items={[
-          <SurveyByLocations
-            data={surveyEntries}
-            setSelectedLocation={setSelectedLocation}
-            fromDate={fromDate}
-            endDate={endDate}
-          />,
+        // items={[
+        //   <SurveyByLocations
+        //     data={surveyEntries}
+        //     setSelectedLocation={setSelectedLocation}
+        //     fromDate={fromDate}
+        //     endDate={endDate}
+        //   />,
 
-          <QuestionnariesByLocation
-            data={surveyEntries}
-            questionariesName={questionariesName}
-            loading={loading}
-            error={error}
-            selectedLocation={selectedLocation}
-          />,
-          // <SurveyByQuestionnarie
-          //   data={surveyEntries}
-          //   questionariesName={questionariesName}
-          //   loading={loading}
-          //   error={error}
-          // />,
-        ]}
-      ></TabPanel>
+        //   <QuestionnariesByLocation
+        //     data={surveyEntries}
+        //     questionariesName={questionariesName}
+        //     loading={loading}
+        //     error={error}
+        //     selectedLocation={selectedLocation}
+        //   />,
+        //   <QuestionnariesByLocation
+        //     data={surveyEntries}
+        //     questionariesName={questionariesName}
+        //     loading={loading}
+        //     error={error}
+        //     selectedLocation={selectedLocation}
+        //   />,
+        //   <SurveyByLocations
+        //     data={surveyEntries}
+        //     setSelectedLocation={setSelectedLocation}
+        //     fromDate={fromDate}
+        //     endDate={endDate}
+        //   />,
+        //   // <SurveyByQuestionnarie
+        //   //   data={surveyEntries}
+        //   //   questionariesName={questionariesName}
+        //   //   loading={loading}
+        //   //   error={error}
+        //   // />,
+        // ]}
+      >
+        <Grid container spacing={2} alignItems="stretch">
+          <Grid item xs={12} sm={6}>
+            <SurveyByLocations
+              data={surveyEntries}
+              setSelectedLocation={setSelectedLocation}
+              fromDate={fromDate}
+              endDate={endDate}
+            />
+          </Grid>
+          {selectedLocation && (
+            <Grid item xs={12} sm={6}>
+              <QuestionnariesByLocation
+                data={surveyEntries}
+                questionariesName={questionariesName}
+                loading={loading}
+                error={error}
+                selectedLocation={selectedLocation}
+              />
+            </Grid>
+          )}
+        </Grid>
+      </TabPanel>
 
       <TabPanel value={tabValue} index={1}>
         2
