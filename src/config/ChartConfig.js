@@ -22,7 +22,7 @@ export const dowloadChartAsPDF = async ({
   ApexCharts.exec(ID, "dataURI").then(({ imgURI }) => {
     const doc = new jsPDF("p", "px", "a4");
     if (isCustom) doc.addImage(imgURI, "JPEG", 20, 20, 406, 230);
-    else doc.addImage(imgURI, "JPEG", 20, 20, 406, 280);
+    else doc.addImage(imgURI, "JPEG", 20, 20, 406, 230);
     doc.save(docName);
   });
 };

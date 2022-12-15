@@ -1,3 +1,4 @@
+import { Paper } from "@mui/material";
 import Chart from "react-apexcharts";
 import {
   CHART_FORECOLOR,
@@ -94,13 +95,15 @@ const SimpleDonutChart = ({ id, data, title, labels, onDownload }) => {
   };
 
   return (
-    <Chart
-      options={options}
-      series={options.series}
-      type="donut"
-      width="100%"
-      height={CHART_HEIGHT}
-    />
+    <Paper variant="elevation" elevation={8} sx={{ p: 0.35, height: "100%" }}>
+      <Chart
+        options={options}
+        series={options.series}
+        type="donut"
+        width="100%"
+        height={CHART_HEIGHT}
+      />
+    </Paper>
   );
 };
 

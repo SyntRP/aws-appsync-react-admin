@@ -6,7 +6,6 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import React from "react";
 
 const DynamicModel = ({
   open,
