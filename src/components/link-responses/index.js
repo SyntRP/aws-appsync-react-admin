@@ -54,7 +54,6 @@ const LinkResponses = () => {
     variables,
   });
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
-  console.log("questionariesName", questionariesName);
 
   const onGettingQuestionnaireById = (id) => {
     const que = questionariesName?.listQuestionnaires?.items?.find(
@@ -81,8 +80,6 @@ const LinkResponses = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-
-  console.log("linkResponses", listLinkResponsesData);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

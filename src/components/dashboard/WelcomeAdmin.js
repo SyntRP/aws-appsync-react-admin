@@ -6,8 +6,6 @@ const WelcomeAdmin = () => {
       variant="elevation"
       elevation={3}
       sx={{
-        p: 2,
-        m: 2,
         overflow: "hidden",
         position: "relative",
         borderRadius: "20px",

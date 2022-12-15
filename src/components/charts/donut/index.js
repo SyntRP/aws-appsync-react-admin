@@ -8,7 +8,7 @@ import {
   dowloadChartAsPDF,
 } from "../../../config/ChartConfig";
 
-const SimpleDonutChart = ({ id, data, title, labels, onDownload }) => {
+const SimpleDonutChart = ({ id, data, title, labels }) => {
   const chartData = Object.entries(data)
     ?.map(([name, obj]) => ({
       ...obj,

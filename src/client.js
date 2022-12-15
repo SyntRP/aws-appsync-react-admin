@@ -27,27 +27,7 @@ const link = ApolloLink.from([
 ]);
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          listSurveyEntriess: {
-            // Don't cache separate results based on
-            // any of this field's arguments.
-            keyArgs: false,
-
-            // Concatenate the incoming list items with
-            // the existing list items.
-            // merge(existing = [], incoming) {
-            //   const items = incoming?.items;
-            //   console.log("incoming : ", incoming);
-            //   return [...existing, ...items];
-            // },
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });
 
 export default client;
