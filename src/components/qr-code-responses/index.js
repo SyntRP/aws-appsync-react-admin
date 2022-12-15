@@ -19,6 +19,7 @@ import {
 } from "../../graphql/custom/queries";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,13 +66,15 @@ const QrCodeResponses = () => {
     if (items?.length > 0) setQrCodeResponses(items);
   };
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
-  const listLinkResponsesData = qrCodeResponses
+  const listQrResponsesData = qrCodeResponses
     ?.filter((user) => user?.location?.location)
     ?.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-
+  const QrResponsesData = listQrResponsesData?.filter(
+    (user) => user?.testing === null || user?.testing === false
+  );
   const onGettingQuestionnaireById = (id) => {
     const que = questionariesName?.listQuestionnaires?.items?.find(
       (q) => q?.id === id
@@ -79,7 +82,7 @@ const QrCodeResponses = () => {
 
     return que?.name ?? id;
   };
-  console.log("linkResponses", listLinkResponsesData);
+  console.log("linkResponses", QrResponsesData);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -94,7 +97,7 @@ const QrCodeResponses = () => {
 
   return (
     <>
-      {listLinkResponsesData?.length > 0 && (
+      {QrResponsesData?.length > 0 && (
         <Paper elevation={10}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -109,40 +112,45 @@ const QrCodeResponses = () => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {listLinkResponsesData
-
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((res, u) => (
-                  <StyledTableRow key={u}>
-                    <StyledTableCell>{u + 1}</StyledTableCell>
-                    <StyledTableCell>{res?.location?.location}</StyledTableCell>
-                    <StyledTableCell>
-                      {res?.location?.inchargeEmail}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {" "}
-                      {onGettingQuestionnaireById(res?.questionnaireId)}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {moment(res?.startTime).format("DD-MM-YYYY hh:mm A")}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      {" "}
-                      {moment(res?.finishTime).format("DD-MM-YYYY hh:mm A")}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      <Button size="small" color="secondary">
-                        <VisibilityOutlinedIcon color="inherit" />
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+              {QrResponsesData?.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              ).map((res, u) => (
+                <StyledTableRow key={u}>
+                  <StyledTableCell>{u + 1}</StyledTableCell>
+                  <StyledTableCell>{res?.location?.location}</StyledTableCell>
+                  <StyledTableCell>
+                    {res?.location?.inchargeEmail}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {" "}
+                    {onGettingQuestionnaireById(res?.questionnaireId)}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {moment(res?.startTime).format("DD-MM-YYYY hh:mm A")}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {" "}
+                    {moment(res?.finishTime).format("DD-MM-YYYY hh:mm A")}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      component={Link}
+                      to={`/surveyresponses?Rid=${res?.id}`}
+                    >
+                      <VisibilityOutlinedIcon color="inherit" />
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
             </TableBody>
           </Table>
 
           <TablePagination
             component="div"
-            count={listLinkResponsesData?.length}
+            count={QrResponsesData?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
