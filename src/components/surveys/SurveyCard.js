@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -18,13 +18,47 @@ import useToggle from "../../helpers/hooks/useToggle";
 import { Loader } from "../common/Loader";
 
 const ShareSurvey = lazy(() => import("../../components/surveys/ShareSurvey"));
-
+const UpdateSurvey = lazy(() => import("./UpdateSurvey"));
 const SurveyCard = ({ survey }) => {
-  const { image, name, description, id } = survey;
+  const {
+    open: updateOpen,
+    toggleOpen: updateToggleOpen,
+    setOpen: setUpdateOpen,
+  } = useToggle();
+  const [currentSurvey, setCurrentSurvey] = useState({});
+  const { image, name, description } = survey;
   const { open, toggleOpen } = useToggle();
+  const openUpdateDialog = Boolean(updateOpen) && Boolean(currentSurvey?.id);
 
+  const handleSurveyUpdateDialog = (survey) => {
+    const { name = "", image = "", description = "", id } = survey;
+    setCurrentSurvey({
+      name,
+      image,
+      description,
+      id,
+    });
+    setUpdateOpen(true);
+  };
+  const handleupdateToggleOpen = () => {
+    setCurrentSurvey({});
+    updateToggleOpen();
+  };
   return (
     <>
+      <DynamicModel
+        open={openUpdateDialog}
+        toggle={handleupdateToggleOpen}
+        dialogTitle={`Update Survey ${currentSurvey?.name}`}
+        isActions={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <UpdateSurvey
+            toggle={handleupdateToggleOpen}
+            initialFormValues={currentSurvey}
+          />
+        </Suspense>
+      </DynamicModel>
       <DynamicModel
         dialogTitle="Share Survey"
         open={open}
@@ -80,7 +114,11 @@ const SurveyCard = ({ survey }) => {
           <IconButton color="primary" aria-label="archive">
             <ArchiveOutlinedIcon />
           </IconButton>
-          <Button size="small" variant="contained">
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => handleSurveyUpdateDialog(survey)}
+          >
             Edit
           </Button>
           <Button size="small" variant="contained" color="secondary">
