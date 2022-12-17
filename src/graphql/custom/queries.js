@@ -266,7 +266,7 @@ export const LIST_RESPONSESS = /* GraphQL */ gql(`
   }
 `);
 
-export const GET_QUESTIONNAIRES= /* GraphQL */ gql(`
+export const GET_QUESTIONNAIRES = /* GraphQL */ gql(`
   query GetQuestionnaire($id: ID!) {
     getQuestionnaire(id: $id) {
       id
