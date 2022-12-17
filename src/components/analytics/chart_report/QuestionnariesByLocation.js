@@ -1,3 +1,4 @@
+import withSuspense from "../../../helpers/hoc/withSuspense";
 import SimpleDonutChart from "../../charts/donut";
 import { Loader } from "../../common/Loader";
 
@@ -45,4 +46,4 @@ const QuestionnariesByLocation = ({
   );
 };
 
-export default QuestionnariesByLocation;
+export default withSuspense(QuestionnariesByLocation);

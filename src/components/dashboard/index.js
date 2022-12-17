@@ -1,7 +1,7 @@
-import { Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
+import { utils, writeFileXLSX } from "xlsx";
+import { SurveyEntriesToExcel } from "../../utils/Excel";
 import SurveyByLocations from "../analytics/chart_report/SurveyByLocations";
-import BreadCrumbs from "../reusable/BreadCrumbs";
-import DynamicModel from "../reusable/DynamicModel";
 import Overview from "./Overview";
 import WelcomeAdmin from "./WelcomeAdmin";
 
@@ -11,10 +11,17 @@ const Dashboard = ({
   surveyCount,
   surveyLocationsCount,
 }) => {
+  const handleDownloadingReport = () => {
+    const modifiedSurveyEntries = SurveyEntriesToExcel(surveyEntries);
+    const ws = utils.json_to_sheet(modifiedSurveyEntries);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, "SurveyEntries");
+    writeFileXLSX(wb, "SurveyReports.xlsx");
+  };
   return (
     <Grid container gap={3} columns={13} justifyItems="center" py={1}>
       <Grid item xs={13} lg={6}>
-        <WelcomeAdmin />
+        <WelcomeAdmin onDownload={handleDownloadingReport} />
       </Grid>
       <Grid item xs={13} lg={6}>
         {!overviewReady && (

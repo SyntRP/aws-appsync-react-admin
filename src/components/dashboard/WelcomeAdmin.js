@@ -1,6 +1,6 @@
 import { Button, CardContent, Paper, Typography } from "@mui/material";
 
-const WelcomeAdmin = () => {
+const WelcomeAdmin = ({ onDownload }) => {
   return (
     <Paper
       variant="elevation"
@@ -34,6 +34,7 @@ const WelcomeAdmin = () => {
           sx={{ my: 2 }}
           size="medium"
           color="secondary"
+          onClick={onDownload}
         >
           Download
         </Button>

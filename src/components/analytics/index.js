@@ -1,17 +1,19 @@
-import { lazy, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { Box, Grid, Tab, Tabs } from "@mui/material";
 import { LIST_QUESTIONNARIES_NAME } from "../../graphql/custom/queries";
-import QuestionnariesByLocation from "./chart_report/QuestionnariesByLocation";
+import SurveyByLocations from "./chart_report/SurveyByLocations";
 import ResponsiveDateRangePicker from "../reusable/DateRangePicker";
-import moment from "moment";
-const SurveyByQuestionnarie = lazy(() =>
-  import("./chart_report/SurveyByQuestionnarie")
+import SimpleLineChart from "../charts/line";
+import SurveyByQuestionnarie from "./chart_report/SurveyByQuestionnarie";
+import { Loader } from "../common/Loader";
+const QuestionnariesByLocation = lazy(() =>
+  import("./chart_report/QuestionnariesByLocation")
 );
 
-const SurveyByLocations = lazy(() =>
-  import("./chart_report/SurveyByLocations")
-);
+// const SurveyByLocations = lazy(() =>
+//   import("./chart_report/SurveyByLocations")
+// );
 
 const TabPanel = (props) => {
   const { value, index, children, ...other } = props;
@@ -80,7 +82,7 @@ const Analytics = ({ surveyEntriesData }) => {
           bgcolor: "background.paper",
         }}
       >
-        <Tabs
+        {/* <Tabs
           value={tabValue}
           onChange={handleChange}
           textColor="primary"
@@ -99,9 +101,9 @@ const Analytics = ({ surveyEntriesData }) => {
           <Tab label="Locations" />
           <Tab label="Item Two" />
           <Tab label="Item Three" />
-        </Tabs>
+        </Tabs> */}
         <Grid container spacing={3} mb={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <ResponsiveDateRangePicker
               fromDate={fromDate}
               setFromDate={setFromDate}
@@ -113,7 +115,7 @@ const Analytics = ({ surveyEntriesData }) => {
       </Box>
       <TabPanel value={tabValue} index={0}>
         <Grid container spacing={2} alignItems="stretch">
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <SurveyByLocations
               data={surveyEntries}
               setSelectedLocation={setSelectedLocation}
@@ -122,17 +124,19 @@ const Analytics = ({ surveyEntriesData }) => {
             />
           </Grid>
           {selectedLocation && (
-            <Grid item xs={12} sm={6}>
-              <QuestionnariesByLocation
-                data={surveyEntries}
-                questionariesName={questionariesName}
-                loading={loading}
-                error={error}
-                selectedLocation={selectedLocation}
-              />
+            <Grid item xs={12} md={6}>
+              <Suspense fallback={<Loader />}>
+                <QuestionnariesByLocation
+                  data={surveyEntries}
+                  questionariesName={questionariesName}
+                  loading={loading}
+                  error={error}
+                  selectedLocation={selectedLocation}
+                />
+              </Suspense>
             </Grid>
           )}
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <SurveyByQuestionnarie
               data={surveyEntries}
               questionariesName={questionariesName}
@@ -140,6 +144,9 @@ const Analytics = ({ surveyEntriesData }) => {
               error={error}
             />
           </Grid>
+          {/* <Grid item xs={12} md={6}>
+            <SimpleLineChart />
+          </Grid> */}
         </Grid>
       </TabPanel>
 

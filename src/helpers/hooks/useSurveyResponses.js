@@ -16,7 +16,6 @@ const useSurveyResponses = () => {
   });
 
   const [surveyResponses, setSurveyResponses] = useState([]);
-  console.log("surveyResponses", surveyResponses);
   const [nextToken, setNextToken] = useState(null);
   const [loading, setLoading] = useState(true);
 

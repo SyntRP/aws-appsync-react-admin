@@ -70,7 +70,6 @@ const SurveyResponses = () => {
   const listUserRes = surveyEntries?.find((r) => r?.id === qid);
 
   const listans = listUserRes?.responses;
-  console.log("listans", listans);
   const customIcons = {
     1: {
       icon: (
@@ -123,7 +122,6 @@ const SurveyResponses = () => {
   //   (a, b) => a?.order - b?.order
   // );
   const questionCount = listans?.items;
-  console.log("questionCount", questionCount);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));

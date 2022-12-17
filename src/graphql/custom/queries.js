@@ -112,8 +112,6 @@ export const LIST_SURVEY_LOCATIONS = /* GraphQL */ gql(`
         id
         location
         inchargeEmail
-        deleted
-        archived
         createdAt
         updatedAt
       }

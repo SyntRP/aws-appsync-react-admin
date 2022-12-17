@@ -1,42 +1,23 @@
 import { useMutation } from "@apollo/client";
 import { Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { CREATE_SURVEY_USER } from "../../graphql/custom/mutations";
-import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
+import { UPDATE_SURVEY_LOCATION } from "../../graphql/custom/mutations";
+import { LIST_SURVEY_LOCATIONS } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
-const initialFormValues = {
-  name: "",
-  email: "",
-};
-
-const CreateUser = ({ toggle }) => {
-  const [createSurveyUser, { loading, error }] = useMutation(
-    CREATE_SURVEY_USER,
+const UpdateLocation = ({ toggle, initialFormValues }) => {
+  const [updateSurveyLocation, { loading, error }] = useMutation(
+    UPDATE_SURVEY_LOCATION,
     {
-      //   update: (cache, { data: { createSurveyUser } }) => {
-      //     const { listSurveyUsers } = cache.readQuery({
-      //       query: LIST_SURVEY_USERS,
-      //     });
-      //     const data = {
-      //       listSurveyUsers: {
-      //         ...listSurveyUsers,
-      //         items: [createSurveyUser, ...listSurveyUsers.items],
-      //       },
-      //     };
-      //     cache.writeQuery({
-      //       query: LIST_SURVEY_USERS,
-      //       data,
-      //     });
-      //   },
-      refetchQueries: [{ query: LIST_SURVEY_USERS }],
+      refetchQueries: [{ query: LIST_SURVEY_LOCATIONS }],
     }
   );
   const { values, handleInputChange } = useForm(initialFormValues);
-  const enableButton = Boolean(values.name) && Boolean(values.email);
-  const onClickCreate = async () => {
-    await createSurveyUser({ variables: { input: values } });
+  const enableButton =
+    Boolean(values.location) && Boolean(values.inchargeEmail);
+  const onClickUpdate = async () => {
+    await updateSurveyLocation({ variables: { input: values } });
     toggle();
   };
   return (
@@ -45,27 +26,27 @@ const CreateUser = ({ toggle }) => {
         <Grid item xs={12} cm={6}>
           <TextField
             required
-            id="standard-user-name"
-            label="User Name"
+            id="standard-location"
+            label="Location"
             variant="standard"
             color="secondary"
-            name="name"
+            name="location"
             fullWidth
             onChange={handleInputChange}
-            value={values.name}
+            value={values.location}
           />
         </Grid>
         <Grid item xs={12} cm={6}>
           <TextField
             required
-            id="standard-email"
+            id="standard-location-email"
             label="Email"
             variant="standard"
             color="secondary"
-            name="email"
+            name="inchargeEmail"
             fullWidth
             onChange={handleInputChange}
-            value={values.email}
+            value={values.inchargeEmail}
           />
         </Grid>
       </Grid>
@@ -82,16 +63,16 @@ const CreateUser = ({ toggle }) => {
         </Button>
         {!loading ? (
           <Button
-            onClick={onClickCreate}
+            onClick={onClickUpdate}
             variant="contained"
             color="primary"
             disabled={!enableButton}
           >
-            Create
+            Update
           </Button>
         ) : (
           <Button variant="contained" color="primary" disabled>
-            Creating ....
+            Updating ....
           </Button>
         )}
       </Box>
@@ -99,4 +80,4 @@ const CreateUser = ({ toggle }) => {
   );
 };
 
-export default withSuspense(CreateUser);
+export default withSuspense(UpdateLocation);

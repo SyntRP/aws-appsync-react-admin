@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { LIST_SURVEY_ENTRIES } from "../../graphql/custom/queries";
 
-const useSurveyEntries = () => {
-  let variables = {
-    limit: 1000,
-  };
+const useSurveyEntries = (initialVar = {}) => {
+  let variables = { ...initialVar, limit: 1000 };
   const {
     loading: listSurveyEntriesLoading,
     error: listSurveyEntriesError,

@@ -86,7 +86,6 @@ const TestResponses = () => {
     variables,
   });
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
-  console.log("questionariesName", questionariesName);
 
   const onGettingQuestionnaireById = (id) => {
     const que = questionariesName?.listQuestionnaires?.items?.find(
@@ -134,7 +133,6 @@ const TestResponses = () => {
   const QrResponsesData = listQrResponsesData?.filter(
     (user) => user?.testing === true && user?.responses?.items?.length > 0
   );
-  console.log("linkResponses", LinkResponsesData);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
