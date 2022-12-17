@@ -9,16 +9,35 @@ import {
   IconButton,
 } from "@mui/material";
 
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import DynamicModel from "../reusable/DynamicModel";
+import useToggle from "../../helpers/hooks/useToggle";
+import { Loader } from "../common/Loader";
+
+const ShareSurvey = lazy(() => import("../../components/surveys/ShareSurvey"));
 
 const SurveyCard = ({ survey }) => {
   const { image, name, description, id } = survey;
+  const { open, toggleOpen } = useToggle();
 
   return (
     <>
+      <DynamicModel
+        dialogTitle="Share Survey"
+        open={open}
+        toggle={toggleOpen}
+        isClose
+        maxWidth="sm"
+        isActions={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <ShareSurvey toggle={toggleOpen} />
+        </Suspense>
+      </DynamicModel>
+
       <Card
         sx={{
           p: 1,
@@ -67,7 +86,7 @@ const SurveyCard = ({ survey }) => {
           <Button size="small" variant="contained" color="secondary">
             Preview
           </Button>
-          <IconButton color="primary" aria-label="delete">
+          <IconButton color="primary" aria-label="delete" onClick={toggleOpen}>
             <ShareOutlinedIcon />
           </IconButton>
         </CardActions>

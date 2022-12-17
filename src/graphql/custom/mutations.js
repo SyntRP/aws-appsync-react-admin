@@ -14,6 +14,23 @@ export const CREATE_SURVEY_USER = /* GraphQL */ gql(`
   }
 `);
 
+export const CREATE_SURVEY = /* GraphQL */ gql(`
+  mutation CreateSurvey(
+    $input: CreateSurveyInput!
+    $condition: ModelSurveyConditionInput
+  ) {
+    createSurvey(input: $input, condition: $condition) {
+      id
+      name
+      description
+      image
+      groups
+      createdAt
+      updatedAt
+    }
+  }
+`);
+
 export const CREATE_QUESTIONNAIRE = /* GraphQL */ gql(`
   mutation CreateQuestionnaire(
     $input: CreateQuestionnaireInput!
