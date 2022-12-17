@@ -4,81 +4,60 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  DialogContent,
   IconButton,
-  TextField,
   Typography,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import useToggle from "../../helpers/hooks/useToggle";
 import DynamicModel from "../reusable/DynamicModel";
 import DeleteModel from "../reusable/DeleteModel";
 import { Link } from "react-router-dom";
+import { DELETE_QUESTONNAIRE } from "../../graphql/custom/mutations";
+import { useMutation } from "@apollo/client";
+import withSuspense from "../../helpers/hoc/withSuspense";
+import { Loader } from "@aws-amplify/ui-react";
+import { lazy, Suspense } from "react";
+
+const EditQuestionnaire = lazy(() => import("./EditQuestionnaire"));
 
 const QuestionnarieCard = ({ questionnarie }) => {
   const { name, description } = questionnarie;
-  const {
-    open: editQuestionnaireModelOpen,
-    setOpen: setEditQuestionnaireModelOpen,
-    toggleOpen: toggleEditQuestionnaireModelOpen,
-  } = useToggle(false);
+  const { open, toggleOpen } = useToggle();
+
   const {
     open: deleteModelOpen,
     setOpen: setDeleteModelOpen,
     toggleOpen: toggledeleteModelOpen,
   } = useToggle(false);
+
+  const [DeleteQuestionnaire] = useMutation(DELETE_QUESTONNAIRE, {
+    id: questionnarie?.id,
+  });
+  const onClickDelete = async () => {
+    await DeleteQuestionnaire({ id: questionnarie?.id });
+    setDeleteModelOpen(false);
+  };
+
   return (
     <>
       <DynamicModel
-        open={editQuestionnaireModelOpen}
-        toggle={toggleEditQuestionnaireModelOpen}
         dialogTitle="Edit Questionnaire"
-        confirmText="UPDATE"
-        cancelText="CANCEL"
+        open={open}
+        toggle={toggleOpen}
+        isClose
+        maxWidth="md"
+        isActions={false}
       >
-        <DialogContent>
-          <TextField
-            // autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            // value={name}
-            // onChange={(event) => setName(event.target.value)}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            id="description"
-            label="Description"
-            // value={description}
-            // onChange={(event) => setDescription(event.target.value)}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            id="introMsg"
-            label="Intro Message"
-            // value={introMsg}
-            // onChange={(event) => setInstroMsg(event.target.value)}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            id="endMsg"
-            label="Thank You Message"
-            // value={endMsg}
-            // onChange={(event) => setEndMsg(event.target.value)}
-            fullWidth
-          />
-          <br />
-        </DialogContent>
+        <Suspense fallback={<Loader />}>
+          <EditQuestionnaire toggle={toggleOpen}/>
+        </Suspense>
       </DynamicModel>
       <DeleteModel
         open={deleteModelOpen}
         toggle={toggledeleteModelOpen}
+        onClickConfirm={onClickDelete}
         dialogTitle="Delete this Questionnaire"
         dialogContentText="Are You Sure You Want to Delete this Questionnaire?"
       />
@@ -125,11 +104,7 @@ const QuestionnarieCard = ({ questionnarie }) => {
             <ArchiveOutlinedIcon />
           </IconButton>
 
-          <Button
-            size="small"
-            variant="contained"
-            onClick={setEditQuestionnaireModelOpen}
-          >
+          <Button size="small" variant="contained" onClick={toggleOpen}>
             Edit
           </Button>
           <Button
@@ -141,13 +116,10 @@ const QuestionnarieCard = ({ questionnarie }) => {
           >
             Preview
           </Button>
-          {/* <IconButton aria-label="share">
-          <ShareOutlinedIcon />
-        </IconButton> */}
         </CardActions>
       </Card>
     </>
   );
 };
 
-export default QuestionnarieCard;
+export default withSuspense(QuestionnarieCard);
