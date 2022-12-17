@@ -1,4 +1,3 @@
-import withSuspense from "../../../helpers/hoc/withSuspense";
 import SimpleDonutChart from "../../charts/donut";
 import { Loader } from "../../common/Loader";
 
@@ -35,4 +34,4 @@ const SurveyByQuestionnarie = ({ data, questionariesName, loading, error }) => {
   );
 };
 
-export default withSuspense(SurveyByQuestionnarie);
+export default SurveyByQuestionnarie;

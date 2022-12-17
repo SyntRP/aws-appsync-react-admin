@@ -21,7 +21,8 @@
     "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.4",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.1/xlsx-0.19.1.tgz"
   },
   "scripts": {
     "start": "react-scripts start",

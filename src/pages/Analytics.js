@@ -4,6 +4,9 @@ import withSuspense from "../helpers/hoc/withSuspense";
 import useSurveyEntries from "../helpers/hooks/useSurveyEntries";
 
 const AnalyticsPage = () => {
+  // const { loading, surveyEntries } = useSurveyEntries({
+  //   filter: { testing: { eq: true } },
+  // });
   const { loading, surveyEntries } = useSurveyEntries();
   if (loading) {
     return <Loader />;

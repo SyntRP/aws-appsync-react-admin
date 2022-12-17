@@ -112,8 +112,6 @@ export const LIST_SURVEY_LOCATIONS = /* GraphQL */ gql(`
         id
         location
         inchargeEmail
-        deleted
-        archived
         createdAt
         updatedAt
       }
@@ -266,7 +264,7 @@ export const LIST_RESPONSESS = /* GraphQL */ gql(`
   }
 `);
 
-export const GET_QUESTIONNAIRES= /* GraphQL */ gql(`
+export const GET_QUESTIONNAIRES = /* GraphQL */ gql(`
   query GetQuestionnaire($id: ID!) {
     getQuestionnaire(id: $id) {
       id

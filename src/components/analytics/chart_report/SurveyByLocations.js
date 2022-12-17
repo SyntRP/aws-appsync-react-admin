@@ -1,6 +1,4 @@
-/* eslint-disable no-undef */
 import { useEffect, useState } from "react";
-import withSuspense from "../../../helpers/hoc/withSuspense";
 import SimpleBarChart from "../../charts/bar";
 import { bindTitle } from "../../../config/ChartConfig";
 
@@ -61,4 +59,4 @@ const SurveyByLocations = ({
   );
 };
 
-export default withSuspense(SurveyByLocations);
+export default SurveyByLocations;
