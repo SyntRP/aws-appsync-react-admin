@@ -50,11 +50,11 @@ export const NavItems = [
     name: "Link Responses",
     icon: InsertLinkOutlinedIcon,
   },
-  {
-    path: "/testresponses",
-    name: "Test Responses",
-    icon: InventoryOutlinedIcon,
-  },
+  // {
+  //   path: "/testresponses",
+  //   name: "Test Responses",
+  //   icon: InventoryOutlinedIcon,
+  // },
   {
     name: "Divider",
   },
