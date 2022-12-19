@@ -15,13 +15,13 @@ const CreateSurvey = lazy(() =>
 const Surveys = () => {
   const { open, toggleOpen } = useToggle();
   const { loading, error, data } = useQuery(LIST_SURVEYS, {
-    variables: { filter: { archived: { ne: true } }, limit: 10 },
+    variables: { filter: { archived: { ne: true } }, limit: 100 },
   });
   const [surveys, setSurveys] = useState([]);
 
   useEffect(() => {
     if (!loading && !error) setSurveys(data?.listSurveys?.items);
-  }, [loading]);
+  }, [loading, data?.listSurveys?.items]);
 
   if (loading) {
     return <Loader />;
@@ -40,7 +40,7 @@ const Surveys = () => {
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
-          <CreateSurvey toggle={toggleOpen} />
+          <CreateSurvey toggle={toggleOpen} surevy={surveys} />
         </Suspense>
       </DynamicModel>
       {surveys.length > 0 ? (

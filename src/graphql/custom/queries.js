@@ -15,6 +15,10 @@ export const LIST_SURVEYS = /* GraphQL */ gql(`
         archived
         createdAt
         updatedAt
+        preQuestionnaire {
+          id
+          name
+        }
       }
       nextToken
     }
@@ -175,7 +179,7 @@ export const COUNT_SURVEY_LOCATIONS = /* GraphQL */ gql(`
     }
   }
 `);
-export const LISTQUESTIONS = /* GraphQL */ gql(`
+export const LIST_QUESTIONS = /* GraphQL */ gql(`
   query ListQuestions(
     $filter: ModelQuestionFilterInput
     $limit: Int = 30000
@@ -360,3 +364,25 @@ export const GET_QUESTIONNAIRES = /* GraphQL */ gql(`
     }
   }
 `);
+
+export const GET_SURVEY = /* GraphQL */ `
+  query GetSurvey($id: ID!) {
+    getSurvey(id: $id) {
+      id
+      name
+      description
+      image
+      archived
+      deleted
+      groups
+      createdAt
+      updatedAt
+      preQuestionnaire {
+        id
+        name
+      }
+
+      nextToken
+    }
+  }
+`;

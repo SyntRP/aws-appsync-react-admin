@@ -71,6 +71,7 @@ export const CREATE_SURVEY = /* GraphQL */ gql(`
       groups
       createdAt
       updatedAt
+      archived
     }
   }
 `);
