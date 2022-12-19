@@ -1,12 +1,13 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Box, Grid, Tab, Tabs } from "@mui/material";
+import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
 import { LIST_QUESTIONNARIES_NAME } from "../../graphql/custom/queries";
 import SurveyByLocations from "./chart_report/SurveyByLocations";
 import ResponsiveDateRangePicker from "../reusable/DateRangePicker";
 import SimpleLineChart from "../charts/line";
 import SurveyByQuestionnarie from "./chart_report/SurveyByQuestionnarie";
 import { Loader } from "../common/Loader";
+import TestModeSwitch from "../reusable/TestModeSwitch";
 const QuestionnariesByLocation = lazy(() =>
   import("./chart_report/QuestionnariesByLocation")
 );
@@ -102,8 +103,13 @@ const Analytics = ({ surveyEntriesData }) => {
           <Tab label="Item Two" />
           <Tab label="Item Three" />
         </Tabs> */}
-        <Grid container spacing={3} mb={2}>
-          <Grid item xs={12} md={6}>
+        <Grid container spacing={3} mb={2} alignItems="flex-start">
+          <Grid item xs={4} sm={2} md={1}>
+            <Typography variant="button" color="primary">
+              Filters
+            </Typography>
+          </Grid>
+          <Grid item xs={10} sm={8} md={6}>
             <ResponsiveDateRangePicker
               fromDate={fromDate}
               setFromDate={setFromDate}

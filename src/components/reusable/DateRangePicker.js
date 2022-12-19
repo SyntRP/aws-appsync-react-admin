@@ -16,8 +16,8 @@ const ResponsiveDateRangePicker = ({
         container
         spacing={3}
         mb={2}
-        textAlign="center"
-        justifyContent="center"
+        // textAlign="center"
+        // justifyContent="center"
       >
         <Grid item xs={12} cm={6} maxWidth="350px">
           <DatePicker
