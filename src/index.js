@@ -44,7 +44,7 @@ const router = createBrowserRouter(
       <Route path="surveyresponses" element={<SurveyResponsesPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
       <Route
-        path="questionnariesquestion/:questionnaireID"
+        path="questionnariesquestion"
         element={<QuestionnariesQuestionPage />}
       />
     </Route>
