@@ -17,7 +17,7 @@ export const SurveyEntriesToExcel = (surveyEntries) =>
     const created = moment(createdAt).format("DD/MM/YYYY, hh:mm:ss a");
     const userName = by?.name || "-";
     const userEmail = by?.email || "-";
-    const locationName = location?.name || "-";
+    const locationName = location?.location || "-";
     const locationInchargeMail = location?.inchargeEmail || "-";
     return {
       SurveyEntryId: id,

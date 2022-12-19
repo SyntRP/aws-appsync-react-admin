@@ -6,13 +6,12 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AccountCircle } from "@mui/icons-material";
 import { DRAWER_WIDTH } from "../../constants";
 import { Link } from "react-router-dom";
-import ThemeToggle from "./ThemeToggle";
+import LOGO from "../../assets/images/LOGO.svg";
 import { useAdmin } from "../../helpers/providers/AdminProvider";
 
 const TopBar = ({ signOut, open, onClick }) => {
@@ -65,9 +64,11 @@ const TopBar = ({ signOut, open, onClick }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Stonemor
-          </Typography>
+          <img
+            src={LOGO}
+            alt="Memorial Planning logo "
+            style={{ height: "48px" }}
+          />
         </Box>
         <Box
           sx={{
@@ -75,7 +76,7 @@ const TopBar = ({ signOut, open, onClick }) => {
             alignItems: "center",
           }}
         >
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           {isAdmin && (
             <div>
               <IconButton
