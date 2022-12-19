@@ -18,14 +18,20 @@ import { DELETE_QUESTONNAIRE } from "../../graphql/custom/mutations";
 import { useMutation } from "@apollo/client";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import { Loader } from "@aws-amplify/ui-react";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 
 const EditQuestionnaire = lazy(() => import("./EditQuestionnaire"));
 
 const QuestionnarieCard = ({ questionnarie }) => {
   const { name, description } = questionnarie;
-  const { open, toggleOpen } = useToggle();
+  const [currentQuestionnarie, setCurrentQuestionnarie] = useState({});
 
+  const {
+    open: updateOpen,
+    toggleOpen: updateToggleOpen,
+    setOpen: setUpdateOpen,
+  } = useToggle();
+  const openUpdateDialog = Boolean(updateOpen) && Boolean(currentQuestionnarie?.id);
   const {
     open: deleteModelOpen,
     setOpen: setDeleteModelOpen,
@@ -40,18 +46,36 @@ const QuestionnarieCard = ({ questionnarie }) => {
     setDeleteModelOpen(false);
   };
 
+  const handleQuestionnarieUpdateDialog = (questionnarie) => {
+    const { name = "", description = "",introMsg = "",endMsg="", id } = questionnarie;
+    setCurrentQuestionnarie({
+      name,
+      description,
+      introMsg,
+      endMsg,
+      id,
+    });
+    setUpdateOpen(true);
+  };
+  const handleupdateToggleOpen = () => {
+    setCurrentQuestionnarie({});
+    updateToggleOpen();
+  };
+
   return (
     <>
       <DynamicModel
-        dialogTitle="Edit Questionnaire"
-        open={open}
-        toggle={toggleOpen}
+        dialogTitle={`Update Questionnaire - ${currentQuestionnarie?.name}`}
+        open={openUpdateDialog}
+        toggle={handleupdateToggleOpen}
         isClose
         maxWidth="md"
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
-          <EditQuestionnaire toggle={toggleOpen}/>
+          <EditQuestionnaire toggle={handleupdateToggleOpen}
+           initialFormValues={currentQuestionnarie}
+           />
         </Suspense>
       </DynamicModel>
       <DeleteModel
@@ -104,7 +128,7 @@ const QuestionnarieCard = ({ questionnarie }) => {
             <ArchiveOutlinedIcon />
           </IconButton>
 
-          <Button size="small" variant="contained" onClick={toggleOpen}>
+          <Button size="small" variant="contained"  onClick={() => handleQuestionnarieUpdateDialog(questionnarie)}>
             Edit
           </Button>
           <Button
@@ -112,7 +136,7 @@ const QuestionnarieCard = ({ questionnarie }) => {
             variant="contained"
             color="secondary"
             component={Link}
-            to={`/questionnariesquestion/${questionnarie.id}`}
+            to={`/questionnariesquestion?Qid=${questionnarie.id}`}
           >
             Preview
           </Button>

@@ -3,31 +3,22 @@ import { Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { UPDATE_QUESTIONNAIRE } from "../../graphql/custom/mutations";
+import { LIST_QUESTIONNARIES } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
-const EditQuestionnaire = ({ questionnarie, toggle }) => {
-  const initialFormValues = {
-    id: questionnarie?.id,
-    name: undefined,
-    description: undefined,
-    type: "PRE",
-    introMsg: "Welcome to StoneMor Suvey. Click continue to attend survey.",
-    endMsg:
-      "Thank you for completing our survey. If you have requested a follow up,someone will be in touch with you soon.",
-  };
+const EditQuestionnaire = ({ toggle ,initialFormValues }) => {
 
   const { values, handleInputChange } = useForm(initialFormValues);
 
-  const [UpdateQuestionnaire] = useMutation(UPDATE_QUESTIONNAIRE, {
-    refetchQueries: [{ query: questionnarie }],
+  const [UpdateQuestionnaire , {loading}] = useMutation(UPDATE_QUESTIONNAIRE, {
+    refetchQueries: [{ query: LIST_QUESTIONNARIES}],
   });
   const enableButton =
     Boolean(values.name) &&
     Boolean(values.description) &&
     Boolean(values.introMsg) &&
     Boolean(values.endMsg);
-
   const onClickUpdate = async () => {
     await UpdateQuestionnaire({ variables: { input: values } });
     toggle();
@@ -46,7 +37,7 @@ const EditQuestionnaire = ({ questionnarie, toggle }) => {
             label="Name"
             variant="standard"
             color="secondary"
-            value={initialFormValues.name}
+            value={values.name}
             onChange={handleInputChange}
           />
         </Grid>
@@ -59,7 +50,7 @@ const EditQuestionnaire = ({ questionnarie, toggle }) => {
             label="Description"
             variant="standard"
             color="secondary"
-            value={initialFormValues.description}
+            value={values.description}
             onChange={handleInputChange}
             fullWidth
           />
@@ -73,7 +64,7 @@ const EditQuestionnaire = ({ questionnarie, toggle }) => {
             label="Intro Message"
             variant="standard"
             color="secondary"
-            value={initialFormValues.introMsg}
+            value={values.introMsg}
             onChange={handleInputChange}
             fullWidth
           />
@@ -87,7 +78,7 @@ const EditQuestionnaire = ({ questionnarie, toggle }) => {
             label="Thank You Message"
             variant="standard"
             color="secondary"
-            value={initialFormValues.endMsg}
+            value={values.endMsg}
             onChange={handleInputChange}
             fullWidth
           />
@@ -104,6 +95,7 @@ const EditQuestionnaire = ({ questionnarie, toggle }) => {
         <Button onClick={toggle} variant="text" color="info">
           Close
         </Button>
+        {!loading ? (
           <Button
             onClick={onClickUpdate}
             variant="contained"
@@ -112,6 +104,11 @@ const EditQuestionnaire = ({ questionnarie, toggle }) => {
           >
             Update
           </Button>
+        ) : (
+          <Button variant="contained" color="primary" disabled>
+            Updating ....
+          </Button>
+        )}
       </Box>
     </Box>
   );
