@@ -19,16 +19,33 @@ import { Loader } from "../common/Loader";
 
 const ShareSurvey = lazy(() => import("../../components/surveys/ShareSurvey"));
 const UpdateSurvey = lazy(() => import("./UpdateSurvey"));
+const ViewSurvey = lazy(() => import("./ViewSurvey"));
+
 const SurveyCard = ({ survey }) => {
   const {
     open: updateOpen,
     toggleOpen: updateToggleOpen,
     setOpen: setUpdateOpen,
   } = useToggle();
+  const {
+    open: viewOpen,
+    toggleOpen: viewToggleOpen,
+    setOpen: setViewOpen,
+  } = useToggle();
+
+  const {
+    open: shareOpen,
+    toggleOpen: shareToggleOpen,
+    setOpen: setShareOpen,
+  } = useToggle();
+
   const [currentSurvey, setCurrentSurvey] = useState({});
+  console.log("currentSurvey", currentSurvey);
   const { image, name, description } = survey;
-  const { open, toggleOpen } = useToggle();
+
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentSurvey?.id);
+  const openViewDialog = Boolean(viewOpen) && Boolean(currentSurvey?.id);
+  const openShareDialog = Boolean(shareOpen) && Boolean(currentSurvey);
 
   const handleSurveyUpdateDialog = (survey) => {
     const { name = "", image = "", description = "", id } = survey;
@@ -40,12 +57,43 @@ const SurveyCard = ({ survey }) => {
     });
     setUpdateOpen(true);
   };
+  const handleSurveyViewDialog = (survey) => {
+    setCurrentSurvey(survey);
+    setViewOpen(true);
+  };
+  const handleSurveyShareDialog = (survey) => {
+    setCurrentSurvey(survey?.preQuestionnaire?.id);
+    setShareOpen(true);
+  };
   const handleupdateToggleOpen = () => {
     setCurrentSurvey({});
     updateToggleOpen();
   };
+  const handleViewToggleOpen = () => {
+    setCurrentSurvey({});
+    viewToggleOpen();
+  };
+  const handleShareToggleOpen = () => {
+    setCurrentSurvey({});
+    shareToggleOpen();
+  };
   return (
     <>
+      <DynamicModel
+        dialogTitle="Share Survey"
+        open={openShareDialog}
+        toggle={handleShareToggleOpen}
+        isClose
+        maxWidth="sm"
+        isActions={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <ShareSurvey
+            toggle={handleShareToggleOpen}
+            currentSurveyId={currentSurvey}
+          />
+        </Suspense>
+      </DynamicModel>
       <DynamicModel
         open={openUpdateDialog}
         toggle={handleupdateToggleOpen}
@@ -59,16 +107,18 @@ const SurveyCard = ({ survey }) => {
           />
         </Suspense>
       </DynamicModel>
+
       <DynamicModel
-        dialogTitle="Share Survey"
-        open={open}
-        toggle={toggleOpen}
-        isClose
-        maxWidth="sm"
+        open={openViewDialog}
+        toggle={handleViewToggleOpen}
+        dialogTitle={`View Survey `}
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
-          <ShareSurvey toggle={toggleOpen} />
+          <ViewSurvey
+            toggle={handleViewToggleOpen}
+            currentSurveyData={currentSurvey}
+          />
         </Suspense>
       </DynamicModel>
 
@@ -121,10 +171,19 @@ const SurveyCard = ({ survey }) => {
           >
             Edit
           </Button>
-          <Button size="small" variant="contained" color="secondary">
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={() => handleSurveyViewDialog(survey)}
+          >
             Preview
           </Button>
-          <IconButton color="primary" aria-label="delete" onClick={toggleOpen}>
+          <IconButton
+            color="primary"
+            aria-label="delete"
+            onClick={() => handleSurveyShareDialog(survey)}
+          >
             <ShareOutlinedIcon />
           </IconButton>
         </CardActions>

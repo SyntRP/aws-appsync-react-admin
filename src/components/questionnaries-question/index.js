@@ -19,6 +19,7 @@ import { Loader } from "../common/Loader";
 import { auto } from "@popperjs/core";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import { GET_QUESTIONNAIRES } from "../../graphql/custom/queries";
+import useIdQuery from "../../helpers/hooks/useIdQuery";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,13 +45,53 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const QuestionnariesQuestion = () => {
-  const { loading, error, data } = useQuery(GET_QUESTIONNAIRES, {
-    variables: { limit: 10 },
+
+  const query = useIdQuery();
+  const qid = query.get('Qid');
+  const [question, setQuestion] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const { loading, error, data } = useQuery(GET_QUESTIONNAIRES,{
+    variables:{
+      id:qid
+    }
   });
 
+  const questionnaireQuestionOrder = data?.getQuestionnaire?.question?.items
+    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    ?.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
+  useEffect(() => {
+    if (!loading && !error) 
+    {
+      setQuestion(data?.getQuestionnaire?.question?.items?.slice()
+      ?.sort(
+      (a, b) => a?.order - b?.order
+    )
+    );
+    }
+  }, [loading, data?.getQuestionnaire?.question?.items]);
+
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <>error</>;
+  }
   return (
     <div>
-      {/* {getQuestionnaire.length > 0 ? ( */}
+      {question.length > 0 ? (
       <TableContainer
         component={Paper}
         elevation={10}
@@ -67,29 +108,23 @@ const QuestionnariesQuestion = () => {
               <StyledTableCell>Delete</StyledTableCell>
             </TableRow>
           </TableHead>
-          {/* <TableBody>
-              {(rowsPerPage > 0
-                ? questionCount.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : questionCount
-              ).map((question, i) => (
+          <TableBody>
+              {question.map((quest, i) => (
                   <StyledTableRow key={i}>
                     <StyledTableCell component="th" scope="row">
-                    {question?.order}
+                    {quest?.order}
                     </StyledTableCell>
-                    <StyledTableCell>{question.qu}</StyledTableCell>
-                  {question?.type === "LIST" && (
+                    <StyledTableCell>{quest.qu}</StyledTableCell>
+                  {quest?.type === "LIST" && (
                     <StyledTableCell>{"RATING"}</StyledTableCell>
                   )}
-                  {question?.type !== "LIST" && (
-                    <StyledTableCell>{question.type}</StyledTableCell>
+                  {quest?.type !== "LIST" && (
+                    <StyledTableCell>{quest.type}</StyledTableCell>
                   )}
 
                   <StyledTableCell>
-                    {question.listOptions
-                      ? question.listOptions.map((option, l) => (
+                    {quest.listOptions
+                      ? quest.listOptions.map((option, l) => (
                           <li key={l}>{option?.listValue}</li>
                         ))
                       : "(Empty)"}
@@ -116,20 +151,20 @@ const QuestionnariesQuestion = () => {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
-              </TableBody> */}
+              </TableBody>
         </Table>
-        {/* <TablePagination
+        <TablePagination
             component="div"
-            count={questionCount?.length}
+            count={questionnaireQuestionOrder?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
+          />
       </TableContainer>
-      {/* ) : (
+      ) : (
           <p>NO QuestionnariesQuestion FOUND !</p>
-        )} */}
+        )} 
     </div>
   );
 };

@@ -2,22 +2,29 @@ import { useMutation } from "@apollo/client";
 import { Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { CREATE_SURVEY } from "../../graphql/custom/mutations";
-import { LIST_SURVEYS, LIST_SURVEY_USERS } from "../../graphql/custom/queries";
+import { LIST_SURVEYS } from "../../graphql/custom/queries";
+
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
 const initialFormValues = {
-  name: undefined,
-  description: undefined,
+  name: "",
+  description: "",
   image:
     "https://dynamix-cdn.s3.amazonaws.com/stonemorcom/stonemorcom_616045937.svg",
 
   groups: "Users",
+  archived: false,
 };
 
 const CreateSurvey = ({ toggle }) => {
   const [createSurvey, { loading, error }] = useMutation(CREATE_SURVEY, {
-    refetchQueries: [{ query: LIST_SURVEYS }],
+    refetchQueries: [
+      {
+        query: LIST_SURVEYS,
+        variables: { filter: { archived: { ne: true } }, limit: 100 },
+      },
+    ],
   });
   const { values, handleInputChange } = useForm(initialFormValues);
 
@@ -35,8 +42,8 @@ const CreateSurvey = ({ toggle }) => {
         <Grid item xs={12} cm={6} my={2}>
           <TextField
             required
-            id="standard-user-name"
-            label="User Name"
+            id="standard-survey-name"
+            label="Survey Name"
             variant="standard"
             color="secondary"
             name="name"
