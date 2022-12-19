@@ -19,7 +19,12 @@ const initialFormValues = {
 
 const CreateSurvey = ({ toggle }) => {
   const [createSurvey, { loading, error }] = useMutation(CREATE_SURVEY, {
-    refetchQueries: [{ query: LIST_SURVEYS }],
+    refetchQueries: [
+      {
+        query: LIST_SURVEYS,
+        variables: { filter: { archived: { ne: true } }, limit: 100 },
+      },
+    ],
   });
   const { values, handleInputChange } = useForm(initialFormValues);
 
@@ -37,8 +42,8 @@ const CreateSurvey = ({ toggle }) => {
         <Grid item xs={12} cm={6} my={2}>
           <TextField
             required
-            id="standard-user-name"
-            label="User Name"
+            id="standard-survey-name"
+            label="Survey Name"
             variant="standard"
             color="secondary"
             name="name"

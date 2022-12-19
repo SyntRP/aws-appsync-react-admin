@@ -26,7 +26,7 @@ const UpdateSurvey = ({ toggle, initialFormValues, surveys }) => {
           <TextField
             required
             id="standard-user-name"
-            label="User Name"
+            label="Survey Name"
             variant="standard"
             color="secondary"
             name="name"
