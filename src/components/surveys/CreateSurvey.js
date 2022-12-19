@@ -2,17 +2,19 @@ import { useMutation } from "@apollo/client";
 import { Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { CREATE_SURVEY } from "../../graphql/custom/mutations";
-import { LIST_SURVEYS, LIST_SURVEY_USERS } from "../../graphql/custom/queries";
+import { LIST_SURVEYS } from "../../graphql/custom/queries";
+
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
 const initialFormValues = {
-  name: undefined,
-  description: undefined,
+  name: "",
+  description: "",
   image:
     "https://dynamix-cdn.s3.amazonaws.com/stonemorcom/stonemorcom_616045937.svg",
 
   groups: "Users",
+  archived: false,
 };
 
 const CreateSurvey = ({ toggle }) => {
