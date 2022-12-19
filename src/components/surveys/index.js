@@ -21,7 +21,7 @@ const Surveys = () => {
 
   useEffect(() => {
     if (!loading && !error) setSurveys(data?.listSurveys?.items);
-  }, [loading]);
+  }, [loading, data?.listSurveys?.items]);
 
   if (loading) {
     return <Loader />;
@@ -40,7 +40,7 @@ const Surveys = () => {
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
-          <CreateSurvey toggle={toggleOpen} />
+          <CreateSurvey toggle={toggleOpen} surevy={surveys} />
         </Suspense>
       </DynamicModel>
       {surveys.length > 0 ? (

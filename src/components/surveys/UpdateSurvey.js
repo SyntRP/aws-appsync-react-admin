@@ -6,9 +6,9 @@ import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
-const UpdateSurvey = ({ toggle, initialFormValues }) => {
+const UpdateSurvey = ({ toggle, initialFormValues, surveys }) => {
   const [updateSurvey, { loading, error }] = useMutation(UPDATE_SURVEY, {
-    refetchQueries: [{ query: LIST_SURVEYS }],
+    refetchQueries: [{ query: surveys }],
   });
   const { values, handleInputChange } = useForm(initialFormValues);
   const enableButton =
