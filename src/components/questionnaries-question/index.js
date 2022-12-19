@@ -20,6 +20,7 @@ import { auto } from "@popperjs/core";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import { GET_QUESTIONNAIRES } from "../../graphql/custom/queries";
 import useIdQuery from "../../helpers/hooks/useIdQuery";
+import { useParams } from "react-router";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,17 +46,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const QuestionnariesQuestion = () => {
-
+  const params = useParams();
   const query = useIdQuery();
-  const qid = query.get('Qid');
+  const qid = query.get("Qid");
   const [question, setQuestion] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const { loading, error, data } = useQuery(GET_QUESTIONNAIRES,{
-    variables:{
-      id:qid
-    }
+  const { loading, error, data } = useQuery(GET_QUESTIONNAIRES, {
+    variables: {
+      id: params.id,
+    },
   });
 
   const questionnaireQuestionOrder = data?.getQuestionnaire?.question?.items
@@ -64,22 +65,21 @@ const QuestionnariesQuestion = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPage(0);
-    };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
-    if (!loading && !error) 
-    {
-      setQuestion(data?.getQuestionnaire?.question?.items?.slice()
-      ?.sort(
-      (a, b) => a?.order - b?.order
-    )
-    );
+    if (!loading && !error) {
+      setQuestion(
+        data?.getQuestionnaire?.question?.items
+          ?.slice()
+          ?.sort((a, b) => a?.order - b?.order)
+      );
     }
   }, [loading, data?.getQuestionnaire?.question?.items]);
 
@@ -92,29 +92,29 @@ const QuestionnariesQuestion = () => {
   return (
     <div>
       {question.length > 0 ? (
-      <TableContainer
-        component={Paper}
-        elevation={10}
-        sx={{ mr: auto, ml: auto, overflow: "auto" }}
-      >
-        <Table sx={{ minWidth: 650 }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Q.No</StyledTableCell>
-              <StyledTableCell>Question</StyledTableCell>
-              <StyledTableCell>Type</StyledTableCell>
-              <StyledTableCell>List Options</StyledTableCell>
-              <StyledTableCell>Manage</StyledTableCell>
-              <StyledTableCell>Delete</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+        <TableContainer
+          component={Paper}
+          elevation={10}
+          sx={{ mr: auto, ml: auto, overflow: "auto" }}
+        >
+          <Table sx={{ minWidth: 650 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Q.No</StyledTableCell>
+                <StyledTableCell>Question</StyledTableCell>
+                <StyledTableCell>Type</StyledTableCell>
+                <StyledTableCell>List Options</StyledTableCell>
+                <StyledTableCell>Manage</StyledTableCell>
+                <StyledTableCell>Delete</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {question.map((quest, i) => (
-                  <StyledTableRow key={i}>
-                    <StyledTableCell component="th" scope="row">
+                <StyledTableRow key={i}>
+                  <StyledTableCell component="th" scope="row">
                     {quest?.order}
-                    </StyledTableCell>
-                    <StyledTableCell>{quest.qu}</StyledTableCell>
+                  </StyledTableCell>
+                  <StyledTableCell>{quest.qu}</StyledTableCell>
                   {quest?.type === "LIST" && (
                     <StyledTableCell>{"RATING"}</StyledTableCell>
                   )}
@@ -129,31 +129,31 @@ const QuestionnariesQuestion = () => {
                         ))
                       : "(Empty)"}
                   </StyledTableCell>
-                    <StyledTableCell>
+                  <StyledTableCell>
                     <Button
-                          size="small"
-                          color="secondary"
-                          // onClick={() =>
-                          //   handleopeninguypdatesurveyUserDialog(user)
-                          // }
-                        >
-                          <EditOutlinedIcon color="inherit"/>
-                        </Button>
-                    </StyledTableCell>
-                    <StyledTableCell>
+                      size="small"
+                      color="secondary"
+                      // onClick={() =>
+                      //   handleopeninguypdatesurveyUserDialog(user)
+                      // }
+                    >
+                      <EditOutlinedIcon color="inherit" />
+                    </Button>
+                  </StyledTableCell>
+                  <StyledTableCell>
                     <Button
-                          // onClick={() => handleOpenDeleteDialog(user)}
-                          size="small"
-                          color="error"
-                        >
-                          <DeleteForeverOutlinedIcon />
-                        </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-        </Table>
-        <TablePagination
+                      // onClick={() => handleOpenDeleteDialog(user)}
+                      size="small"
+                      color="error"
+                    >
+                      <DeleteForeverOutlinedIcon />
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
             component="div"
             count={questionnaireQuestionOrder?.length}
             page={page}
@@ -161,10 +161,10 @@ const QuestionnariesQuestion = () => {
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-      </TableContainer>
+        </TableContainer>
       ) : (
-          <p>NO QuestionnariesQuestion FOUND !</p>
-        )} 
+        <p>NO QuestionnariesQuestion FOUND !</p>
+      )}
     </div>
   );
 };

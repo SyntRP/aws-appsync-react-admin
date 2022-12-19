@@ -68,7 +68,7 @@ const ViewSurvey = ({ currentSurveyData }) => {
             variant="contained"
             color="secondary"
             component={Link}
-            to={`/questionnairequestion?Qid=${preQuestionnaire?.id}`}
+            to={`/questionnaries/${preQuestionnaire?.id}`}
           >
             View Questionnaire
           </Button>

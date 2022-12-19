@@ -31,7 +31,8 @@ const QuestionnarieCard = ({ questionnarie }) => {
     toggleOpen: updateToggleOpen,
     setOpen: setUpdateOpen,
   } = useToggle();
-  const openUpdateDialog = Boolean(updateOpen) && Boolean(currentQuestionnarie?.id);
+  const openUpdateDialog =
+    Boolean(updateOpen) && Boolean(currentQuestionnarie?.id);
   const {
     open: deleteModelOpen,
     setOpen: setDeleteModelOpen,
@@ -47,7 +48,13 @@ const QuestionnarieCard = ({ questionnarie }) => {
   };
 
   const handleQuestionnarieUpdateDialog = (questionnarie) => {
-    const { name = "", description = "",introMsg = "",endMsg="", id } = questionnarie;
+    const {
+      name = "",
+      description = "",
+      introMsg = "",
+      endMsg = "",
+      id,
+    } = questionnarie;
     setCurrentQuestionnarie({
       name,
       description,
@@ -73,9 +80,10 @@ const QuestionnarieCard = ({ questionnarie }) => {
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
-          <EditQuestionnaire toggle={handleupdateToggleOpen}
-           initialFormValues={currentQuestionnarie}
-           />
+          <EditQuestionnaire
+            toggle={handleupdateToggleOpen}
+            initialFormValues={currentQuestionnarie}
+          />
         </Suspense>
       </DynamicModel>
       <DeleteModel
@@ -128,7 +136,11 @@ const QuestionnarieCard = ({ questionnarie }) => {
             <ArchiveOutlinedIcon />
           </IconButton>
 
-          <Button size="small" variant="contained"  onClick={() => handleQuestionnarieUpdateDialog(questionnarie)}>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => handleQuestionnarieUpdateDialog(questionnarie)}
+          >
             Edit
           </Button>
           <Button
@@ -136,7 +148,7 @@ const QuestionnarieCard = ({ questionnarie }) => {
             variant="contained"
             color="secondary"
             component={Link}
-            to={`/questionnariesquestion?Qid=${questionnarie.id}`}
+            to={`/questionnaries/${questionnarie.id}`}
           >
             Preview
           </Button>

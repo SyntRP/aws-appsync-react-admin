@@ -36,6 +36,10 @@ const router = createBrowserRouter(
       <Route index element={<DashboardPage />} />
       <Route path="surveys" element={<SurveysPage />} />
       <Route path="questionnaries" element={<QuestionnariesPage />} />
+      <Route
+        path="questionnaries/:id"
+        element={<QuestionnariesQuestionPage />}
+      />
       <Route path="users" element={<UsersPage />} />
       <Route path="locations" element={<LocationsPage />} />
       <Route path="qrcoderesponses" element={<QrCodeResponsesPage />} />
@@ -43,10 +47,6 @@ const router = createBrowserRouter(
       {/* <Route path="testresponses" element={<TestResponsesPage />} /> */}
       <Route path="surveyresponses" element={<SurveyResponsesPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
-      <Route
-        path="questionnariesquestion"
-        element={<QuestionnariesQuestionPage />}
-      />
     </Route>
   )
 );
