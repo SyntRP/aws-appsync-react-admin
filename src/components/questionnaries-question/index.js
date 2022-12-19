@@ -75,7 +75,6 @@ const QuestionnariesQuestion = () => {
   useEffect(() => {
     if (!loading && !error) 
     {
-      console.log("stjhtjng")
       setQuestion(data?.getQuestionnaire?.question?.items?.slice()
       ?.sort(
       (a, b) => a?.order - b?.order
@@ -90,10 +89,6 @@ const QuestionnariesQuestion = () => {
   if (error) {
     return <>error</>;
   }
-
-  // console.log("questionCount:",questionCount);
-  console.log("qid:",question);
-
   return (
     <div>
       {question.length > 0 ? (
