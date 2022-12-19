@@ -10,11 +10,12 @@ const ColorModeContext = createContext({
 });
 
 const ColorModeContextProvider = ({ children }) => {
-  const [mode, setMode] = useState(darkMode === "light" ? "light" : "dark");
+  // const [mode, setMode] = useState(darkMode === "light" ? "light" : "dark");
+  const [mode, setMode] = useState("light");
 
   const toggleColorMode = () => {
-    localStorage.setItem(DARK_THEME, mode === "light" ? "dark" : "light");
-    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    // localStorage.setItem(DARK_THEME, mode === "light" ? "dark" : "light");
+    // setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
 
   // recreate theme everytime mode changes
@@ -104,7 +105,7 @@ const ColorModeContextProvider = ({ children }) => {
     <ColorModeContext.Provider
       value={{
         toggleColorMode,
-        mode,
+        mode: "light",
       }}
     >
       <ThemeProvider theme={appTheme}>{children}</ThemeProvider>
