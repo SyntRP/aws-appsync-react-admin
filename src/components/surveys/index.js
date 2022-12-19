@@ -15,7 +15,7 @@ const CreateSurvey = lazy(() =>
 const Surveys = () => {
   const { open, toggleOpen } = useToggle();
   const { loading, error, data } = useQuery(LIST_SURVEYS, {
-    variables: { filter: { archived: { ne: true } }, limit: 10 },
+    variables: { filter: { archived: { ne: true } }, limit: 100 },
   });
   const [surveys, setSurveys] = useState([]);
 
