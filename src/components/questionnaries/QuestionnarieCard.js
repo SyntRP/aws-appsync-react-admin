@@ -46,6 +46,10 @@ const QuestionnarieCard = ({ questionnarie }) => {
     await DeleteQuestionnaire({ id: questionnarie?.id });
     setDeleteModelOpen(false);
   };
+  const handleQuestionnarieDeleteDialog = (questionnarie) => {
+    setCurrentQuestionnarie(questionnarie);
+    setDeleteModelOpen(true);
+  };
 
   const handleQuestionnarieUpdateDialog = (questionnarie) => {
     const {
@@ -90,8 +94,8 @@ const QuestionnarieCard = ({ questionnarie }) => {
         open={deleteModelOpen}
         toggle={toggledeleteModelOpen}
         onClickConfirm={onClickDelete}
-        dialogTitle="Delete this Questionnaire"
-        dialogContentText="Are You Sure You Want to Delete this Questionnaire?"
+        dialogTitle={`Delete this - ${currentQuestionnarie?.name} Questionnaire`}
+        dialogContentText={`Are You Sure You Want to Delete this ${currentQuestionnarie?.name} Questionnaire?`}
       />
       <Card
         sx={{
@@ -113,7 +117,7 @@ const QuestionnarieCard = ({ questionnarie }) => {
             </Avatar>
           }
           action={
-            <IconButton aria-label="delete" onClick={setDeleteModelOpen}>
+            <IconButton aria-label="delete"  onClick={() => handleQuestionnarieDeleteDialog(questionnarie)}>
               <DeleteForeverOutlinedIcon color="error" />
             </IconButton>
           }

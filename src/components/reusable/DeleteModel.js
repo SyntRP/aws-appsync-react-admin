@@ -9,17 +9,17 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function DeleteModel({
+const DeleteModel = ({
   open,
   toggle,
   dialogTitle,
   dialogContentText,
   onClickConfirm,
   isClose = true,
-}) {
+}) => {
   return (
     <>
-      <Dialog open={open} toggle={toggle} aria-labelledby="form-dialog-title">
+      <Dialog open={open} aria-labelledby="form-dialog-title">
         <FormControl>
           <DialogTitle id="form-dialog-title">{dialogTitle}</DialogTitle>
           <DialogContent>
@@ -46,6 +46,6 @@ function DeleteModel({
       </Dialog>
     </>
   );
-}
+};
 
 export default DeleteModel;

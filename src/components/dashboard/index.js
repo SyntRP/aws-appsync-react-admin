@@ -11,6 +11,7 @@ const Dashboard = ({
   overviewReady,
   surveyCount,
   surveyLocationsCount,
+  surveyUsersCount,
 }) => {
   const handleDownloadingReport = () => {
     const modifiedSurveyEntries = SurveyEntriesToExcel(surveyEntries);
@@ -30,6 +31,7 @@ const Dashboard = ({
             surveyCount={surveyCount}
             surveyLocationsCount={surveyLocationsCount}
             surveyEntriesCount={surveyEntries?.length || 0}
+            surveyUsersCount={surveyUsersCount}
           />
         )}
       </Grid>
