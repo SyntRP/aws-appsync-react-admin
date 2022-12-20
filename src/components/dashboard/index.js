@@ -10,6 +10,7 @@ const Dashboard = ({
   overviewReady,
   surveyCount,
   surveyLocationsCount,
+  surveyUsersCount,
 }) => {
   const handleDownloadingReport = () => {
     const modifiedSurveyEntries = SurveyEntriesToExcel(surveyEntries);
@@ -29,6 +30,7 @@ const Dashboard = ({
             surveyCount={surveyCount}
             surveyLocationsCount={surveyLocationsCount}
             surveyEntriesCount={surveyEntries?.length || 0}
+            surveyUsersCount={surveyUsersCount}
           />
         )}
       </Grid>
@@ -37,7 +39,7 @@ const Dashboard = ({
           data={surveyEntries}
           setSelectedLocation={() => null}
         />
-      </Grid>
+        </Grid>
     </Grid>
   );
 };
