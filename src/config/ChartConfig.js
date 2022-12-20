@@ -32,13 +32,13 @@ export const bindTitle = ({ TITLE, fromDate, endDate }) => {
     const fromDateFormat = moment(fromDate).format("MM/DD/YYYY");
     const endDateFormat = moment(endDate).format("MM/DD/YYYY");
 
-    return TITLE + "-" + fromDateFormat + "  " + "to" + "  " + endDateFormat;
+    return TITLE + " - " + fromDateFormat + "  " + "to" + "  " + endDateFormat;
   } else if (fromDate) {
     const fromDateFormat = moment(fromDate).format("MM/DD/YYYY");
-    return TITLE + "- from " + fromDateFormat;
+    return TITLE + " - from " + fromDateFormat;
   } else if (endDate) {
     const endDateFormat = moment(endDate).format("MM/DD/YYYY");
-    return TITLE + "- till " + endDateFormat;
+    return TITLE + " - till " + endDateFormat;
   } else {
     return TITLE;
   }

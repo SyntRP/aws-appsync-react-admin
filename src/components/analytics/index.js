@@ -8,6 +8,7 @@ import SimpleLineChart from "../charts/line";
 import SurveyByQuestionnarie from "./chart_report/SurveyByQuestionnarie";
 import { Loader } from "../common/Loader";
 import TestModeSwitch from "../reusable/TestModeSwitch";
+import SurveyByDate from "./chart_report/SurveyByDate";
 const QuestionnariesByLocation = lazy(() =>
   import("./chart_report/QuestionnariesByLocation")
 );
@@ -150,9 +151,15 @@ const Analytics = ({ surveyEntriesData }) => {
               error={error}
             />
           </Grid>
-          {/* <Grid item xs={12} md={6}>
-            <SimpleLineChart />
-          </Grid> */}
+          <Grid item xs={12} md={6}>
+            <SurveyByDate
+              data={surveyEntries}
+              loading={loading}
+              error={error}
+              fromDate={fromDate}
+              endDate={endDate}
+            />
+          </Grid>
         </Grid>
       </TabPanel>
 

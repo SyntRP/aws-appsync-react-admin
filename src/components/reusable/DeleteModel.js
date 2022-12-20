@@ -1,5 +1,5 @@
 import {
-    Button,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -29,7 +29,7 @@ function DeleteModel({
           </DialogContent>
           <DialogActions>
             {isClose && (
-              <Button onClick={toggle} color="error" variant="contained">
+              <Button onClick={toggle} color="error">
                 Cancel
               </Button>
             )}

@@ -35,6 +35,7 @@ query ListSurveyEntriess(
     #   {
     #     complete:{attributeExists:false}
     #   }
+    # 
     # ],
     testing:{ne:true},
 
@@ -54,6 +55,12 @@ query ListSurveyEntriess(
       complete
       createdAt
       updatedAt
+      responses {
+        items {
+          id
+        }
+        nextToken
+      }
       by {
         id
         name
@@ -365,7 +372,7 @@ export const GET_QUESTIONNAIRES = /* GraphQL */ gql(`
   }
 `);
 
-export const GET_SURVEY = /* GraphQL */ `
+export const GET_SURVEY = /* GraphQL */ gql(`
   query GetSurvey($id: ID!) {
     getSurvey(id: $id) {
       id
@@ -385,4 +392,84 @@ export const GET_SURVEY = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`);
+
+export const GET_SURVEYENTRIES = /* GraphQL */ gql(`
+query GetSurveyEntries($id: ID!) {
+  getSurveyEntries(id: $id) {
+    id
+    startTime
+    finishTime
+    questionnaireId
+    deleted
+    archived
+  
+    responses {
+      items {
+        id
+        res
+        deleted
+        archived
+        createdAt
+        updatedAt
+        qu {
+          id
+          qu
+          type
+          isSelf
+          isDependent
+          order
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+   
+  }
+}
+`);
+
+export const LIST_INCOMPLETED_SURVEY_ENTRIES = /* GraphQL */ gql(`
+query ListSurveyEntriess(
+  $filter: ModelSurveyEntriesFilterInput = {
+    testing:{ne:true}
+    complete:{lt:100}
+  }
+  $limit: Int =  1000
+  $nextToken: String
+) {
+  listSurveyEntriess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      startTime
+      finishTime
+      questionnaireId
+      deleted
+      archived
+      testing
+      complete
+      createdAt
+      updatedAt
+      responses {
+        items {
+          id
+        }
+        nextToken
+      }
+      by {
+        id
+        name
+        email
+      }
+      location {
+        id
+        location
+        inchargeEmail
+       
+      }
+    }
+    nextToken
+  }
+}
+`);

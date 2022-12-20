@@ -35,22 +35,21 @@ const ViewSurvey = ({ currentSurveyData }) => {
       <CardHeader />
 
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
+        <Typography gutterBottom variant="h5" component="div">
           {name}
         </Typography>
         {description && (
-          <Typography variant="body2" color="text.secondary">
+          <Typography gutterBottom variant="body2" color="text.secondary">
             {description}
           </Typography>
         )}
-        {""}
 
-        <Typography variant="body3">
+        <Typography gutterBottom variant="body2">
           created time : {moment(createdAt).format(" Do MMMM  YYYY, h:mm:ss a")}
         </Typography>
 
         {preQuestionnaire?.name && (
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="button" component="div">
             Questionnaire : {preQuestionnaire?.name}
           </Typography>
         )}

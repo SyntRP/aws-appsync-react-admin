@@ -40,21 +40,21 @@ export const NavItems = [
   {
     name: "Divider",
   },
-  {
-    path: "/qrcoderesponses",
-    name: "QR Responses",
-    icon: QrCode2OutlinedIcon,
-  },
-  {
-    path: "/linkresponses",
-    name: "Link Responses",
-    icon: InsertLinkOutlinedIcon,
-  },
   // {
-  //   path: "/testresponses",
-  //   name: "Test Responses",
-  //   icon: InventoryOutlinedIcon,
+  //   path: "/qrcoderesponses",
+  //   name: "QR Responses",
+  //   icon: QrCode2OutlinedIcon,
   // },
+  // {
+  //   path: "/linkresponses",
+  //   name: "Link Responses",
+  //   icon: InsertLinkOutlinedIcon,
+  // },
+  {
+    path: "/surveyEntries",
+    name: "SurveyEntries",
+    icon: InventoryOutlinedIcon,
+  },
   {
     name: "Divider",
   },

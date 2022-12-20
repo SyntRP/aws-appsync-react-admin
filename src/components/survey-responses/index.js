@@ -17,14 +17,15 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import useSurveyEntries from "../../helpers/hooks/useSurveyEntries";
-import useIdQuery from "../../helpers/hooks/useIdQuery";
+
+import { useParams } from "react-router";
 
 import {
+  GET_SURVEYENTRIES,
   LIST_QUESTIONNARIES_NAME,
-  LIST_RESPONSESS,
-  LIST_SURVEY_ENTRIES,
 } from "../../graphql/custom/queries";
+import withSuspense from "../../helpers/hoc/withSuspense";
+import { Loader } from "../common/Loader";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -60,16 +61,18 @@ const StyledRating = styled(Rating)({
 });
 
 const SurveyResponses = () => {
-  const query = useIdQuery();
-  const { surveyEntries } = useSurveyEntries();
+  const params = useParams();
+
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
+  const { loading, error, data } = useQuery(GET_SURVEYENTRIES, {
+    variables: {
+      id: params.id,
+    },
+  });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const qid = query.get("Rid");
 
-  const listUserRes = surveyEntries?.find((r) => r?.id === qid);
-
-  const listans = listUserRes?.responses;
+  const listans = data?.getSurveyEntries?.responses;
   const customIcons = {
     1: {
       icon: (
@@ -109,11 +112,6 @@ const SurveyResponses = () => {
 
     return <span {...other}>{customIcons[value].icon}</span>;
   }
-  const onGettingQuestionnaireById = (id) => {
-    const que = questionariesName?.items?.find((q) => q?.id === id);
-
-    return que?.name ?? id;
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -121,12 +119,21 @@ const SurveyResponses = () => {
   // const questionCount = listans?.question?.items.sort(
   //   (a, b) => a?.order - b?.order
   // );
-  const questionCount = listans?.items;
+  const responses = listans?.items
+    ?.slice()
+    ?.sort((a, b) => a?.qu?.order - b?.qu?.order);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
   return (
     <div>
       <Paper>
@@ -143,11 +150,11 @@ const SurveyResponses = () => {
           <TableBody>
             {/* {listans?.items?.map((res, r) => ( */}
             {(rowsPerPage > 0
-              ? questionCount?.slice(
+              ? responses?.slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 )
-              : questionCount
+              : responses
             )?.map((res, r) => (
               <StyledTableRow key={r}>
                 <StyledTableCell>{res?.qu?.order}</StyledTableCell>
@@ -172,7 +179,7 @@ const SurveyResponses = () => {
         </Table>
         <TablePagination
           component="div"
-          count={questionCount?.length}
+          count={responses?.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
@@ -183,4 +190,4 @@ const SurveyResponses = () => {
   );
 };
 
-export default SurveyResponses;
+export default withSuspense(SurveyResponses);
