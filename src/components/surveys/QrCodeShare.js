@@ -25,7 +25,6 @@ import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlin
 import DownloadForOfflineOutlinedIcon from "@mui/icons-material/DownloadForOfflineOutlined";
 
 const QrCodeShare = ({ toggle, surveyId }) => {
-  console.log("surveyId", surveyId);
   const { loading, error, data } = useQuery(LIST_SURVEY_LOCATIONS);
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
   const [surveyLocation, setSuveyLocation] = useState("");

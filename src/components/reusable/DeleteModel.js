@@ -1,5 +1,5 @@
 import {
-    Button,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,17 +9,17 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function DeleteModel({
+const DeleteModel = ({
   open,
   toggle,
   dialogTitle,
   dialogContentText,
   onClickConfirm,
   isClose = true,
-}) {
+}) => {
   return (
     <>
-      <Dialog open={open} toggle={toggle} aria-labelledby="form-dialog-title">
+      <Dialog open={open} aria-labelledby="form-dialog-title">
         <FormControl>
           <DialogTitle id="form-dialog-title">{dialogTitle}</DialogTitle>
           <DialogContent>
@@ -29,7 +29,7 @@ function DeleteModel({
           </DialogContent>
           <DialogActions>
             {isClose && (
-              <Button onClick={toggle} color="error" variant="contained">
+              <Button onClick={toggle} color="error">
                 Cancel
               </Button>
             )}
@@ -46,6 +46,6 @@ function DeleteModel({
       </Dialog>
     </>
   );
-}
+};
 
 export default DeleteModel;

@@ -5,6 +5,7 @@ import {
   CHART_FORECOLOR,
   CHART_HEIGHT,
   CHART_PDF_DOWNLOAD_ICON,
+  CHART_THEME_MODE,
   dowloadChartAsPDF,
 } from "../../../config/ChartConfig";
 
@@ -87,7 +88,7 @@ const SimpleBarChart = ({
       size: 1,
     },
     theme: {
-      mode: "dark",
+      mode: CHART_THEME_MODE,
     },
   };
 

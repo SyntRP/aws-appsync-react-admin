@@ -8,8 +8,8 @@ import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
 const initialFormValues = {
-  name: undefined,
-  description: undefined,
+  name: "",
+  description: "",
   type: "PRE",
   introMsg: "Welcome to StoneMor Suvey. Click continue to attend survey.",
   endMsg:
@@ -30,7 +30,9 @@ const CreateQuestionnarie = ({ toggle }) => {
     Boolean(values.name) &&
     Boolean(values.description) &&
     Boolean(values.introMsg) &&
-    Boolean(values.endMsg);
+    Boolean(values.endMsg)&&
+    Boolean(surveyId);
+
 const handleSurveyChange = (e) => {
     setSurveyId(e.target.value)
 }
@@ -118,6 +120,7 @@ const handleSurveyChange = (e) => {
               fullWidth
                variant="standard"
             color="secondary"
+            value={surveyId}
               onChange={handleSurveyChange}
             >
               {data?.listSurveys?.items.map((survey, s) => (

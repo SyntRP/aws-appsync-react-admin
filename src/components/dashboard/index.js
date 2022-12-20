@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import { utils, writeFileXLSX } from "xlsx";
 import { SurveyEntriesToExcel } from "../../utils/Excel";
+import SurveyByDate from "../analytics/chart_report/SurveyByDate";
 import SurveyByLocations from "../analytics/chart_report/SurveyByLocations";
 import Overview from "./Overview";
 import WelcomeAdmin from "./WelcomeAdmin";
@@ -10,6 +11,7 @@ const Dashboard = ({
   overviewReady,
   surveyCount,
   surveyLocationsCount,
+  surveyUsersCount,
 }) => {
   const handleDownloadingReport = () => {
     const modifiedSurveyEntries = SurveyEntriesToExcel(surveyEntries);
@@ -29,6 +31,7 @@ const Dashboard = ({
             surveyCount={surveyCount}
             surveyLocationsCount={surveyLocationsCount}
             surveyEntriesCount={surveyEntries?.length || 0}
+            surveyUsersCount={surveyUsersCount}
           />
         )}
       </Grid>
@@ -37,6 +40,9 @@ const Dashboard = ({
           data={surveyEntries}
           setSelectedLocation={() => null}
         />
+      </Grid>
+      <Grid item xs={13} lg={6}>
+        <SurveyByDate data={surveyEntries} setSelectedLocation={() => null} />
       </Grid>
     </Grid>
   );

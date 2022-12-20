@@ -8,7 +8,7 @@ import {
   CardHeader,
   IconButton,
 } from "@mui/material";
-
+import DeleteModel from "../reusable/DeleteModel";
 import React, { lazy, Suspense, useState } from "react";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
@@ -39,6 +39,12 @@ const SurveyCard = ({ survey }) => {
     setOpen: setShareOpen,
   } = useToggle();
 
+  const {
+    open: deleteModelOpen,
+    setOpen: setDeleteModelOpen,
+    toggleOpen: toggledeleteModelOpen,
+  } = useToggle(false);
+
   const [currentSurvey, setCurrentSurvey] = useState({});
   const { image, name, description } = survey;
 
@@ -60,6 +66,10 @@ const SurveyCard = ({ survey }) => {
     setCurrentSurvey(survey);
     setViewOpen(true);
   };
+  const handleSurveyDeleteDialog = (survey) => {
+    setCurrentSurvey(survey);
+    setDeleteModelOpen(true);
+  };
   const handleSurveyShareDialog = (survey) => {
     setCurrentSurvey(survey?.preQuestionnaire?.id);
     setShareOpen(true);
@@ -78,6 +88,14 @@ const SurveyCard = ({ survey }) => {
   };
   return (
     <>
+      <DeleteModel
+        open={deleteModelOpen}
+        toggle={toggledeleteModelOpen}
+        //  onClickConfirm={onClickDelete}
+        dialogTitle="Delete "
+        dialogContentText={`Are You Sure You Want to Delete ${currentSurvey?.name} survey?`}
+      />
+
       <DynamicModel
         dialogTitle="Share Survey"
         open={openShareDialog}
@@ -96,7 +114,7 @@ const SurveyCard = ({ survey }) => {
       <DynamicModel
         open={openUpdateDialog}
         toggle={handleupdateToggleOpen}
-        dialogTitle={`Update Survey ${currentSurvey?.name}`}
+        dialogTitle={`Update Survey - ${currentSurvey?.name}`}
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
@@ -131,7 +149,10 @@ const SurveyCard = ({ survey }) => {
       >
         <CardHeader
           action={
-            <IconButton aria-label="delete">
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleSurveyDeleteDialog(survey)}
+            >
               <DeleteForeverOutlinedIcon color="error" />
             </IconButton>
           }
@@ -178,13 +199,15 @@ const SurveyCard = ({ survey }) => {
           >
             Preview
           </Button>
-          <IconButton
-            color="primary"
-            aria-label="delete"
-            onClick={() => handleSurveyShareDialog(survey)}
-          >
-            <ShareOutlinedIcon />
-          </IconButton>
+          {survey?.preQuestionnaire?.id && (
+            <IconButton
+              color="primary"
+              aria-label="delete"
+              onClick={() => handleSurveyShareDialog(survey)}
+            >
+              <ShareOutlinedIcon />
+            </IconButton>
+          )}
         </CardActions>
       </Card>
     </>

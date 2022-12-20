@@ -22,13 +22,13 @@ const AnalyticsPage = lazy(() => import("./pages/Analytics"));
 const QuestionnariesPage = lazy(() => import("./pages/Questionnaries"));
 const UsersPage = lazy(() => import("./pages/Users"));
 const LocationsPage = lazy(() => import("./pages/Locations"));
-const QrCodeResponsesPage = lazy(() => import("./pages/QrCodeResponses"));
-const LinkResponsesPage = lazy(() => import("./pages/LinkResponses"));
+
 const QuestionnariesQuestionPage = lazy(() =>
   import("./pages/QuestionnariesQuestion")
 );
 const TestResponsesPage = lazy(() => import("./pages/TestResponses"));
 const SurveyResponsesPage = lazy(() => import("./pages/SurveyResponses"));
+const SurveyEntriesPage = lazy(() => import("./pages/SurveyEntries"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,11 +42,12 @@ const router = createBrowserRouter(
       />
       <Route path="users" element={<UsersPage />} />
       <Route path="locations" element={<LocationsPage />} />
-      <Route path="qrcoderesponses" element={<QrCodeResponsesPage />} />
-      <Route path="linkresponses" element={<LinkResponsesPage />} />
+      {/* <Route path="qrcoderesponses" element={<QrCodeResponsesPage />} /> */}
+      {/* <Route path="linkresponses" element={<LinkResponsesPage />} /> */}
       {/* <Route path="testresponses" element={<TestResponsesPage />} /> */}
-      <Route path="surveyresponses" element={<SurveyResponsesPage />} />
+      <Route path="surveyEntries/:id" element={<SurveyResponsesPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
+      <Route path="surveyEntries" element={<SurveyEntriesPage />} />
     </Route>
   )
 );

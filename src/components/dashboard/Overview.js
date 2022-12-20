@@ -6,6 +6,7 @@ const Overview = ({
   surveyCount,
   surveyEntriesCount,
   surveyLocationsCount,
+  surveyUsersCount,
 }) => {
   return (
     <Grid container my={1}>
@@ -20,6 +21,12 @@ const Overview = ({
         title="Total Location"
         count={surveyLocationsCount}
         to="/locations"
+      />
+      <Wrapper
+        title="Total Users"
+        count={surveyUsersCount}
+        secondary
+        to="/users"
       />
     </Grid>
   );
