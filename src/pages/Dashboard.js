@@ -6,6 +6,7 @@ import withSuspense from "../helpers/hoc/withSuspense";
 import {
   COUNT_SURVEYS,
   COUNT_SURVEY_LOCATIONS,
+  COUNT_SURVEY_USERS,
 } from "../graphql/custom/queries";
 
 const DashboardPage = () => {
@@ -20,11 +21,17 @@ const DashboardPage = () => {
     error: surveyLocationCountError,
     data: surveyLocationCountData,
   } = useQuery(COUNT_SURVEY_LOCATIONS);
+  const {
+    loading: surveyUsersCountLoading,
+    error: surveyUsersCountError,
+    data: surveyUsersCountData,
+  } = useQuery(COUNT_SURVEY_USERS);
   const overviewReady =
     Boolean(surveyCountLoading) ||
     Boolean(surveyCountError) ||
     Boolean(surveyLocationCountLoading) ||
     Boolean(surveyLocationCountError);
+  Boolean(surveyUsersCountLoading) || Boolean(surveyUsersCountError);
   if (loading) {
     return <Loader />;
   }
@@ -35,6 +42,9 @@ const DashboardPage = () => {
       surveyCount={surveyCountData?.listSurveys?.items?.length || 0}
       surveyLocationsCount={
         surveyLocationCountData?.listSurveyLocations?.items?.length || 0
+      }
+      surveyUsersCount={
+        surveyUsersCountData?.listSurveyUsers?.items?.length || 0
       }
     />
   );

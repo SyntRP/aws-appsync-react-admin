@@ -22,6 +22,7 @@ import { Loader } from "../common/Loader";
 import { LIST_SURVEY_LOCATIONS } from "../../graphql/custom/queries";
 import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
+import DeleteModel from "../reusable/DeleteModel";
 
 const UpdateLocation = lazy(() => import("./UpdateLocation"));
 
@@ -54,22 +55,25 @@ const Locations = () => {
     toggleOpen: updateToggleOpen,
     setOpen: setUpdateOpen,
   } = useToggle();
+  const {
+    open: deleteModelOpen,
+    setOpen: setDeleteModelOpen,
+    toggleOpen: toggledeleteModelOpen,
+  } = useToggle(false);
   const { loading, error, data } = useQuery(LIST_SURVEY_LOCATIONS);
   const [surveyLocations, setSurveyLocations] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentLocation, setCurrentLocation] = useState({});
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentLocation?.id);
-  const surveyLocationOrder = data?.listSurveyLocations?.items
-    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
 
   useEffect(() => {
     if (!loading && !error)
-      setSurveyLocations(data?.listSurveyLocations?.items);
+      setSurveyLocations(
+        data?.listSurveyLocations?.items
+          ?.slice()
+          ?.sort((a, b) => a?.order - b?.order)
+      );
   }, [loading, data?.listSurveyLocations?.items]);
 
   if (loading) {
@@ -98,6 +102,10 @@ const Locations = () => {
     setCurrentLocation({});
     updateToggleOpen();
   };
+  const handleLocationDeleteDialog = (loc) => {
+    setCurrentLocation(loc);
+    setDeleteModelOpen(true);
+  };
 
   return (
     <>
@@ -114,6 +122,13 @@ const Locations = () => {
           />
         </Suspense>
       </DynamicModel>
+      <DeleteModel
+        open={deleteModelOpen}
+        toggle={toggledeleteModelOpen}
+        // onClickConfirm={onClickDelete}
+        dialogTitle={`Remove this - ${currentLocation?.location} Location`}
+        dialogContentText={`Are You Sure You Want to Remove this - ${currentLocation?.location} Location?`}
+      />
       {surveyLocations.length > 0 ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -127,42 +142,48 @@ const Locations = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {surveyLocations.map((loc, i) => (
-                <StyledTableRow key={i}>
-                  <StyledTableCell component="th" scope="row">
-                    {i + 1}
-                  </StyledTableCell>
-                  <StyledTableCell>{loc?.location}</StyledTableCell>
-                  <StyledTableCell>{loc?.inchargeEmail}</StyledTableCell>
-                  <StyledTableCell>
-                    <Button
-                      size="small"
-                      color="secondary"
-                      onClick={() => handleLocationUpdateDialog(loc)}
-                    >
-                      <EditOutlinedIcon />
-                    </Button>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Button
-                      // onClick={() => handleOpenDeleteDialog(user)}
-                      size="small"
-                      color="error"
-                    >
-                      <DeleteForeverOutlinedIcon />
-                    </Button>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
+              {surveyLocations
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((loc, i) => (
+                  <StyledTableRow key={i}>
+                    <StyledTableCell component="th" scope="row">
+                      {i + 1}
+                    </StyledTableCell>
+                    <StyledTableCell>{loc?.location}</StyledTableCell>
+                    <StyledTableCell>{loc?.inchargeEmail}</StyledTableCell>
+                    <StyledTableCell>
+                      <Button
+                        size="small"
+                        color="secondary"
+                        onClick={() => handleLocationUpdateDialog(loc)}
+                      >
+                        <EditOutlinedIcon />
+                      </Button>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Button
+                        onClick={() => handleLocationDeleteDialog(loc)}
+                        size="small"
+                        color="error"
+                      >
+                        <DeleteForeverOutlinedIcon />
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
             </TableBody>
           </Table>
           <TablePagination
             component="div"
-            count={surveyLocationOrder?.length}
+            count={surveyLocations?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           />
         </TableContainer>
       ) : (

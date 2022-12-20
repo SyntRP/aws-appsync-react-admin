@@ -22,6 +22,8 @@ import { Loader } from "../common/Loader";
 import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
 import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
+import DeleteModel from "../reusable/DeleteModel";
+
 
 const UpdateUser = lazy(() => import("./UpdateUser"));
 
@@ -59,16 +61,20 @@ const Users = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentUser, setCurrentUser] = useState({});
+  const {
+    open: deleteModelOpen,
+    setOpen: setDeleteModelOpen,
+    toggleOpen: toggledeleteModelOpen,
+  } = useToggle(false);
 
-  const surveyUserOrder = data?.listSurveyUsers?.items
-    ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentUser?.id);
   useEffect(() => {
-    if (!loading && !error) setUsers(data?.listSurveyUsers?.items);
+    if (!loading && !error)
+      setUsers(
+        data?.listSurveyUsers?.items
+          ?.slice()
+          ?.sort((a, b) => a?.order - b?.order)
+      );
   }, [loading, data?.listSurveyUsers?.items]);
 
   if (loading) {
@@ -77,6 +83,10 @@ const Users = () => {
   if (error) {
     return <>error</>;
   }
+  const handleUserDeleteDialog = (user) => {
+    setCurrentUser(user);
+    setDeleteModelOpen(true);
+  };
   const handleUserUpdateDialog = (user) => {
     const { name = "", email = "", id } = user;
     setCurrentUser({
@@ -112,6 +122,13 @@ const Users = () => {
           />
         </Suspense>
       </DynamicModel>
+      <DeleteModel
+        open={deleteModelOpen}
+        toggle={toggledeleteModelOpen}
+        // onClickConfirm={onClickDelete}
+        dialogTitle={`Remove this - ${currentUser?.name} User`}
+        dialogContentText={`Are You Sure You Want to Remove this ${currentUser?.name} User?`}
+      />
       {users.length > 0 ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -125,7 +142,7 @@ const Users = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user, i) => (
+              {users?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)?.map((user, i) => (
                 <StyledTableRow key={i}>
                   <StyledTableCell component="th" scope="row">
                     {i + 1}
@@ -143,7 +160,7 @@ const Users = () => {
                   </StyledTableCell>
                   <StyledTableCell>
                     <Button
-                      // onClick={() => handleOpenDeleteDialog(user)}
+                      onClick={() => handleUserDeleteDialog(user)}
                       size="small"
                       color="error"
                     >
@@ -156,11 +173,15 @@ const Users = () => {
           </Table>
           <TablePagination
             component="div"
-            count={surveyUserOrder?.length}
+            count={users?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           />
         </TableContainer>
       ) : (

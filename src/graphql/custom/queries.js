@@ -179,6 +179,20 @@ export const COUNT_SURVEY_LOCATIONS = /* GraphQL */ gql(`
     }
   }
 `);
+export const COUNT_SURVEY_USERS = /* GraphQL */ gql(`
+  query ListSurveyUsers(
+    $filter: ModelSurveyUserFilterInput
+    $limit: Int =1000
+    $nextToken: String
+  ) {
+    listSurveyUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+      }
+      nextToken
+    }
+  }
+`);
 export const LIST_QUESTIONS = /* GraphQL */ gql(`
   query ListQuestions(
     $filter: ModelQuestionFilterInput
