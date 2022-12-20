@@ -10,7 +10,6 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.10.16",
-    "@mui/styles": "^5.11.0",
     "@mui/x-date-pickers": "^5.0.10",
     "apexcharts": "^3.36.3",
     "aws-amplify": "^5.0.4",
