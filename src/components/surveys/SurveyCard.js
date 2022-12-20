@@ -40,7 +40,6 @@ const SurveyCard = ({ survey }) => {
   } = useToggle();
 
   const [currentSurvey, setCurrentSurvey] = useState({});
-  console.log("currentSurvey", currentSurvey);
   const { image, name, description } = survey;
 
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentSurvey?.id);

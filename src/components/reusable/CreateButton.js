@@ -8,7 +8,7 @@ const CreateButton = ({ onClick }) => {
       aria-label="add"
       sx={{
         position: "fixed",
-        bottom: "12px",
+        bottom: "40px",
         right: "12px",
       }}
       onClick={onClick}

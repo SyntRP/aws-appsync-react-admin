@@ -160,3 +160,15 @@ mutation UpdateSurvey(
   }
 }
 `);
+
+export const CREATE_QUESTION = /* GraphQL */ gql(`
+  mutation CreateQuestion(
+    $input: CreateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    createQuestion(input: $input, condition: $condition) {
+      id
+      qu
+    }
+  }
+`);
