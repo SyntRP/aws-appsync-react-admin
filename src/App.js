@@ -52,7 +52,13 @@ const Layout = () => {
       {isAdmin ? (
         <>
           <SideBar onClose={handleDrawerToggle} open={mobileOpen} />
-          <div style={{ display: "flex" }}>
+          <div
+            style={
+              {
+                // display: "flex",
+              }
+            }
+          >
             <Box
               component="main"
               sx={{
