@@ -8,15 +8,21 @@ import {
   dowloadChartAsPDF,
 } from "../../../config/ChartConfig";
 
-const SimpleLineChart = () => {
+const SimpleLineChart = ({ data, title, id, seriesName, yAxisTitle }) => {
+  console.log(title);
+  const chartData = Object.entries(data)
+    ?.map(([name, obj]) => obj)
+    ?.sort((a, b) => new Date(b.x).getTime() - new Date(a.x).getTime());
+
   const series = [
     {
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+      name: seriesName,
+      data: chartData,
     },
   ];
   const options = {
     chart: {
+      id,
       type: "line",
       dropShadow: {
         enabled: true,
@@ -31,6 +37,34 @@ const SimpleLineChart = () => {
         enabled: true,
         autoScaleYaxis: true,
       },
+      toolbar: {
+        tools: {
+          customIcons: [
+            {
+              ...CHART_PDF_DOWNLOAD_ICON,
+              click: async () =>
+                await dowloadChartAsPDF({ ID: id, docName: title }),
+            },
+          ],
+        },
+        export: {
+          csv: {
+            filename: title,
+            columnDelimiter: ",",
+            headerCategory: title,
+            headerValue: yAxisTitle,
+            dateFormatter(timestamp) {
+              return new Date(timestamp).toDateString();
+            },
+          },
+          svg: {
+            filename: title,
+          },
+          png: {
+            filename: title,
+          },
+        },
+      },
     },
     colors: ["#7fb05d"],
     dataLabels: {
@@ -40,7 +74,7 @@ const SimpleLineChart = () => {
       curve: "smooth",
     },
     title: {
-      text: "Survey by Date",
+      text: title,
       align: "center",
     },
     theme: {
@@ -52,18 +86,18 @@ const SimpleLineChart = () => {
         opacity: 0.7,
       },
     },
+
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-      ],
+      type: "category",
+      labels: {
+        trim: true,
+        hideOverlappingLabels: false,
+      },
+    },
+    yaxis: {
+      title: {
+        text: yAxisTitle,
+      },
     },
   };
 

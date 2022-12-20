@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import { utils, writeFileXLSX } from "xlsx";
 import { SurveyEntriesToExcel } from "../../utils/Excel";
+import SurveyByDate from "../analytics/chart_report/SurveyByDate";
 import SurveyByLocations from "../analytics/chart_report/SurveyByLocations";
 import Overview from "./Overview";
 import WelcomeAdmin from "./WelcomeAdmin";
@@ -39,7 +40,10 @@ const Dashboard = ({
           data={surveyEntries}
           setSelectedLocation={() => null}
         />
-        </Grid>
+      </Grid>
+      <Grid item xs={13} lg={6}>
+        <SurveyByDate data={surveyEntries} setSelectedLocation={() => null} />
+      </Grid>
     </Grid>
   );
 };
