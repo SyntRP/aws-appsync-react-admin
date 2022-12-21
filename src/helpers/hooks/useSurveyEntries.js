@@ -3,7 +3,10 @@ import { useQuery } from "@apollo/client";
 import { LIST_SURVEY_ENTRIES } from "../../graphql/custom/queries";
 
 const useSurveyEntries = (initialVar = {}) => {
-  let variables = { ...initialVar, limit: 1000 };
+  let variables = {
+    ...initialVar,
+    limit: 1000,
+  };
   const {
     loading: listSurveyEntriesLoading,
     error: listSurveyEntriesError,

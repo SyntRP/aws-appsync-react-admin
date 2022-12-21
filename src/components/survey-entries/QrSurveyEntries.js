@@ -5,6 +5,7 @@ import {
   TableBody,
   TableCell,
   tableCellClasses,
+  TableContainer,
   TableHead,
   TablePagination,
   TableRow,
@@ -68,7 +69,7 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries }) => {
     <>
       {" "}
       {LinkSurveyEntriesData?.length > 0 && (
-        <Paper>
+        <TableContainer component={Paper}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <StyledTableRow>
@@ -130,7 +131,7 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries }) => {
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </Paper>
+        </TableContainer>
       )}
     </>
   );

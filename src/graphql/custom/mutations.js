@@ -172,3 +172,27 @@ export const CREATE_QUESTION = /* GraphQL */ gql(`
     }
   }
 `);
+
+export const UPDATE_SURVEYENTRIES = /* GraphQL */ gql(`
+  mutation UpdateSurveyEntries(
+    $input: UpdateSurveyEntriesInput!
+    $condition: ModelSurveyEntriesConditionInput
+  ) {
+    updateSurveyEntries(input: $input, condition: $condition) {
+      id
+      archived
+      createdAt
+      updatedAt
+      questionnaireId
+      responses {
+        items {
+          id
+          res
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`);

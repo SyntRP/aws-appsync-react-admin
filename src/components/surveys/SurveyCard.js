@@ -16,6 +16,8 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import { Loader } from "../common/Loader";
+import ArchivedSurvey from "./ArchivedSurvey";
+import withSuspense from "../../helpers/hoc/withSuspense";
 
 const ShareSurvey = lazy(() => import("../../components/surveys/ShareSurvey"));
 const UpdateSurvey = lazy(() => import("./UpdateSurvey"));
@@ -38,11 +40,16 @@ const SurveyCard = ({ survey }) => {
     toggleOpen: shareToggleOpen,
     setOpen: setShareOpen,
   } = useToggle();
+  const {
+    open: archivedOpen,
+    toggleOpen: archivedToggleOpen,
+    setOpen: setArchivedOpen,
+  } = useToggle();
 
   const {
     open: deleteModelOpen,
     setOpen: setDeleteModelOpen,
-    toggleOpen: toggledeleteModelOpen,
+    toggleOpen: toggleDeleteModelOpen,
   } = useToggle(false);
 
   const [currentSurvey, setCurrentSurvey] = useState({});
@@ -50,6 +57,8 @@ const SurveyCard = ({ survey }) => {
 
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentSurvey?.id);
   const openViewDialog = Boolean(viewOpen) && Boolean(currentSurvey?.id);
+  const openArchivedDialog =
+    Boolean(archivedOpen) && Boolean(currentSurvey?.id);
   const openShareDialog = Boolean(shareOpen) && Boolean(currentSurvey);
 
   const handleSurveyUpdateDialog = (survey) => {
@@ -70,6 +79,10 @@ const SurveyCard = ({ survey }) => {
     setCurrentSurvey(survey);
     setDeleteModelOpen(true);
   };
+  const handleSurveyArchivedDialog = (survey) => {
+    setCurrentSurvey(survey);
+    setArchivedOpen(true);
+  };
   const handleSurveyShareDialog = (survey) => {
     setCurrentSurvey(survey?.preQuestionnaire?.id);
     setShareOpen(true);
@@ -86,16 +99,35 @@ const SurveyCard = ({ survey }) => {
     setCurrentSurvey({});
     shareToggleOpen();
   };
+  const handleArchivedToggleOpen = () => {
+    setCurrentSurvey({});
+    archivedToggleOpen();
+  };
   return (
     <>
       <DeleteModel
         open={deleteModelOpen}
-        toggle={toggledeleteModelOpen}
+        toggle={toggleDeleteModelOpen}
         //  onClickConfirm={onClickDelete}
         dialogTitle="Delete "
         dialogContentText={`Are You Sure You Want to Delete ${currentSurvey?.name} survey?`}
       />
 
+      <DynamicModel
+        dialogTitle={` Survey - ${currentSurvey?.name}`}
+        open={openArchivedDialog}
+        toggle={handleArchivedToggleOpen}
+        isClose
+        maxWidth="sm"
+        isActions={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <ArchivedSurvey
+            toggle={handleArchivedToggleOpen}
+            currentSurveyData={currentSurvey}
+          />
+        </Suspense>
+      </DynamicModel>
       <DynamicModel
         dialogTitle="Share Survey"
         open={openShareDialog}
@@ -181,9 +213,15 @@ const SurveyCard = ({ survey }) => {
             justifyContent: "space-around",
           }}
         >
-          <IconButton color="primary" aria-label="archive">
-            <ArchiveOutlinedIcon />
-          </IconButton>
+          {survey?.preQuestionnaire?.id && (
+            <IconButton
+              color="primary"
+              aria-label="archive"
+              onClick={() => handleSurveyArchivedDialog(survey)}
+            >
+              <ArchiveOutlinedIcon />
+            </IconButton>
+          )}
           <Button
             size="small"
             variant="contained"
@@ -214,4 +252,4 @@ const SurveyCard = ({ survey }) => {
   );
 };
 
-export default SurveyCard;
+export default withSuspense(SurveyCard);

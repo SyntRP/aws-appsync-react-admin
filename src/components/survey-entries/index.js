@@ -60,9 +60,7 @@ const SurveyEntries = () => {
   const [tabValue, setTabValue] = useState(0);
   const [surveyEntriesData, setSurveyEntriesData] = useState([]);
 
-  let variables = {
-    limit: 10000,
-  };
+  let variables = { filter: { archived: { ne: true } }, limit: 100 };
   const {
     loading: listSurveyEntriesLoading,
     error: listSurveyEntriesError,
