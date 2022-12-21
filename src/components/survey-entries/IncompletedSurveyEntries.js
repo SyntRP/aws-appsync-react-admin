@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   tableCellClasses,
+  TableContainer,
   TableHead,
   TablePagination,
   TableRow,
@@ -97,55 +98,62 @@ const IncompletedSurveyEntries = ({ questionnaries }) => {
     <>
       {" "}
       {/* {linkResponses?.length > 0 && ( */}
-      <Paper>
-        <>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <StyledTableRow>
-                <StyledTableCell>S.NO</StyledTableCell>
-                <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell>Email</StyledTableCell>
+      <TableContainer component={Paper}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <StyledTableRow>
+              <StyledTableCell>S.NO</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Email</StyledTableCell>
 
-                <StyledTableCell>Questionnaire</StyledTableCell>
-                <StyledTableCell>Start Time</StyledTableCell>
+              <StyledTableCell>Questionnaire</StyledTableCell>
+              <StyledTableCell>Start Time</StyledTableCell>
 
-                <StyledTableCell>completed status</StyledTableCell>
-              </StyledTableRow>
-            </TableHead>
-            <TableBody>
-              {incompeletedSurveyEntriesData
-                ?.filter((user) => user?.by?.name)
-                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user, u) => (
-                  <StyledTableRow key={u}>
-                    <StyledTableCell>{u + 1}</StyledTableCell>
-                    <StyledTableCell>{user?.by?.name}</StyledTableCell>
-                    <StyledTableCell>{user?.by?.email}</StyledTableCell>
+              <StyledTableCell>completed status</StyledTableCell>
+            </StyledTableRow>
+          </TableHead>
+          <TableBody>
+            {incompeletedSurveyEntriesData
+              ?.filter((user) => user?.by?.name)
+              ?.sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((user, u) => (
+                <StyledTableRow key={u}>
+                  <StyledTableCell>{u + 1}</StyledTableCell>
+                  <StyledTableCell>{user?.by?.name}</StyledTableCell>
+                  <StyledTableCell>{user?.by?.email}</StyledTableCell>
 
-                    <StyledTableCell>
-                      {" "}
-                      {onGettingQuestionnaireById(user?.questionnaireId)}
-                    </StyledTableCell>
+                  <StyledTableCell>
+                    {" "}
+                    {onGettingQuestionnaireById(user?.questionnaireId)}
+                  </StyledTableCell>
 
-                    <StyledTableCell>
-                      {moment(user?.startTime).format("DD-MM-YYYY hh:mm A")}
-                    </StyledTableCell>
+                  <StyledTableCell>
+                    {moment(user?.startTime).format("DD-MM-YYYY hh:mm A")}
+                  </StyledTableCell>
 
-                    <StyledTableCell>{user?.complete}%</StyledTableCell>
-                  </StyledTableRow>
-                ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            component="div"
-            count={incompeletedSurveyEntriesData?.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </>
-      </Paper>
+                  <StyledTableCell>{user?.complete}%</StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          component="div"
+          count={incompeletedSurveyEntriesData?.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
       {/* )} */}
     </>
   );

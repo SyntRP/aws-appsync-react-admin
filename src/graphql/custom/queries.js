@@ -38,7 +38,7 @@ query ListSurveyEntriess(
     # 
     # ],
     testing:{ne:true},
-
+    archived:{ne:true}
   }
   $limit: Int =  1000
   $nextToken: String
@@ -449,6 +449,7 @@ query ListSurveyEntriess(
   $filter: ModelSurveyEntriesFilterInput = {
     testing:{ne:true}
     complete:{lt:100}
+    archived:{ne:true}
   }
   $limit: Int =  1000
   $nextToken: String

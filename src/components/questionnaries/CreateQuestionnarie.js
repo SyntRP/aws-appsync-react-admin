@@ -1,9 +1,23 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Button, Grid, TextField,FormControl,InputLabel,Select,MenuItem } from "@mui/material";
+import {
+  Button,
+  Grid,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { CREATE_QUESTIONNAIRE, UPDATE_SURVEY } from "../../graphql/custom/mutations";
-import { LIST_QUESTIONNARIES, LIST_SURVEYS } from "../../graphql/custom/queries";
+import {
+  CREATE_QUESTIONNAIRE,
+  UPDATE_SURVEY,
+} from "../../graphql/custom/mutations";
+import {
+  LIST_QUESTIONNARIES,
+  LIST_SURVEYS,
+} from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
@@ -20,33 +34,37 @@ const CreateQuestionnarie = ({ toggle }) => {
 
   const [createQuestionnaire] = useMutation(CREATE_QUESTIONNAIRE);
   const [updateSurvey] = useMutation(UPDATE_SURVEY, {
-    refetchQueries: [{ query: LIST_QUESTIONNARIES,variables : 
-        {filter: {archived: {ne: true}}} }],
+    refetchQueries: [
+      {
+        query: LIST_QUESTIONNARIES,
+        variables: { filter: { archived: { ne: true } } },
+      },
+    ],
   });
 
   const { values, handleInputChange } = useForm(initialFormValues);
-  const [surveyId,setSurveyId]= useState("")
+  const [surveyId, setSurveyId] = useState("");
   const enableButton =
     Boolean(values.name) &&
     Boolean(values.description) &&
     Boolean(values.introMsg) &&
-    Boolean(values.endMsg)&&
+    Boolean(values.endMsg) &&
     Boolean(surveyId);
 
-const handleSurveyChange = (e) => {
-    setSurveyId(e.target.value)
-}
+  const handleSurveyChange = (e) => {
+    setSurveyId(e.target.value);
+  };
 
   const onClickCreate = async () => {
-   const res = await createQuestionnaire({ variables: { input: values } });
-   const {data}= res;
-   if(data.createQuestionnaire){
-    const surveyData = {
+    const res = await createQuestionnaire({ variables: { input: values } });
+    const { data } = res;
+    if (data.createQuestionnaire) {
+      const surveyData = {
         id: surveyId,
         surveyPreQuestionnaireId: data?.createQuestionnaire?.id,
-      }
-   await updateSurvey({variables:{input:surveyData}})
-   }
+      };
+      await updateSurvey({ variables: { input: surveyData } });
+    }
     toggle();
   };
 
@@ -118,16 +136,16 @@ const handleSurveyChange = (e) => {
             <Select
               margin="dense"
               fullWidth
-               variant="standard"
-            color="secondary"
-            value={surveyId}
+              variant="standard"
+              color="secondary"
+              value={surveyId}
               onChange={handleSurveyChange}
             >
               {data?.listSurveys?.items.map((survey, s) => (
-                        <MenuItem key={s} value={survey?.id}>
-                          {survey.name}
-                        </MenuItem>
-                      ))}
+                <MenuItem key={s} value={survey?.id}>
+                  {survey.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>

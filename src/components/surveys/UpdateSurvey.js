@@ -8,7 +8,8 @@ import useForm from "../../helpers/hooks/useForm";
 
 const UpdateSurvey = ({ toggle, initialFormValues, surveys }) => {
   const [updateSurvey, { loading, error }] = useMutation(UPDATE_SURVEY, {
-    refetchQueries: [{ query: surveys }],
+    query: LIST_SURVEYS,
+    variables: { filter: { archived: { ne: true } }, limit: 100 },
   });
   const { values, handleInputChange } = useForm(initialFormValues);
   const enableButton =
