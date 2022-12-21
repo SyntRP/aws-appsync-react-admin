@@ -9,7 +9,6 @@ import {
 } from "../../../config/ChartConfig";
 
 const SimpleLineChart = ({ data, title, id, seriesName, yAxisTitle }) => {
-  console.log(title);
   const chartData = Object.entries(data)
     ?.map(([name, obj]) => obj)
     ?.sort((a, b) => new Date(b.x).getTime() - new Date(a.x).getTime());
@@ -75,7 +74,7 @@ const SimpleLineChart = ({ data, title, id, seriesName, yAxisTitle }) => {
     },
     title: {
       text: title,
-      align: "center",
+      align: "left",
     },
     theme: {
       mode: CHART_THEME_MODE,
