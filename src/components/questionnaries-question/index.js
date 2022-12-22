@@ -47,7 +47,7 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {questions.map((quest, i) => (
+            {questions?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((quest, i) => (
               <TableRow key={i}>
                 <TableCell component="th" scope="row">
                   {quest?.order}
