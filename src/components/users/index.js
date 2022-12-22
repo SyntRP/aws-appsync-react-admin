@@ -23,7 +23,7 @@ import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
 import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import DeleteModel from "../reusable/DeleteModel";
-
+import SearchBar from "../reusable/SearchBar";
 
 const UpdateUser = lazy(() => import("./UpdateUser"));
 
@@ -61,6 +61,7 @@ const Users = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentUser, setCurrentUser] = useState({});
+  const [search, setSearch] = useState({});
   const {
     open: deleteModelOpen,
     setOpen: setDeleteModelOpen,
@@ -107,6 +108,16 @@ const Users = () => {
     setCurrentUser({});
     updateToggleOpen();
   };
+  const userSearch = (searched) => {
+    setSearch(
+      users.filter((item) =>
+        item?.name
+          .toString()
+          .toLowerCase()
+          .includes(searched.toString().toLowerCase())
+      )
+    );
+  };
   return (
     <>
       <DynamicModel
@@ -129,8 +140,9 @@ const Users = () => {
         dialogTitle={`Remove this - ${currentUser?.name} User`}
         dialogContentText={`Are You Sure You Want to Remove this ${currentUser?.name} User?`}
       />
+      <SearchBar searchInput={(e) => userSearch(e.target.value)} />
       {users.length > 0 ? (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -142,38 +154,40 @@ const Users = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)?.map((user, i) => (
-                <StyledTableRow key={i}>
-                  <StyledTableCell component="th" scope="row">
-                    {i + 1}
-                  </StyledTableCell>
-                  <StyledTableCell>{user?.name}</StyledTableCell>
-                  <StyledTableCell>{user?.email}</StyledTableCell>
-                  <StyledTableCell>
-                    <Button
-                      size="small"
-                      color="secondary"
-                      onClick={() => handleUserUpdateDialog(user)}
-                    >
-                      <EditOutlinedIcon />
-                    </Button>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Button
-                      onClick={() => handleUserDeleteDialog(user)}
-                      size="small"
-                      color="error"
-                    >
-                      <DeleteForeverOutlinedIcon />
-                    </Button>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
+              {(search?.length > 0 ? search : users)
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                ?.map((user, i) => (
+                  <StyledTableRow key={i}>
+                    <StyledTableCell component="th" scope="row">
+                      {i + 1}
+                    </StyledTableCell>
+                    <StyledTableCell>{user?.name}</StyledTableCell>
+                    <StyledTableCell>{user?.email}</StyledTableCell>
+                    <StyledTableCell>
+                      <Button
+                        size="small"
+                        color="secondary"
+                        onClick={() => handleUserUpdateDialog(user)}
+                      >
+                        <EditOutlinedIcon />
+                      </Button>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Button
+                        onClick={() => handleUserDeleteDialog(user)}
+                        size="small"
+                        color="error"
+                      >
+                        <DeleteForeverOutlinedIcon />
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
             </TableBody>
           </Table>
           <TablePagination
             component="div"
-            count={users?.length}
+            count={users?.length || search?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}

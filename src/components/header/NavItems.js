@@ -22,7 +22,7 @@ export const NavItems = [
   },
   {
     path: "/questionnaries",
-    name: "Questionnaries",
+    name: "Questionnaires",
     icon: QuestionAnswerOutlinedIcon,
   },
   {

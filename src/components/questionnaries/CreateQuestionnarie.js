@@ -132,7 +132,7 @@ const CreateQuestionnarie = ({ toggle }) => {
         </Grid>
         <Grid item xs={12} cm={6}>
           <FormControl fullWidth margin="dense">
-            <InputLabel>Survey</InputLabel>
+            <InputLabel>Link survey</InputLabel>
             <Select
               margin="dense"
               fullWidth
