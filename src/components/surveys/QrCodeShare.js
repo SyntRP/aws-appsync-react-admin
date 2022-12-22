@@ -40,7 +40,7 @@ const QrCodeShare = ({ toggle, surveyId }) => {
   const emailUrl =
     "https://stonemor.netlify.app/.netlify/functions/server/send";
   const baseUrl = "https://main.d3d8mcg1fsym22.amplifyapp.com";
-  const surveyQrcodeTest = `${baseUrl}/surveyquestionstest/${surveyId}?uid=${surveyLocation}`;
+  const surveyQrcodeTest = `${baseUrl}/surveyquestions/${surveyId}?uid=${surveyLocation}`;
 
   /* Get quetion by questionID */
   const onGettingQuestionById = (id) => {

@@ -58,34 +58,26 @@ const Questionnaries = ({ questionnaires }) => {
       </DynamicModel>
       <SearchBar searchInput={(e) => questionnairesSearch(e.target.value)} />
       {questionnaires.length > 0 ? (
-        <>
-          <Grid container spacing={2} alignItems="stretch" sx={{ p: "2rem" }}>
-            <Grid item xs={12} cm={6} md={4}>
-              <CreateCard title="Create Questionnaire" onClick={toggleOpen} />
-            </Grid>
-            {(search?.length > 0 ? search : data?.currentData())?.map(
-              (questionnarie, i) => (
-                <Grid item xs={12} cm={6} md={4} key={i}>
-                  <QuestionnarieCard
-                    questionnarie={questionnarie}
-                    sx={{ height: "100%" }}
-                  />
-                </Grid>
-              )
-            )}
+        <Grid container spacing={2} alignItems="stretch">
+          <Grid item xs={12} cm={6} md={4}>
+            <CreateCard title="Create Questionnarie" onClick={toggleOpen} />
           </Grid>
-          <Box display="flex" justifyContent="end" my={2}>
-            <Pagination
-              count={count || search?.length}
-              size="large"
-              page={page}
-              color="primary"
-              variant="outlined"
-              shape="rounded"
-              onChange={handleChange}
-            />
-          </Box>
-        </>
+          {questionnaires
+            ?.slice()
+            ?.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+            ?.map((questionnarie, i) => (
+              <Grid item xs={12} cm={6} md={4} key={i}>
+                <QuestionnarieCard
+                  questionnarie={questionnarie}
+                  sx={{ height: "100%" }}
+                />
+              </Grid>
+            ))}
+        </Grid>
       ) : (
         <p>No Questionnaires found</p>
       )}

@@ -6,6 +6,7 @@ import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 
 export const NavItems = [
@@ -62,5 +63,13 @@ export const NavItems = [
     path: "/analytics",
     name: "Analytics",
     icon: AnalyticsOutlinedIcon,
+  },
+  {
+    name: "Divider",
+  },
+  {
+    path: "/archived",
+    name: "archived",
+    icon: ArchiveOutlinedIcon,
   },
 ];

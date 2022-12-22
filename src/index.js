@@ -29,6 +29,7 @@ const QuestionnariesQuestionPage = lazy(() =>
 const TestResponsesPage = lazy(() => import("./pages/TestResponses"));
 const SurveyResponsesPage = lazy(() => import("./pages/SurveyResponses"));
 const SurveyEntriesPage = lazy(() => import("./pages/SurveyEntries"));
+const ArchivedPage = lazy(() => import("./pages/Archived"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
       <Route path="surveyEntries/:id" element={<SurveyResponsesPage />} />
       <Route path="analytics" element={<AnalyticsPage />} />
       <Route path="surveyEntries" element={<SurveyEntriesPage />} />
+      <Route path="archived" element={<ArchivedPage />} />
     </Route>
   )
 );
