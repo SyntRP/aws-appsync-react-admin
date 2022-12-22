@@ -23,6 +23,7 @@ import { LIST_SURVEY_LOCATIONS } from "../../graphql/custom/queries";
 import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import DeleteModel from "../reusable/DeleteModel";
+import SearchBar from "../reusable/SearchBar";
 
 const UpdateLocation = lazy(() => import("./UpdateLocation"));
 
@@ -65,6 +66,7 @@ const Locations = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentLocation, setCurrentLocation] = useState({});
+  const [search, setSearch] = useState({});
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentLocation?.id);
 
   useEffect(() => {
@@ -106,6 +108,16 @@ const Locations = () => {
     setCurrentLocation(loc);
     setDeleteModelOpen(true);
   };
+  const locationSearch = (searched) => {
+    setSearch(
+      surveyLocations.filter((item) =>
+        item?.location
+          .toString()
+          .toLowerCase()
+          .includes(searched.toString().toLowerCase())
+      )
+    );
+  };
 
   return (
     <>
@@ -129,8 +141,9 @@ const Locations = () => {
         dialogTitle={`Remove this - ${currentLocation?.location} Location`}
         dialogContentText={`Are You Sure You Want to Remove this - ${currentLocation?.location} Location?`}
       />
+      <SearchBar searchInput={(e) => locationSearch(e.target.value)}/>
       {surveyLocations.length > 0 ? (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx = {{mt : 2}}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -142,7 +155,7 @@ const Locations = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {surveyLocations
+              {(search?.length > 0 ? search : surveyLocations)
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((loc, i) => (
                   <StyledTableRow key={i}>
@@ -175,7 +188,7 @@ const Locations = () => {
           </Table>
           <TablePagination
             component="div"
-            count={surveyLocations?.length}
+            count={surveyLocations?.length || search?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}

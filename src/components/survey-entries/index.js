@@ -28,6 +28,7 @@ import LinkSurveyEntries from "./LinkSurveyEntries";
 import QrSurveyEntries from "./QrSurveyEntries";
 import { Loader } from "../common/Loader";
 import IncompletedSurveyEntries from "./IncompletedSurveyEntries";
+import SearchBar from "../reusable/SearchBar";
 
 const TabPanel = (props) => {
   const { value, index, items, children, ...other } = props;
@@ -96,10 +97,14 @@ const SurveyEntries = () => {
   }
   return (
     <div>
+      <div sx = {{mt: 2}}>
+        <SearchBar />
+      </div>
       <Box
         sx={{
           width: "100%",
           bgcolor: "background.paper",
+          mt: 2
           // display: "flex",
           // justifyContent: "flex-start",
           // alignItems: "center",

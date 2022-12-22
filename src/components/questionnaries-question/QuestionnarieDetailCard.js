@@ -15,13 +15,14 @@ const QuestionnarieDetailCard = ({ questionnarieData }) => {
 
   return (
     <>
-      <Paper elevation={10} sx={{ mb: "1rem" }}>
+      <Paper elevation={10} sx={{ mb: "1rem" , mt: 2}}>
         <Card
           sx={{
             p: 3,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            bgcolor: "#dcedc8"
           }}
         >
           <CardContent>

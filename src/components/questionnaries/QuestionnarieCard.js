@@ -94,8 +94,8 @@ const QuestionnarieCard = ({ questionnarie }) => {
         open={deleteModelOpen}
         toggle={toggledeleteModelOpen}
         onClickConfirm={onClickDelete}
-        dialogTitle={`Delete this - ${currentQuestionnarie?.name} Questionnaire`}
-        dialogContentText={`Are You Sure You Want to Delete this ${currentQuestionnarie?.name} Questionnaire?`}
+        dialogTitle={`Delete this - ${currentQuestionnarie?.name}`}
+        dialogContentText={`Are You Sure You Want to Delete ${currentQuestionnarie?.name}?`}
       />
       <Card
         sx={{
