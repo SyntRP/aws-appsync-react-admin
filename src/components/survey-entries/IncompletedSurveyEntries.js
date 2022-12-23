@@ -109,7 +109,7 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
               <StyledTableCell>Questionnaire</StyledTableCell>
               <StyledTableCell>Start Time</StyledTableCell>
 
-              <StyledTableCell>completed status</StyledTableCell>
+              <StyledTableCell>Completed Status</StyledTableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
