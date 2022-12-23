@@ -39,7 +39,7 @@ const ShareSurvey = ({ toggle, currentSurveyId }) => {
   return (
     <>
       <DynamicModel
-        dialogTitle="Link  Share "
+        dialogTitle=" Share  Link  "
         open={openLinkShareDialog}
         toggle={handleLinkShareToggleOpen}
         isClose
@@ -79,7 +79,7 @@ const ShareSurvey = ({ toggle, currentSurveyId }) => {
               variant="contained"
               onClick={() => handleSurveyLinkShareDialog()}
             >
-              Link Survey
+              Generate Survey Link
             </Button>
           </Grid>
           <Grid
@@ -99,7 +99,7 @@ const ShareSurvey = ({ toggle, currentSurveyId }) => {
               variant="contained"
               onClick={() => handleSurveyQrShareDialog()}
             >
-              QR Survey
+              Generate Survey Qr Code
             </Button>
           </Grid>
         </Grid>

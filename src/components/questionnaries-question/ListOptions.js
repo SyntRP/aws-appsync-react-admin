@@ -50,6 +50,7 @@ const ListOptions = ({
         variant="contained"
         color="secondary"
         onClick={handleAddingListItem}
+        disabled={!listItem?.listValue}
       >
         Add
       </Button>

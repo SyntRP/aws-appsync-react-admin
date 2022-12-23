@@ -193,19 +193,18 @@ const QrCodeShare = ({ toggle, surveyId }) => {
             alignItems="center"
           >
             <IconButton
-              color="error"
-              aria-label="mailsend"
-              onClick={handleSendEmail}
-            >
-              <ForwardToInboxOutlinedIcon fontSize="large" />
-            </IconButton>
-
-            <IconButton
               color="primary"
               aria-label="mailsend"
               onClick={downloadQRCodeTest}
             >
               <DownloadForOfflineOutlinedIcon fontSize="large" />
+            </IconButton>
+            <IconButton
+              color="error"
+              aria-label="mailsend"
+              onClick={handleSendEmail}
+            >
+              <ForwardToInboxOutlinedIcon fontSize="large" />
             </IconButton>
           </Grid>
         </Grid>

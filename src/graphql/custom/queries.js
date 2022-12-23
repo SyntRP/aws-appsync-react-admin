@@ -488,3 +488,33 @@ query ListSurveyEntriess(
   }
 }
 `);
+export const GET_QUESTION = /* GraphQL */ gql(`
+  query GetQuestion($id: ID!) {
+    getQuestion(id: $id) {
+      id
+      qu
+      type
+      isSelf
+      isDependent
+      listOptions {
+        listValue
+        nextQuestion
+        isText
+        isMultiple
+      }
+      deleted
+      archived
+      order
+      dependent {
+        id
+        options {
+          dependentValue
+          nextQuestion
+        }
+      }
+      createdAt
+      updatedAt
+     
+    }
+  }
+`);

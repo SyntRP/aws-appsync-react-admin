@@ -43,6 +43,7 @@ const CreateQuestion = ({ toggle, questions, questionQuestionnaireId }) => {
       },
     ],
   });
+
   const {
     values,
     handleInputChange,

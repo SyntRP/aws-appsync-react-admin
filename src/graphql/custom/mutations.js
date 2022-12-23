@@ -196,3 +196,34 @@ export const UPDATE_SURVEYENTRIES = /* GraphQL */ gql(`
     }
   }
 `);
+export const UPDATE_QUESTION = /* GraphQL */ gql(`
+  mutation UpdateQuestion(
+    $input: UpdateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    updateQuestion(input: $input, condition: $condition) {
+      id
+      qu
+      type
+      isSelf
+      isDependent
+      listOptions {
+        listValue
+        nextQuestion
+        isText
+        isMultiple
+      }
+      order
+      dependent {
+        id
+        options {
+          dependentValue
+          nextQuestion
+        }
+      }
+      createdAt
+      updatedAt
+     
+    }
+  }
+`);

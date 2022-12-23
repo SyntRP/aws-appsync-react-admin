@@ -13,12 +13,49 @@ import {
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import QuestionnarieDetailCard from "./QuestionnarieDetailCard";
+import DynamicModel from "../reusable/DynamicModel";
+import useToggle from "../../helpers/hooks/useToggle";
+import { Suspense } from "react";
+import { Loader } from "../common/Loader";
+import { lazy } from "react";
+
+const UpdateQuestion = lazy(() => import("./UpdateQuestion"));
 
 const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
   const [page, setPage] = useState(0);
-
+  const {
+    open: updateOpen,
+    toggleOpen: updateToggleOpen,
+    setOpen: setUpdateOpen,
+  } = useToggle();
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [currentQuestion, setCurrentQuestion] = useState({});
+  const openUpdateDialog = Boolean(updateOpen) && Boolean(currentQuestion?.id);
 
+  const handleQuestionUpdateDialog = (quest) => {
+    const {
+      qu = "",
+      order = "",
+      currentMode = " ",
+      type = "",
+      nextQuestion = "",
+      nextQuestionAU = {},
+      dependentQuestion = "",
+      dependentQuestionAU = {},
+      dependentQuestionOptions = [],
+      dependentQuestionOptionsAU = [],
+      listOptions = [],
+      id,
+    } = quest;
+    setCurrentQuestion({
+      id,
+      qu,
+      order,
+      type,
+      listOptions,
+    });
+    setUpdateOpen(true);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -27,8 +64,31 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
     setPage(0);
   };
 
+  const handleQuestionToggleOpen = () => {
+    setCurrentQuestion({});
+    updateToggleOpen(true);
+  };
+
+  console.log("currentQuestion", currentQuestion);
+  console.log("questions", questions);
   return (
     <>
+      <DynamicModel
+        dialogTitle={`Update - ${currentQuestion?.qu}`}
+        open={openUpdateDialog}
+        toggle={handleQuestionToggleOpen}
+        isClose
+        maxWidth="md"
+        isActions={false}
+      >
+        <Suspense fallback={<Loader />}>
+          <UpdateQuestion
+            toggle={handleQuestionToggleOpen}
+            question={currentQuestion}
+          />
+        </Suspense>
+      </DynamicModel>
+
       <QuestionnarieDetailCard questionnarieData={questionnarieData} />
       <TableContainer
         elevation={10}
@@ -47,44 +107,42 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {questions?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((quest, i) => (
-              <TableRow key={i}>
-                <TableCell component="th" scope="row">
-                  {quest?.order}
-                </TableCell>
-                <TableCell>{quest.qu}</TableCell>
-                {quest?.type === "LIST" && <TableCell>{"RATING"}</TableCell>}
-                {quest?.type !== "LIST" && <TableCell>{quest.type}</TableCell>}
+            {questions
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((quest, i) => (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {quest?.order}
+                  </TableCell>
+                  <TableCell>{quest.qu}</TableCell>
+                  {quest?.type === "LIST" && <TableCell>{"RATING"}</TableCell>}
+                  {quest?.type !== "LIST" && (
+                    <TableCell>{quest.type}</TableCell>
+                  )}
 
-                <TableCell>
-                  {quest.listOptions
-                    ? quest.listOptions.map((option, l) => (
-                        <li key={l}>{option?.listValue}</li>
-                      ))
-                    : "(Empty)"}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    size="small"
-                    color="secondary"
-                    // onClick={() =>
-                    //   handleopeninguypdatesurveyUserDialog(user)
-                    // }
-                  >
-                    <EditOutlinedIcon color="inherit" />
-                  </Button>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    // onClick={() => handleOpenDeleteDialog(user)}
-                    size="small"
-                    color="error"
-                  >
-                    <DeleteForeverOutlinedIcon />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>
+                    {quest?.listOptions
+                      ? quest.listOptions.map((option, l) => (
+                          <li key={l}>{option?.listValue}</li>
+                        ))
+                      : "(Empty)"}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={() => handleQuestionUpdateDialog(quest)}
+                    >
+                      <EditOutlinedIcon color="inherit" />
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button size="small" color="error">
+                      <DeleteForeverOutlinedIcon />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
         <TablePagination
