@@ -114,7 +114,7 @@ const SurveyCard = ({ survey }) => {
       />
 
       <DynamicModel
-        dialogTitle={` Survey - ${currentSurvey?.name}`}
+        dialogTitle={` Archive - ${currentSurvey?.name}`}
         open={openArchivedDialog}
         toggle={handleArchivedToggleOpen}
         isClose
