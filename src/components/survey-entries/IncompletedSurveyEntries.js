@@ -41,7 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-const IncompletedSurveyEntries = ({ questionnaries }) => {
+const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
   const [incompeletedSurveyEntriesData, setIncompletedSurveyEntriesData] =
     useState([]);
   const [page, setPage] = useState(0);
@@ -109,12 +109,17 @@ const IncompletedSurveyEntries = ({ questionnaries }) => {
               <StyledTableCell>Questionnaire</StyledTableCell>
               <StyledTableCell>Start Time</StyledTableCell>
 
-              <StyledTableCell>completed status</StyledTableCell>
+              <StyledTableCell>Completed Status</StyledTableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
             {incompeletedSurveyEntriesData
-              ?.filter((user) => user?.by?.name)
+              ?.filter((user) =>
+                user?.by?.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(incompleteSurvey.toString().toLowerCase())
+              )
               ?.sort(
                 (a, b) =>
                   new Date(b.createdAt).getTime() -

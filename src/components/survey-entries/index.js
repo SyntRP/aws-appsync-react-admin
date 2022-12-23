@@ -60,7 +60,8 @@ const TabPanel = (props) => {
 const SurveyEntries = () => {
   const [tabValue, setTabValue] = useState(0);
   const [surveyEntriesData, setSurveyEntriesData] = useState([]);
-
+  const [surveySearched, setSurveySearched] = useState("");
+  
   let variables = { filter: { archived: { ne: true } }, limit: 100 };
   const {
     loading: listSurveyEntriesLoading,
@@ -95,14 +96,14 @@ const SurveyEntries = () => {
   }
   return (
     <div>
-      <div sx = {{mt: 2}}>
-        <SearchBar />
+      <div sx={{ mt: 2 }}>
+        <SearchBar searchInput={(e) => setSurveySearched(e.target.value)} />
       </div>
       <Box
         sx={{
           width: "100%",
           bgcolor: "background.paper",
-          mt: 2
+          mt: 2,
           // display: "flex",
           // justifyContent: "flex-start",
           // alignItems: "center",
@@ -131,19 +132,36 @@ const SurveyEntries = () => {
       </Box>
       <TabPanel value={tabValue} index={0}>
         <LinkSurveyEntries
-          surveyEntries={surveyEntriesList}
+          surveyEntries={surveyEntriesList
+            ?.filter((user) => user?.by?.name)
+            ?.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )}
           questionnaries={questionariesName}
+          linkSurvey={surveySearched}
         />
       </TabPanel>
 
       <TabPanel value={tabValue} index={1}>
         <QrSurveyEntries
-          surveyEntries={surveyEntriesList}
+          surveyEntries={surveyEntriesList
+            ?.filter((user) => user?.location?.location)
+            ?.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )}
           questionnaries={questionariesName}
+          qrSurvey={surveySearched}
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <IncompletedSurveyEntries questionnaries={questionariesName} />
+        <IncompletedSurveyEntries
+          questionnaries={questionariesName}
+          incompleteSurvey={surveySearched}
+        />
       </TabPanel>
     </div>
   );

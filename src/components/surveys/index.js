@@ -11,6 +11,7 @@ import withSuspense from "../../helpers/hoc/withSuspense";
 import SurveyCard from "./SurveyCard";
 import usePagination from "../../helpers/hooks/usePagination";
 import { Box } from "@mui/system";
+import SearchBar from "../reusable/SearchBar";
 
 const CreateSurvey = lazy(() =>
   import("../../components/surveys/CreateSurvey")
@@ -21,6 +22,7 @@ const Surveys = () => {
     variables: { filter: { archived: { ne: true } }, limit: 100 },
   });
   const [surveys, setSurveys] = useState([]);
+  const [surveySearch , setSurveySearch] = useState("");
   const [page, setPage] = useState(1);
   const PER_PAGE = 5;
   const surveysList = surveys
@@ -30,7 +32,15 @@ const Surveys = () => {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   const count = Math.ceil(surveysList?.length / PER_PAGE);
-  const _DATA = usePagination(surveysList, PER_PAGE);
+  const _DATA = usePagination(
+    surveysList?.filter((item) =>
+      item?.name
+        .toString()
+        .toLowerCase()
+        .includes(surveySearch.toString().toLowerCase())
+    ),
+    PER_PAGE
+  );
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -61,9 +71,10 @@ const Surveys = () => {
           <CreateSurvey toggle={toggleOpen} surevy={surveys} />
         </Suspense>
       </DynamicModel>
+      <SearchBar searchInput={(e) => setSurveySearch(e.target.value)}/>
       {surveys.length > 0 ? (
         <>
-          <Grid container spacing={2} alignItems="stretch">
+          <Grid container spacing={2} alignItems="stretch" sx={{ p: "2rem" }}>
             <Grid item xs={12} cm={6} md={4}>
               <CreateCard title="Create Survey" onClick={toggleOpen} />
             </Grid>

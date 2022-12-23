@@ -39,19 +39,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const LinkSurveyEntries = ({ surveyEntries, questionnaries }) => {
+const LinkSurveyEntries = ({ surveyEntries, questionnaries ,linkSurvey}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const LinkSurveyEntriesData = surveyEntries
-    ?.filter((user) => user?.by?.name)
-    ?.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+  const LinkSurveyEntriesData = surveyEntries?.filter((item) =>
+  item?.by?.name
+    .toString()
+    .toLowerCase()
+    .includes(linkSurvey.toString().toLowerCase())
+)
   const onGettingQuestionnaireById = (id) => {
     const que = questionnaries?.listQuestionnaires?.items?.find(
       (q) => q?.id === id
