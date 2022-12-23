@@ -86,30 +86,41 @@ const UnarchiveSurvey = ({ currentSurveyData, toggle }) => {
 
   return (
     <Box>
-      <Typography color="success">{`Are You Sure You Want to Unarchive ${currentSurveyData?.name} survey?`}</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          gap: 2,
-        }}
-        spacing={2}
-        my={2}
-      >
-        <Button onClick={toggle} variant="text" color="info">
-          Close
-        </Button>
-        {!isPostingResponse ? (
-          <Button onClick={onClickUpdate} variant="contained" color="primary">
-            Unarchive
-          </Button>
-        ) : (
-          <Button variant="contained" color="primary" disabled>
-            Unarchiving ....
-          </Button>
-        )}
-      </Box>
+      {SurveyEntryData ? (
+        <>
+          <Typography color="success">{`Are You Sure You Want to Unarchive ${currentSurveyData?.name} survey?`}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: 2,
+            }}
+            spacing={2}
+            my={2}
+          >
+            <Button onClick={toggle} variant="text" color="info">
+              Close
+            </Button>
+
+            {!isPostingResponse ? (
+              <Button
+                onClick={onClickUpdate}
+                variant="contained"
+                color="primary"
+              >
+                Unarchive
+              </Button>
+            ) : (
+              <Button variant="contained" color="primary" disabled>
+                Unarchiving ....
+              </Button>
+            )}
+          </Box>
+        </>
+      ) : (
+        <Loader />
+      )}
     </Box>
   );
 };

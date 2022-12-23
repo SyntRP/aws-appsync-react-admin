@@ -23,21 +23,11 @@ const UnarchiveSurvey = lazy(() => import("./UnarchiveSurvey"));
 
 const ArchiveCard = ({ survey }) => {
   const {
-    open: updateOpen,
-    toggleOpen: updateToggleOpen,
-    setOpen: setUpdateOpen,
-  } = useToggle();
-  const {
     open: viewOpen,
     toggleOpen: viewToggleOpen,
     setOpen: setViewOpen,
   } = useToggle();
 
-  const {
-    open: shareOpen,
-    toggleOpen: shareToggleOpen,
-    setOpen: setShareOpen,
-  } = useToggle();
   const {
     open: archivedOpen,
     toggleOpen: archivedToggleOpen,
@@ -53,22 +43,10 @@ const ArchiveCard = ({ survey }) => {
   const [currentSurvey, setCurrentSurvey] = useState({});
   const { image, name, description } = survey;
 
-  const openUpdateDialog = Boolean(updateOpen) && Boolean(currentSurvey?.id);
   const openViewDialog = Boolean(viewOpen) && Boolean(currentSurvey?.id);
   const openArchivedDialog =
     Boolean(archivedOpen) && Boolean(currentSurvey?.id);
-  const openShareDialog = Boolean(shareOpen) && Boolean(currentSurvey);
 
-  const handleSurveyUpdateDialog = (survey) => {
-    const { name = "", image = "", description = "", id } = survey;
-    setCurrentSurvey({
-      name,
-      image,
-      description,
-      id,
-    });
-    setUpdateOpen(true);
-  };
   const handleSurveyViewDialog = (survey) => {
     setCurrentSurvey(survey);
     setViewOpen(true);
@@ -81,22 +59,12 @@ const ArchiveCard = ({ survey }) => {
     setCurrentSurvey(survey);
     setArchivedOpen(true);
   };
-  const handleSurveyShareDialog = (survey) => {
-    setCurrentSurvey(survey?.preQuestionnaire?.id);
-    setShareOpen(true);
-  };
-  const handleupdateToggleOpen = () => {
-    setCurrentSurvey({});
-    updateToggleOpen();
-  };
+
   const handleViewToggleOpen = () => {
     setCurrentSurvey({});
     viewToggleOpen();
   };
-  const handleShareToggleOpen = () => {
-    setCurrentSurvey({});
-    shareToggleOpen();
-  };
+
   const handleArchivedToggleOpen = () => {
     setCurrentSurvey({});
     archivedToggleOpen();
@@ -130,7 +98,7 @@ const ArchiveCard = ({ survey }) => {
       <DynamicModel
         open={openViewDialog}
         toggle={handleViewToggleOpen}
-        dialogTitle={`View Survey `}
+        dialogTitle={`View Archived Survey `}
         isActions={false}
       >
         <Suspense fallback={<Loader />}>

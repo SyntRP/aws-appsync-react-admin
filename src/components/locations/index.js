@@ -141,9 +141,9 @@ const Locations = () => {
         dialogTitle={`Remove this - ${currentLocation?.location} Location`}
         dialogContentText={`Are You Sure You Want to Remove this - ${currentLocation?.location} Location?`}
       />
-      <SearchBar searchInput={(e) => locationSearch(e.target.value)}/>
+      <SearchBar searchInput={(e) => locationSearch(e.target.value)} />
       {surveyLocations.length > 0 ? (
-        <TableContainer component={Paper} sx = {{mt : 2}}>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>

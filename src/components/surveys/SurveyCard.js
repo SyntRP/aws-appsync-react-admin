@@ -129,7 +129,7 @@ const SurveyCard = ({ survey }) => {
         </Suspense>
       </DynamicModel>
       <DynamicModel
-        dialogTitle="Share Survey"
+        dialogTitle="  Share Survey "
         open={openShareDialog}
         toggle={handleShareToggleOpen}
         isClose
