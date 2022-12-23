@@ -13,6 +13,7 @@ import {
 } from "../../graphql/custom/queries";
 import { useState } from "react";
 import { Loader } from "../common/Loader";
+import withSuspense from "../../helpers/hoc/withSuspense";
 
 const ArchivedSurvey = ({ currentSurveyData, toggle }) => {
   const [isPostingResponse, setIsPostingResponse] = useState(false);
@@ -32,13 +33,13 @@ const ArchivedSurvey = ({ currentSurveyData, toggle }) => {
   const { data: listSurveyEntriesData } = useQuery(LIST_SURVEY_ENTRIES, {
     variables,
   });
-  const [UpdateQuestionnaire] = useMutation(UPDATE_QUESTIONNAIRE);
-  const [UpdateSurveyEntries] = useMutation(UPDATE_SURVEYENTRIES);
 
   const SurveyEntryData =
     listSurveyEntriesData?.listSurveyEntriess?.items?.filter(
       (q) => q?.questionnaireId === currentSurveyData?.preQuestionnaire?.id
     );
+  const [UpdateQuestionnaire] = useMutation(UPDATE_QUESTIONNAIRE);
+  const [UpdateSurveyEntries] = useMutation(UPDATE_SURVEYENTRIES);
 
   const onClickUpdate = async () => {
     setIsPostingResponse(true);
@@ -82,34 +83,46 @@ const ArchivedSurvey = ({ currentSurveyData, toggle }) => {
     setIsPostingResponse(true);
     toggle();
   };
+
   return (
     <Box>
-      <Typography color="success">{`Are You Sure You Want to Archive ${currentSurveyData?.name} survey?`}</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          gap: 2,
-        }}
-        spacing={2}
-        my={2}
-      >
-        <Button onClick={toggle} variant="text" color="info">
-          Close
-        </Button>
-        {!isPostingResponse ? (
-          <Button onClick={onClickUpdate} variant="contained" color="primary">
-            Archive
-          </Button>
-        ) : (
-          <Button variant="contained" color="primary" disabled>
-            Archiving ....
-          </Button>
-        )}
-      </Box>
+      {SurveyEntryData ? (
+        <>
+          <Typography color="success">{`Are You Sure You Want to Archive ${currentSurveyData?.name} survey?`}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: 2,
+            }}
+            spacing={2}
+            my={2}
+          >
+            <Button onClick={toggle} variant="text" color="info">
+              Close
+            </Button>
+
+            {!isPostingResponse ? (
+              <Button
+                onClick={onClickUpdate}
+                variant="contained"
+                color="primary"
+              >
+                Archive
+              </Button>
+            ) : (
+              <Button variant="contained" color="primary" disabled>
+                Archiving ....
+              </Button>
+            )}
+          </Box>
+        </>
+      ) : (
+        <Loader />
+      )}
     </Box>
   );
 };
 
-export default ArchivedSurvey;
+export default withSuspense(ArchivedSurvey);
