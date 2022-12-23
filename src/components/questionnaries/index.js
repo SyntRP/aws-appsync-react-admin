@@ -15,7 +15,7 @@ const CreateQuestionnarie = lazy(() => import("./CreateQuestionnarie"));
 const Questionnaries = ({ questionnaires }) => {
   const { open, toggleOpen } = useToggle();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState(1);
+  const [questionnaireSearch, setQuestionnaireSearch] = useState("");
   const PER_PAGE = 8;
   const questyionnairesList = questionnaires
     ?.slice()
@@ -24,22 +24,16 @@ const Questionnaries = ({ questionnaires }) => {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
   const count = Math.ceil(questyionnairesList?.length / PER_PAGE);
-  const data = usePagination(questyionnairesList, PER_PAGE);
+  const data = usePagination(questyionnairesList?.filter((item) =>
+  item?.name
+    .toString()
+    .toLowerCase()
+    .includes(questionnaireSearch.toString().toLowerCase())
+), PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
     data.jump(p);
-  };
-
-  const questionnairesSearch = (searched) => {
-    setSearch(
-      questyionnairesList.filter((item) =>
-        item?.name
-          .toString()
-          .toLowerCase()
-          .includes(searched.toString().toLowerCase())
-      )
-    );
   };
 
   return (
@@ -56,14 +50,14 @@ const Questionnaries = ({ questionnaires }) => {
           <CreateQuestionnarie toggle={toggleOpen} />
         </Suspense>
       </DynamicModel>
-      <SearchBar searchInput={(e) => questionnairesSearch(e.target.value)} />
+      <SearchBar searchInput={(e) => setQuestionnaireSearch(e.target.value)} />
       {questionnaires.length > 0 ? (
         <>
           <Grid container spacing={2} alignItems="stretch" sx={{ p: "2rem" }}>
             <Grid item xs={12} cm={6} md={4}>
               <CreateCard title="Create Questionnaire" onClick={toggleOpen} />
             </Grid>
-            {(search?.length > 0 ? search : data?.currentData())?.map(
+            {data?.currentData()?.map(
               (questionnarie, i) => (
                 <Grid item xs={12} cm={6} md={4} key={i}>
                   <QuestionnarieCard
@@ -76,7 +70,7 @@ const Questionnaries = ({ questionnaires }) => {
           </Grid>
           <Box display="flex" justifyContent="end" my={2}>
             <Pagination
-              count={count || search?.length}
+              count={count || data?.length}
               size="large"
               page={page}
               color="primary"

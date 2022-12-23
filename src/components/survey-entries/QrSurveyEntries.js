@@ -40,19 +40,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-const LinkSurveyEntries = ({ surveyEntries, questionnaries }) => {
+const QrSurveyEntries = ({ surveyEntries, questionnaries ,qrSurvey}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const LinkSurveyEntriesData = surveyEntries
-    ?.filter((user) => user?.location?.location)
-    ?.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+  const LinkSurveyEntriesData = surveyEntries?.filter((item) =>
+  item?.location?.location
+    .toString()
+    .toLowerCase()
+    .includes(qrSurvey.toString().toLowerCase())
+)
   const onGettingQuestionnaireById = (id) => {
     const que = questionnaries?.listQuestionnaires?.items?.find(
       (q) => q?.id === id
@@ -64,7 +64,6 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   return (
     <>
       {" "}
@@ -137,4 +136,4 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries }) => {
   );
 };
 
-export default withSuspense(LinkSurveyEntries);
+export default withSuspense(QrSurveyEntries);
