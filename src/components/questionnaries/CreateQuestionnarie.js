@@ -37,7 +37,9 @@ const CreateQuestionnarie = ({ toggle }) => {
     refetchQueries: [
       {
         query: LIST_QUESTIONNARIES,
-        variables: { filter: { archived: { ne: true } } },
+        variables: {
+          filter: { archived: { ne: true }, deleted: { ne: true } },
+        },
       },
     ],
   });

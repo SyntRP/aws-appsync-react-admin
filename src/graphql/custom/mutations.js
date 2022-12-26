@@ -23,6 +23,7 @@ export const UPDATE_SURVEY_USER = /* GraphQL */ gql(`
       id
       name
       email
+      deleted
       createdAt
       updatedAt
     }
@@ -38,6 +39,7 @@ export const CREATE_SURVEY_LOCATION = /* GraphQL */ gql(`
       id
       location
       inchargeEmail
+      deleted
       createdAt
       updatedAt
     }
@@ -169,6 +171,7 @@ export const CREATE_QUESTION = /* GraphQL */ gql(`
     createQuestion(input: $input, condition: $condition) {
       id
       qu
+      deleted
     }
   }
 `);
@@ -207,6 +210,7 @@ export const UPDATE_QUESTION = /* GraphQL */ gql(`
       type
       isSelf
       isDependent
+      deleted
       listOptions {
         listValue
         nextQuestion

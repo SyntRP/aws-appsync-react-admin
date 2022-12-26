@@ -8,7 +8,7 @@ const Questionnaries = lazy(() => import("../components/questionnaries"));
 
 const QuestionnariesPage = () => {
   const variables = {
-    filter: { archived: { ne: true } },
+    filter: { archived: { ne: true }, deleted: { ne: true } },
   };
   const {
     loading: listQuestionnairesLoading,

@@ -14,11 +14,15 @@ import useToggle from "../../helpers/hooks/useToggle";
 import DynamicModel from "../reusable/DynamicModel";
 import DeleteModel from "../reusable/DeleteModel";
 import { Link } from "react-router-dom";
-import { DELETE_QUESTONNAIRE } from "../../graphql/custom/mutations";
+import {
+  DELETE_QUESTONNAIRE,
+  UPDATE_QUESTIONNAIRE,
+} from "../../graphql/custom/mutations";
 import { useMutation } from "@apollo/client";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import { Loader } from "@aws-amplify/ui-react";
 import { lazy, Suspense, useState } from "react";
+import { LIST_QUESTIONNARIES } from "../../graphql/custom/queries";
 
 const EditQuestionnaire = lazy(() => import("./EditQuestionnaire"));
 
@@ -36,18 +40,26 @@ const QuestionnarieCard = ({ questionnarie }) => {
   const {
     open: deleteModelOpen,
     setOpen: setDeleteModelOpen,
-    toggleOpen: toggledeleteModelOpen,
+    toggleOpen: toggleDeleteModelOpen,
   } = useToggle(false);
 
-  const [DeleteQuestionnaire] = useMutation(DELETE_QUESTONNAIRE, {
-    id: questionnarie?.id,
+  const [deleteQuestionnaire] = useMutation(UPDATE_QUESTIONNAIRE, {
+    refetchQueries: [
+      {
+        query: LIST_QUESTIONNARIES,
+        variables: {
+          filter: { archived: { ne: true }, deleted: { ne: true } },
+        },
+      },
+    ],
   });
-  const onClickDelete = async () => {
-    await DeleteQuestionnaire({ id: questionnarie?.id });
-    setDeleteModelOpen(false);
-  };
+
   const handleQuestionnarieDeleteDialog = (questionnarie) => {
-    setCurrentQuestionnarie(questionnarie);
+    const { id, name } = questionnarie;
+    setCurrentQuestionnarie({
+      id,
+      name,
+    });
     setDeleteModelOpen(true);
   };
 
@@ -72,6 +84,15 @@ const QuestionnarieCard = ({ questionnarie }) => {
     setCurrentQuestionnarie({});
     updateToggleOpen();
   };
+  const onClickDelete = async () => {
+    const DeleteQuery = {
+      id: currentQuestionnarie?.id,
+
+      deleted: true,
+    };
+    await deleteQuestionnaire({ variables: { input: DeleteQuery } });
+    toggleDeleteModelOpen();
+  };
 
   return (
     <>
@@ -92,7 +113,7 @@ const QuestionnarieCard = ({ questionnarie }) => {
       </DynamicModel>
       <DeleteModel
         open={deleteModelOpen}
-        toggle={toggledeleteModelOpen}
+        toggle={toggleDeleteModelOpen}
         onClickConfirm={onClickDelete}
         dialogTitle={`Delete this - ${currentQuestionnarie?.name}`}
         dialogContentText={`Are You Sure You Want to Delete ${currentQuestionnarie?.name}?`}
@@ -117,7 +138,10 @@ const QuestionnarieCard = ({ questionnarie }) => {
             </Avatar>
           }
           action={
-            <IconButton aria-label="delete"  onClick={() => handleQuestionnarieDeleteDialog(questionnarie)}>
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleQuestionnarieDeleteDialog(questionnarie)}
+            >
               <DeleteForeverOutlinedIcon color="error" />
             </IconButton>
           }
@@ -136,9 +160,9 @@ const QuestionnarieCard = ({ questionnarie }) => {
             justifyContent: "space-around",
           }}
         >
-          <IconButton aria-label="archieve">
+          {/* <IconButton aria-label="archieve">
             <ArchiveOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
 
           <Button
             size="small"

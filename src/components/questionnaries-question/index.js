@@ -16,8 +16,16 @@ import QuestionnarieDetailCard from "./QuestionnarieDetailCard";
 import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import { Suspense } from "react";
+import { useMutation } from "@apollo/client";
 import { Loader } from "../common/Loader";
 import { lazy } from "react";
+import DeleteModel from "../reusable/DeleteModel";
+import {
+  GET_QUESTIONNAIRES,
+  LIST_QUESTIONNARIES,
+  LIST_QUESTIONS,
+} from "../../graphql/custom/queries";
+import { UPDATE_QUESTION } from "../../graphql/custom/mutations";
 
 const UpdateQuestion = lazy(() => import("./UpdateQuestion"));
 
@@ -28,22 +36,34 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
     toggleOpen: updateToggleOpen,
     setOpen: setUpdateOpen,
   } = useToggle();
+
+  const {
+    open: deleteModelOpen,
+    setOpen: setDeleteModelOpen,
+    toggleOpen: toggleDeleteModelOpen,
+  } = useToggle(false);
+
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentQuestion?.id);
 
+  const [deleteQuestion] = useMutation(UPDATE_QUESTION, {
+    refetchQueries: [
+      {
+        query: GET_QUESTIONNAIRES,
+        variables: {
+          id: questionnarieData?.id,
+        },
+      },
+    ],
+  });
   const handleQuestionUpdateDialog = (quest) => {
     const {
       qu = "",
       order = "",
-      currentMode = " ",
+
       type = "",
-      nextQuestion = "",
-      nextQuestionAU = {},
-      dependentQuestion = "",
-      dependentQuestionAU = {},
-      dependentQuestionOptions = [],
-      dependentQuestionOptionsAU = [],
+
       listOptions = [],
       id,
     } = quest;
@@ -56,6 +76,14 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
     });
     setUpdateOpen(true);
   };
+  const handleSurveyDeleteDialog = (survey) => {
+    const { id } = survey;
+    setCurrentQuestion({
+      id,
+    });
+    setDeleteModelOpen(true);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -68,11 +96,27 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
     setCurrentQuestion({});
     updateToggleOpen(true);
   };
+  const onClickDelete = async () => {
+    const DeleteSurveyQuery = {
+      id: currentQuestion?.id,
 
-  console.log("currentQuestion", currentQuestion);
-  console.log("questions", questions);
+      deleted: true,
+    };
+    await deleteQuestion({ variables: { input: DeleteSurveyQuery } });
+    toggleDeleteModelOpen();
+  };
+
   return (
     <>
+      <DeleteModel
+        open={deleteModelOpen}
+        toggle={toggleDeleteModelOpen}
+        onClickConfirm={onClickDelete}
+        isClose
+        dialogTitle="Delete "
+        dialogContentText={`Are You Sure You Want to Delete  question?`}
+      />
+
       <DynamicModel
         dialogTitle={`Update - ${currentQuestion?.qu}`}
         open={openUpdateDialog}
@@ -137,7 +181,11 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
                     </Button>
                   </TableCell>
                   <TableCell>
-                    <Button size="small" color="error">
+                    <Button
+                      size="small"
+                      color="error"
+                      onClick={() => handleSurveyDeleteDialog(quest)}
+                    >
                       <DeleteForeverOutlinedIcon />
                     </Button>
                   </TableCell>
