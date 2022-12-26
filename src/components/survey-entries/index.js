@@ -13,6 +13,7 @@ import {
   TablePagination,
   TableRow,
   Tabs,
+  Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
@@ -132,7 +133,14 @@ const SurveyEntries = () => {
   return (
     <div>
       <div sx={{ mt: 2 }}>
-        <SearchBar searchInput={(e) => setSurveySearched(e.target.value)} />
+        <Grid container spacing={2} sx={{ p: "0.5rem" }}>
+          <Grid item xs={6}>
+            <Typography variant="h6">SurveyEntries</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <SearchBar searchInput={(e) => setSurveySearched(e.target.value)} />
+          </Grid>
+        </Grid>
       </div>
       <Box
         sx={{

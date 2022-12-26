@@ -78,6 +78,12 @@ const Analytics = ({ surveyEntriesData }) => {
 
   return (
     <div>
+      <Grid container spacing={2} sx={{ py: "0.5rem" }}>
+        <Grid item xs={6}>
+          <Typography variant="h6">Analytics</Typography>
+        </Grid>
+        <Grid item xs={6}></Grid>
+      </Grid>
       <Box
         sx={{
           width: "100%",

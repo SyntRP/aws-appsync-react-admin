@@ -21,6 +21,8 @@ import withSuspense from "../../helpers/hoc/withSuspense";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import { UPDATE_SURVEY } from "../../graphql/custom/mutations";
 import { useMutation } from "@apollo/client";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 const ShareSurvey = lazy(() => import("../../components/surveys/ShareSurvey"));
 const UpdateSurvey = lazy(() => import("./UpdateSurvey"));
@@ -226,13 +228,13 @@ const SurveyCard = ({ survey }) => {
         />
         <CardMedia
           component="img"
-          height="70"
+          height="100"
           src={image}
           alt="Survey Logo"
           sx={{ p: 0.5, objectFit: "contain" }}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h6" component="div">
             {name}
           </Typography>
           {description && (
@@ -257,21 +259,22 @@ const SurveyCard = ({ survey }) => {
               <ArchiveOutlinedIcon />
             </IconButton>
           )}
-          <Button
-            size="small"
-            variant="contained"
+
+          <IconButton
+            color="primary"
+            aria-label="archive"
             onClick={() => handleSurveyUpdateDialog(survey)}
           >
-            Edit
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
+            <ModeEditOutlineOutlinedIcon />
+          </IconButton>
+          <IconButton
+            color="primary"
+            aria-label="archive"
             onClick={() => handleSurveyViewDialog(survey)}
           >
-            Preview
-          </Button>
+            <VisibilityOutlinedIcon />
+          </IconButton>
+
           {survey?.preQuestionnaire?.id && (
             <IconButton
               color="primary"
