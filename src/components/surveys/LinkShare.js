@@ -38,7 +38,6 @@ const LinkShare = ({ toggle, surveyId }) => {
     setAlertSuccess(true);
     setAlertCopySuccess("Survey Link copyed successfully");
   };
-  console.log("usersId", usersId);
   return (
     <Box my={2}>
       {" "}
