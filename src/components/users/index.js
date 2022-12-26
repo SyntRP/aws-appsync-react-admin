@@ -1,3 +1,4 @@
+import { useQuery, useMutation } from "@apollo/client";
 import {
   Box,
   Breadcrumbs,
@@ -16,7 +17,6 @@ import {
 import { styled } from "@mui/material/styles";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useQuery } from "@apollo/client";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Loader } from "../common/Loader";
 import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
@@ -24,6 +24,8 @@ import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import DeleteModel from "../reusable/DeleteModel";
 import SearchBar from "../reusable/SearchBar";
+import { UPDATE_SURVEY_USER } from "../../graphql/custom/mutations";
+
 
 const UpdateUser = lazy(() => import("./UpdateUser"));
 
@@ -68,13 +70,24 @@ const Users = () => {
     toggleOpen: toggledeleteModelOpen,
   } = useToggle(false);
 
+  const [deleteUser] = useMutation(UPDATE_SURVEY_USER, {
+    refetchQueries: [
+      {
+        query: LIST_SURVEY_USERS,
+        variables: {
+          filter: { deleted: { ne: true } },
+        },
+      },
+    ],
+  });
+
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentUser?.id);
   useEffect(() => {
     if (!loading && !error)
       setUsers(
         data?.listSurveyUsers?.items
           ?.slice()
-          ?.sort((a, b) => a?.order - b?.order)
+          ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       );
   }, [loading, data?.listSurveyUsers?.items]);
 
@@ -85,8 +98,17 @@ const Users = () => {
     return <>error</>;
   }
   const handleUserDeleteDialog = (user) => {
-    setCurrentUser(user);
+    const { id,name } = user;
+    setCurrentUser({ id , name });
     setDeleteModelOpen(true);
+  };
+  const onClickDelete = async () => {
+    const deleteUserQuery = {
+      id: currentUser?.id,
+      deleted: true,
+    };
+    await deleteUser({ variables: { input: deleteUserQuery } });
+    toggledeleteModelOpen(false);
   };
   const handleUserUpdateDialog = (user) => {
     const { name = "", email = "", id } = user;
@@ -114,6 +136,10 @@ const Users = () => {
         item?.name
           .toString()
           .toLowerCase()
+          .includes(searched.toString().toLowerCase()) ||
+          item?.email
+          .toString()
+          .toLowerCase()
           .includes(searched.toString().toLowerCase())
       )
     );
@@ -136,7 +162,7 @@ const Users = () => {
       <DeleteModel
         open={deleteModelOpen}
         toggle={toggledeleteModelOpen}
-        // onClickConfirm={onClickDelete}
+        onClickConfirm={onClickDelete}
         dialogTitle={`Remove this - ${currentUser?.name} User`}
         dialogContentText={`Are You Sure You Want to Remove this ${currentUser?.name} User?`}
       />
