@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { Button, Grid, Pagination } from "@mui/material";
+import { Button, Grid, Pagination, Typography } from "@mui/material";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import useToggle from "../../helpers/hooks/useToggle";
@@ -8,6 +8,7 @@ import withSuspense from "../../helpers/hoc/withSuspense";
 import usePagination from "../../helpers/hooks/usePagination";
 import { Box } from "@mui/system";
 import ArchiveCard from "./ArchiveCard";
+import SearchBar from "../reusable/SearchBar";
 
 const CreateSurvey = lazy(() =>
   import("../../components/surveys/CreateSurvey")
@@ -18,9 +19,16 @@ const Archived = () => {
     variables: { filter: { archived: { eq: true } }, limit: 100 },
   });
   const [surveys, setSurveys] = useState([]);
+  const [surveySearch, setSurveySearch] = useState("");
   const [page, setPage] = useState(1);
   const PER_PAGE = 5;
   const surveysList = surveys
+    ?.filter((item) =>
+      item?.name
+        .toString()
+        .toLowerCase()
+        .includes(surveySearch.toString().toLowerCase())
+    )
     ?.slice()
     ?.sort(
       (a, b) =>
@@ -46,6 +54,14 @@ const Archived = () => {
   }
   return (
     <div>
+      <Grid container spacing={2} sx={{ p: "0.5rem" }}>
+        <Grid item xs={6}>
+          <Typography variant="h6">Archived</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <SearchBar searchInput={(e) => setSurveySearch(e.target.value)} />
+        </Grid>
+      </Grid>
       {surveys.length > 0 ? (
         <>
           <Grid container spacing={2} alignItems="stretch">

@@ -51,7 +51,7 @@ const SearchBar = ({ searchInput }) => {
       sx={{
         display: "flex",
         justifyContent: "flex-end",
-        pr: { xs: 0, md: "2rem" },
+        // pr: { xs: 0, md: "2rem" },
       }}
     >
       <Paper sx={{ p: 0.5, width: 350 }}>

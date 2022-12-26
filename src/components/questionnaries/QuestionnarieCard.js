@@ -23,6 +23,8 @@ import withSuspense from "../../helpers/hoc/withSuspense";
 import { Loader } from "@aws-amplify/ui-react";
 import { lazy, Suspense, useState } from "react";
 import { LIST_QUESTIONNARIES } from "../../graphql/custom/queries";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 const EditQuestionnaire = lazy(() => import("./EditQuestionnaire"));
 
@@ -144,12 +146,15 @@ const QuestionnarieCard = ({ questionnarie }) => {
               <DeleteForeverOutlinedIcon color="error" />
             </IconButton>
           }
+          titleTypographyProps={{ variant: "h6" }}
           title={name}
         />
         <CardContent>
-          <Typography variant="body1" color="text.secondary">
-            {description}
-          </Typography>
+          {description && (
+            <Typography variant="body1" color="text.secondary">
+              {description}
+            </Typography>
+          )}
         </CardContent>
         <CardActions
           sx={{
@@ -163,21 +168,21 @@ const QuestionnarieCard = ({ questionnarie }) => {
             <ArchiveOutlinedIcon />
           </IconButton> */}
 
-          <Button
-            size="small"
-            variant="contained"
+          <IconButton
+            color="primary"
+            aria-label="archive"
             onClick={() => handleQuestionnarieUpdateDialog(questionnarie)}
           >
-            Edit
-          </Button>
+            <ModeEditOutlineOutlinedIcon />
+          </IconButton>
+
           <Button
-            size="small"
-            variant="contained"
-            color="secondary"
+            color="primary"
+            aria-label="archive"
             component={Link}
             to={`/questionnaries/${questionnarie.id}`}
           >
-            Preview
+            <VisibilityOutlinedIcon />
           </Button>
         </CardActions>
       </Card>

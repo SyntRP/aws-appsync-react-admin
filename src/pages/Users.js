@@ -24,8 +24,8 @@ const UsersPage = () => {
           <CreateUser toggle={toggleOpen} />
         </Suspense>
       </DynamicModel>
-      <Users />
       <CreateButton onClick={toggleOpen} />
+      <Users />
     </>
   );
 };

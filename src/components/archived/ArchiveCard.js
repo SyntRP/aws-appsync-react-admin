@@ -17,6 +17,7 @@ import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import { Loader } from "../common/Loader";
 import UnarchiveOutlinedIcon from "@mui/icons-material/UnarchiveOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 const ViewSurvey = lazy(() => import("../surveys/ViewSurvey"));
 const UnarchiveSurvey = lazy(() => import("./UnarchiveSurvey"));
@@ -161,14 +162,13 @@ const ArchiveCard = ({ survey }) => {
             </IconButton>
           )}
 
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
+          <IconButton
+            color="primary"
+            aria-label="archive"
             onClick={() => handleSurveyViewDialog(survey)}
           >
-            Preview
-          </Button>
+            <VisibilityOutlinedIcon />
+          </IconButton>
         </CardActions>
       </Card>
     </>

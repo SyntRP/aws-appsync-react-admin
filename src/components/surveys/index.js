@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { Button, Grid, Pagination } from "@mui/material";
+import { Button, Grid, Pagination, Typography } from "@mui/material";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import useToggle from "../../helpers/hooks/useToggle";
@@ -29,22 +29,20 @@ const Surveys = () => {
   const [page, setPage] = useState(1);
   const PER_PAGE = 5;
   const surveysList = surveys
+    ?.filter((item) =>
+      item?.name
+        .toString()
+        .toLowerCase()
+        .includes(surveySearch.toString().toLowerCase())
+    )
     ?.slice()
     ?.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-  const count = Math.ceil(surveysList?.length / PER_PAGE);
-  const _DATA = usePagination(
-    surveysList?.filter((item) =>
-      item?.name
-        .toString()
-        .toLowerCase()
-        .includes(surveySearch.toString().toLowerCase())
-    ),
-    PER_PAGE
-  );
 
+  const _DATA = usePagination(surveysList, PER_PAGE);
+  const count = Math.ceil(surveysList?.length / PER_PAGE);
   const handleChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
@@ -74,10 +72,18 @@ const Surveys = () => {
           <CreateSurvey toggle={toggleOpen} surevy={surveys} />
         </Suspense>
       </DynamicModel>
-      <SearchBar searchInput={(e) => setSurveySearch(e.target.value)} />
+      <Grid container spacing={2} sx={{ py: "0.5rem" }}>
+        <Grid item xs={6}>
+          <Typography variant="h6">Surveys</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <SearchBar searchInput={(e) => setSurveySearch(e.target.value)} />
+        </Grid>
+      </Grid>
+
       {surveys.length > 0 ? (
         <>
-          <Grid container spacing={2} alignItems="stretch" sx={{ p: "2rem" }}>
+          <Grid container spacing={2} alignItems="stretch" sx={{ p: "0.5rem" }}>
             <Grid item xs={12} cm={6} md={4}>
               <CreateCard title="Create Survey" onClick={toggleOpen} />
             </Grid>

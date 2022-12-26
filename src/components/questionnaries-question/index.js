@@ -9,6 +9,10 @@ import {
   TableRow,
   Button,
   TablePagination,
+  Grid,
+  Typography,
+  Breadcrumbs,
+  Link,
 } from "@mui/material";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -121,7 +125,22 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
           />
         </Suspense>
       </DynamicModel>
+      <Grid container spacing={2} sx={{ py: "0.5rem" }}>
+        <Grid item xs={6}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/questionnaries">
+              <Typography variant="h6"> Questionnarie</Typography>
+            </Link>
 
+            <Typography color="text.primary" variant="h6">
+              Question
+            </Typography>
+          </Breadcrumbs>
+        </Grid>
+        <Grid item xs={6}>
+          {/* <SearchBar searchInput={(e) => setSurveySearch(e.target.value)} /> */}
+        </Grid>
+      </Grid>
       <QuestionnarieDetailCard questionnarieData={questionnarieData} />
       <TableContainer
         elevation={10}
