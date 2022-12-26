@@ -69,7 +69,7 @@ export const NavItems = [
   },
   {
     path: "/archived",
-    name: "archived",
+    name: "Archived",
     icon: ArchiveOutlinedIcon,
   },
 ];
