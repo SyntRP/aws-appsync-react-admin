@@ -2,7 +2,9 @@ import { gql } from "@apollo/client";
 
 export const LIST_SURVEYS = /* GraphQL */ gql(`
   query ListSurveys(
-    $filter: ModelSurveyFilterInput
+    $filter: ModelSurveyFilterInput ={
+      deleted:{ne:true}
+    }
     $limit: Int = 1000
     $nextToken: String
   ) {
@@ -13,6 +15,7 @@ export const LIST_SURVEYS = /* GraphQL */ gql(`
         description
         image
         archived
+        deleted
         createdAt
         updatedAt
         preQuestionnaire {
@@ -80,7 +83,10 @@ query ListSurveyEntriess(
 
 export const LIST_QUESTIONNARIES_NAME = /* GraphQL */ gql(`
   query ListQuestionnaires(
-    $filter: ModelQuestionnaireFilterInput
+    $filter: ModelQuestionnaireFilterInput={
+      deleted:{ne:true}
+      archived:{ne:true}
+    }
     $limit: Int
     $nextToken: String
   ) {
@@ -95,7 +101,10 @@ export const LIST_QUESTIONNARIES_NAME = /* GraphQL */ gql(`
 
 export const LIST_SURVEY_USERS = /* GraphQL */ gql(`
   query ListSurveyUsers(
-    $filter: ModelSurveyUserFilterInput
+    $filter: ModelSurveyUserFilterInput={
+      deleted:{ne:true}
+      archived:{ne:true}
+    }
     $limit: Int
     $nextToken: String
   ) {
@@ -114,7 +123,9 @@ export const LIST_SURVEY_USERS = /* GraphQL */ gql(`
 
 export const LIST_SURVEY_LOCATIONS = /* GraphQL */ gql(`
   query ListSurveyLocations(
-    $filter: ModelSurveyLocationFilterInput
+    $filter: ModelSurveyLocationFilterInput={ 
+      deleted:{ne:true}
+      archived:{ne:true}}
     $limit: Int
     $nextToken: String
   ) {
@@ -133,7 +144,10 @@ export const LIST_SURVEY_LOCATIONS = /* GraphQL */ gql(`
 
 export const LIST_QUESTIONNARIES = /* GraphQL */ gql(`
   query ListQuestionnaires(
-    $filter: ModelQuestionnaireFilterInput
+    $filter: ModelQuestionnaireFilterInput ={
+      deleted:{ne:true}
+      archived:{ne:true}
+    }
     $limit: Int
     $nextToken: String
   ) {
@@ -160,7 +174,10 @@ export const LIST_QUESTIONNARIES = /* GraphQL */ gql(`
 
 export const COUNT_SURVEYS = /* GraphQL */ gql(`
 query ListSurveys(
-    $filter: ModelSurveyFilterInput
+    $filter: ModelSurveyFilterInput ={
+      deleted:{ne:true}
+      archived:{ne:true}
+    }
     $limit: Int = 1000
     $nextToken: String
   ) {
@@ -174,7 +191,10 @@ query ListSurveys(
 
 export const COUNT_SURVEY_LOCATIONS = /* GraphQL */ gql(`
   query ListSurveyLocations(
-    $filter: ModelSurveyLocationFilterInput
+    $filter: ModelSurveyLocationFilterInput ={
+      deleted:{ne:true}
+
+    }
     $limit: Int =1000
     $nextToken: String
   ) {
@@ -188,7 +208,9 @@ export const COUNT_SURVEY_LOCATIONS = /* GraphQL */ gql(`
 `);
 export const COUNT_SURVEY_USERS = /* GraphQL */ gql(`
   query ListSurveyUsers(
-    $filter: ModelSurveyUserFilterInput
+    $filter: ModelSurveyUserFilterInput={
+      deleted:{ne:true}
+    }
     $limit: Int =1000
     $nextToken: String
   ) {
@@ -202,7 +224,10 @@ export const COUNT_SURVEY_USERS = /* GraphQL */ gql(`
 `);
 export const LIST_QUESTIONS = /* GraphQL */ gql(`
   query ListQuestions(
-    $filter: ModelQuestionFilterInput
+    $filter: ModelQuestionFilterInput={
+      deleted:{ne:true}
+   
+    }
     $limit: Int = 30000
     $nextToken: String
   ) {
@@ -247,7 +272,10 @@ export const LIST_QUESTIONS = /* GraphQL */ gql(`
 `);
 export const LIST_RESPONSESS = /* GraphQL */ gql(`
   query ListResponsess(
-    $filter: ModelResponsesFilterInput
+    $filter: ModelResponsesFilterInput={
+      deleted:{ne:true}
+  
+    }
     $limit: Int =10000000
     $nextToken: String
   ) {
@@ -363,6 +391,7 @@ export const GET_QUESTIONNAIRES = /* GraphQL */ gql(`
           type
           isSelf
           isDependent
+          deleted
           listOptions {
             listValue
             nextQuestion

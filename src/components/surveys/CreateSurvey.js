@@ -15,6 +15,7 @@ const initialFormValues = {
 
   groups: "Users",
   archived: false,
+  deleted: false,
 };
 
 const CreateSurvey = ({ toggle }) => {
@@ -22,7 +23,10 @@ const CreateSurvey = ({ toggle }) => {
     refetchQueries: [
       {
         query: LIST_SURVEYS,
-        variables: { filter: { archived: { ne: true } }, limit: 100 },
+        variables: {
+          filter: { archived: { ne: true }, deleted: { ne: true } },
+          limit: 100,
+        },
       },
     ],
   });

@@ -23,7 +23,10 @@ const ArchivedSurvey = ({ currentSurveyData, toggle }) => {
     refetchQueries: [
       {
         query: LIST_SURVEYS,
-        variables: { filter: { archived: { ne: true } }, limit: 100 },
+        variables: {
+          filter: { archived: { ne: true }, deleted: { ne: true } },
+          limit: 100,
+        },
       },
     ],
   });

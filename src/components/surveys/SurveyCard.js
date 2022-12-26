@@ -18,6 +18,9 @@ import useToggle from "../../helpers/hooks/useToggle";
 import { Loader } from "../common/Loader";
 import ArchivedSurvey from "./ArchivedSurvey";
 import withSuspense from "../../helpers/hoc/withSuspense";
+import { LIST_SURVEYS } from "../../graphql/custom/queries";
+import { UPDATE_SURVEY } from "../../graphql/custom/mutations";
+import { useMutation } from "@apollo/client";
 
 const ShareSurvey = lazy(() => import("../../components/surveys/ShareSurvey"));
 const UpdateSurvey = lazy(() => import("./UpdateSurvey"));
@@ -61,6 +64,17 @@ const SurveyCard = ({ survey }) => {
     Boolean(archivedOpen) && Boolean(currentSurvey?.id);
   const openShareDialog = Boolean(shareOpen) && Boolean(currentSurvey);
 
+  const [deleteSurvey] = useMutation(UPDATE_SURVEY, {
+    refetchQueries: [
+      {
+        query: LIST_SURVEYS,
+        variables: {
+          filter: { archived: { ne: true }, deleted: { ne: true } },
+          limit: 100,
+        },
+      },
+    ],
+  });
   const handleSurveyUpdateDialog = (survey) => {
     const { name = "", image = "", description = "", id } = survey;
     setCurrentSurvey({
@@ -75,10 +89,16 @@ const SurveyCard = ({ survey }) => {
     setCurrentSurvey(survey);
     setViewOpen(true);
   };
+
   const handleSurveyDeleteDialog = (survey) => {
-    setCurrentSurvey(survey);
+    const { id, name } = survey;
+    setCurrentSurvey({
+      id,
+      name,
+    });
     setDeleteModelOpen(true);
   };
+
   const handleSurveyArchivedDialog = (survey) => {
     setCurrentSurvey(survey);
     setArchivedOpen(true);
@@ -103,12 +123,23 @@ const SurveyCard = ({ survey }) => {
     setCurrentSurvey({});
     archivedToggleOpen();
   };
+  const onClickDelete = async () => {
+    const DeleteSurveyQuery = {
+      id: currentSurvey?.id,
+
+      deleted: true,
+    };
+    await deleteSurvey({ variables: { input: DeleteSurveyQuery } });
+    toggleDeleteModelOpen();
+  };
+
   return (
     <>
       <DeleteModel
         open={deleteModelOpen}
         toggle={toggleDeleteModelOpen}
-        //  onClickConfirm={onClickDelete}
+        onClickConfirm={onClickDelete}
+        isClose
         dialogTitle="Delete "
         dialogContentText={`Are You Sure You Want to Delete ${currentSurvey?.name} survey?`}
       />
@@ -129,7 +160,7 @@ const SurveyCard = ({ survey }) => {
         </Suspense>
       </DynamicModel>
       <DynamicModel
-        dialogTitle="  Share Survey "
+        dialogTitle={` Share survey - ${currentSurvey?.name}`}
         open={openShareDialog}
         toggle={handleShareToggleOpen}
         isClose
