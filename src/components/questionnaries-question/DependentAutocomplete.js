@@ -27,7 +27,7 @@ const DependentAutocomplete = ({
           handleSettingDependentNextQuestion(newValue, option);
         }}
         value={
-          dependentQuestionOptionsAU.find((o) => o?.dependentValue === option)
+          dependentQuestionOptionsAU?.find((o) => o?.dependentValue === option)
             ?.nextQuestion
         }
         label={option}
