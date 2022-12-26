@@ -15,7 +15,7 @@ const DeleteModel = ({
   dialogTitle,
   dialogContentText,
   onClickConfirm,
-  isClose = false,
+  isClose = true,
   isActions = true,
 }) => {
   return (

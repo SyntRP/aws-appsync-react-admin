@@ -74,9 +74,6 @@ const Locations = () => {
     refetchQueries: [
       {
         query: LIST_SURVEY_LOCATIONS,
-        variables: {
-          filter: { deleted: { ne: true } },
-        },
       },
     ],
   });
@@ -86,7 +83,10 @@ const Locations = () => {
       setSurveyLocations(
         data?.listSurveyLocations?.items
           ?.slice()
-          ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          ?.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
       );
   }, [loading, data?.listSurveyLocations?.items]);
 
@@ -118,7 +118,7 @@ const Locations = () => {
   };
   const handleLocationDeleteDialog = (loc) => {
     const { id, location } = loc;
-    setCurrentLocation({id, location});
+    setCurrentLocation({ id, location });
     setDeleteModelOpen(true);
   };
   const onClickDelete = async () => {
@@ -131,15 +131,16 @@ const Locations = () => {
   };
   const locationSearch = (searched) => {
     setSearch(
-      surveyLocations.filter((item) =>
-        item?.location
-          .toString()
-          .toLowerCase()
-          .includes(searched.toString().toLowerCase()) ||
+      surveyLocations.filter(
+        (item) =>
+          item?.location
+            .toString()
+            .toLowerCase()
+            .includes(searched.toString().toLowerCase()) ||
           item?.inchargeEmail
-          .toString()
-          .toLowerCase()
-          .includes(searched.toString().toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(searched.toString().toLowerCase())
       )
     );
   };

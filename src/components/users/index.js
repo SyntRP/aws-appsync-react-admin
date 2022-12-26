@@ -74,9 +74,6 @@ const Users = () => {
     refetchQueries: [
       {
         query: LIST_SURVEY_USERS,
-        variables: {
-          filter: { deleted: { ne: true } },
-        },
       },
     ],
   });
