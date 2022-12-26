@@ -41,7 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
+const IncompletedQrSurveyEntries = ({ incompleteQrSurvey }) => {
   const [incompeletedSurveyEntriesData, setIncompletedSurveyEntriesData] =
     useState([]);
   const [page, setPage] = useState(0);
@@ -66,7 +66,17 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
 
     return que?.name ?? id;
   };
-
+  const incompleteQrEntries = incompeletedSurveyEntriesData?.filter(
+    (item) =>
+      item?.location?.location
+        .toString()
+        .toLowerCase()
+        .includes(incompleteQrSurvey.toString().toLowerCase()) ||
+      item?.location?.inchargeEmail
+        .toString()
+        .toLowerCase()
+        .includes(incompleteQrSurvey.toString().toLowerCase())
+  );
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -103,7 +113,7 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
           <TableHead>
             <StyledTableRow>
               <StyledTableCell>S.NO</StyledTableCell>
-              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Location</StyledTableCell>
               <StyledTableCell>Email</StyledTableCell>
 
               <StyledTableCell>Questionnaire</StyledTableCell>
@@ -113,18 +123,7 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {incompeletedSurveyEntriesData
-              ?.filter(
-                (user) =>
-                  user?.by?.name
-                    .toString()
-                    .toLowerCase()
-                    .includes(incompleteSurvey.toString().toLowerCase()) ||
-                  user?.by?.email
-                    .toString()
-                    .toLowerCase()
-                    .includes(incompleteSurvey.toString().toLowerCase())
-              )
+            {incompleteQrEntries
               ?.sort(
                 (a, b) =>
                   new Date(b.createdAt).getTime() -
@@ -134,8 +133,10 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
               .map((user, u) => (
                 <StyledTableRow key={u}>
                   <StyledTableCell>{u + 1}</StyledTableCell>
-                  <StyledTableCell>{user?.by?.name}</StyledTableCell>
-                  <StyledTableCell>{user?.by?.email}</StyledTableCell>
+                  <StyledTableCell>{user?.location?.location}</StyledTableCell>
+                  <StyledTableCell>
+                    {user?.location?.inchargeEmail}
+                  </StyledTableCell>
 
                   <StyledTableCell>
                     {" "}
@@ -157,7 +158,7 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
             justifyContent: "center",
           }}
           component="div"
-          count={incompeletedSurveyEntriesData?.length}
+          count={incompleteQrEntries?.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
@@ -169,4 +170,4 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
   );
 };
 
-export default withSuspense(IncompletedSurveyEntries);
+export default withSuspense(IncompletedQrSurveyEntries);

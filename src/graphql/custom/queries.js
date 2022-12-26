@@ -103,7 +103,7 @@ export const LIST_SURVEY_USERS = /* GraphQL */ gql(`
   query ListSurveyUsers(
     $filter: ModelSurveyUserFilterInput={
       deleted:{ne:true}
-      archived:{ne:true}
+      
     }
     $limit: Int
     $nextToken: String
@@ -113,6 +113,7 @@ export const LIST_SURVEY_USERS = /* GraphQL */ gql(`
         id
         name
         email
+        deleted
         createdAt
         updatedAt
       }
@@ -546,4 +547,49 @@ export const GET_QUESTION = /* GraphQL */ gql(`
      
     }
   }
+`);
+
+export const TEST_SURVEY_ENTRIES = /* GraphQL */ gql(`
+query ListSurveyEntriess(
+  $filter: ModelSurveyEntriesFilterInput = {
+
+    testing:{eq:true},
+    archived:{ne:true}
+  }
+  $limit: Int =  1000
+  $nextToken: String
+) {
+  listSurveyEntriess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      startTime
+      finishTime
+      questionnaireId
+      deleted
+      archived
+      testing
+      complete
+      createdAt
+      updatedAt
+      responses {
+        items {
+          id
+        }
+        nextToken
+      }
+      by {
+        id
+        name
+        email
+      }
+      location {
+        id
+        location
+        inchargeEmail
+       
+      }
+    }
+    nextToken
+  }
+}
 `);

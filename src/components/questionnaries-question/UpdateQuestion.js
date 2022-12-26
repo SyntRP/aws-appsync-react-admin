@@ -11,32 +11,98 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import useForm from "../../helpers/hooks/useForm";
-import Step1 from "./edit-steps/Step1";
-import Step2 from "./edit-steps/Step2";
 import Step3 from "./edit-steps/Step3";
-import {
-  CREATE_QUESTION,
-  UPDATE_QUESTION,
-} from "../../graphql/custom/mutations";
-import {
-  GET_QUESTION,
-  GET_QUESTIONNAIRES,
-  LIST_QUESTIONS,
-} from "../../graphql/custom/queries";
+import { UPDATE_QUESTION } from "../../graphql/custom/mutations";
+import { GET_QUESTIONNAIRES } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
+import Step1 from "./steps/Step1";
+import Step2 from "./steps/Step2";
+import { questionQuery } from "../../utils/Question";
 
 const STEPS = ["Edit Question", "Next Question", "Preview"];
 
-const UpdateQuestion = ({ toggle, question }) => {
+const UpdateQuestion = ({
+  toggle,
+  currentQuestion,
+  questions,
+  questionQuestionnaireId,
+}) => {
   const [updateQuestion, { loading, error }] = useMutation(UPDATE_QUESTION, {
-    refetchQueries: [{ query: LIST_QUESTIONS }],
+    refetchQueries: [
+      {
+        query: GET_QUESTIONNAIRES,
+        variables: {
+          id: questionQuestionnaireId,
+        },
+      },
+    ],
   });
 
-  // const { data: currentQuestion } = useQuery(GET_QUESTION, {
-  //   variables: {
-  //     id: question?.id,
-  //   },
-  // });
+  const { qu, order, type, isDependent, isSelf, listOptions, id, dependent } =
+    currentQuestion;
+
+  const currentMode = () => {
+    if (isDependent) return "dependent";
+    if (isSelf) return "self";
+    return "normal";
+  };
+
+  const listItemOptions =
+    listOptions?.length > 0
+      ? listOptions?.map((item) => ({
+          listValue: item?.listValue,
+          nextQuestion: item?.nextQuestion,
+        }))
+      : [];
+
+  const nextQuestion =
+    listOptions?.length > 0 ? listOptions[0]?.nextQuestion : "";
+
+  const questionAU = (question) => {
+    if (question) {
+      const que = questions?.find((q) => q?.id === question);
+      return {
+        id: que?.id,
+        label: que?.order + "  " + que?.qu,
+      };
+    } else return {};
+  };
+
+  const dependentQuestionId = isDependent ? dependent?.id : "";
+
+  const dependentQuestionOptions = isDependent
+    ? dependent?.options?.map((item) => {
+        const { dependentValue, nextQuestion } = item;
+        return {
+          dependentValue,
+          nextQuestion,
+        };
+      })
+    : [];
+
+  const dependentQuestionOptionsAU = isDependent
+    ? dependent?.options?.map((item) => {
+        const { dependentValue, nextQuestion } = item;
+        return {
+          dependentValue,
+          nextQuestion: questionAU(nextQuestion),
+        };
+      })
+    : [];
+
+  const initialFormValues = {
+    question: qu,
+    order,
+    type,
+    currentMode: currentMode(),
+    nextQuestion,
+    nexQuestionAU: questionAU(nextQuestion),
+    listItemOptions,
+    dependentQuestion: dependentQuestionId,
+    dependentQuestionAU: questionAU(dependentQuestionId),
+    dependentQuestionOptions,
+    dependentQuestionOptionsAU,
+  };
 
   const {
     values,
@@ -44,13 +110,14 @@ const UpdateQuestion = ({ toggle, question }) => {
     handleRadioButtonChange,
     handleAutoCompleteChange,
     setValues,
-  } = useForm(question);
+  } = useForm(initialFormValues);
 
   const [activeStep, setActiveStep] = useState(0);
+
   const enableButton = () => {
     if (activeStep === 0)
       return (
-        Boolean(values?.qu) &&
+        Boolean(values?.question) &&
         Boolean(values?.order) &&
         Boolean(values?.currentMode) &&
         Boolean(values?.type)
@@ -118,62 +185,13 @@ const UpdateQuestion = ({ toggle, question }) => {
   };
 
   const getQuestionById = (id) => {
-    const questions = question?.find((q) => q?.id === id);
-    return questions?.qu ? questions?.order + "  " + questions?.qu : id;
+    const question = questions?.find((q) => q?.id === id);
+    return question?.qu ? question?.order + "  " + question?.qu : id;
   };
 
   const handleQuestionUpdate = async () => {
-    const {
-      qu,
-      order,
-      type,
-      nextQuestion,
-      dependentQuestion,
-      currentMode,
-      listItemOptions,
-      listOptions,
-      dependentQuestionOptions,
-      id,
-    } = values;
-    console.log("values", values);
-    let updateQuestionQuery = {
-      qu: qu,
-      type: type,
-      order: order,
-      id: id,
-    };
-
-    if (currentMode === "dependent") {
-      const dependentQuestionQuery = {
-        id: dependentQuestion,
-        options: dependentQuestionOptions,
-      };
-      updateQuestionQuery.isDependent = true;
-      updateQuestionQuery.dependent = dependentQuestionQuery;
-      if (listItemOptions.length > 0)
-        updateQuestionQuery.listOptions = listItemOptions;
-    }
-
-    if (currentMode === "self") {
-      updateQuestionQuery.isSelf = true;
-      if (type === "TEXT" || type === "LIST") {
-        updateQuestionQuery.listOptions = {
-          listValue: type,
-          nextQuestion: nextQuestion,
-        };
-      }
-    }
-    if (type === "RADIO") {
-      if (listItemOptions.length > 0)
-        updateQuestionQuery.listOptions = listItemOptions;
-    }
-    if (type === "CHECKBOX") {
-      if (listItemOptions.length > 0)
-        updateQuestionQuery.listOptions = listItemOptions.map((option) => ({
-          listValue: option?.listValue,
-          nextQuestion,
-        }));
-    }
+    const updateQuestionQuery = questionQuery(values);
+    updateQuestionQuery.id = id;
     await updateQuestion({ variables: { input: updateQuestionQuery } });
     toggle();
   };
@@ -187,12 +205,6 @@ const UpdateQuestion = ({ toggle, question }) => {
               optional={
                 index === 1 && (
                   <Tooltip title="Only Applicable for Self & Dependent mode">
-                    {/* <Typography
-                        sx={{ color: (theme) => theme.palette.warning.main }}
-                        variant="body2"
-                      >
-                        Only Applicable for Self & Dependent mode
-                      </Typography> */}
                     <InfoOutlinedIcon />
                   </Tooltip>
                 )
@@ -217,8 +229,8 @@ const UpdateQuestion = ({ toggle, question }) => {
           <Step2
             currentMode={values?.currentMode}
             handleAutoCompleteChange={handleAutoCompleteChange}
-            type={values.type}
-            questions={question}
+            type={values?.type}
+            questions={questions}
             dependentQuestion={values?.dependentQuestion}
             handleSettingDependentNextQuestion={
               handleSettingDependentNextQuestion

@@ -15,7 +15,7 @@ import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
 import copy from "copy-to-clipboard";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 
-const LinkShare = ({ toggle, surveyId }) => {
+const TestLinkShare = ({ toggle, surveyId }) => {
   const baseUrl = "https://main.d3d8mcg1fsym22.amplifyapp.com";
   const [usersId, setUsersId] = useState("");
   const [userSurveyLink, setUserSurveyLink] = useState("");
@@ -26,10 +26,10 @@ const LinkShare = ({ toggle, surveyId }) => {
   const handleSurveyUserChange = (e) => {
     setUsersId(e.target.value);
   };
-  const surveyUrl = `${baseUrl}/surveyquestions/${surveyId}?uid=${usersId}`;
+  const surveyUrl = `${baseUrl}/surveyquestionstest/${surveyId}?uid=${usersId}`;
 
   const handleGeneratingSurveyLink = () => {
-    const surveyUrl = `${baseUrl}/surveyquestions/${surveyId}?uid=${usersId}`;
+    const surveyUrl = `${baseUrl}/surveyquestionstest/${surveyId}?uid=${usersId}`;
     setUserSurveyLink(surveyUrl);
   };
   //copy-clipboard//
@@ -38,6 +38,7 @@ const LinkShare = ({ toggle, surveyId }) => {
     setAlertSuccess(true);
     setAlertCopySuccess("Survey Link copyed successfully");
   };
+  console.log("usersId", usersId);
   return (
     <Box my={2}>
       {" "}
@@ -102,4 +103,4 @@ const LinkShare = ({ toggle, surveyId }) => {
   );
 };
 
-export default withSuspense(LinkShare);
+export default withSuspense(TestLinkShare);

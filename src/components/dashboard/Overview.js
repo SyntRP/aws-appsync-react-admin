@@ -15,7 +15,7 @@ const Overview = ({
         title="Total Entries"
         count={surveyEntriesCount}
         secondary
-        to="/"
+        to="/surveyEntries"
       />
       <Wrapper
         title="Total Location"
