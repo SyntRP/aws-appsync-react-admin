@@ -16,6 +16,7 @@ import Step2 from "./steps/Step2";
 import Step3 from "./steps/Step3";
 import { CREATE_QUESTION } from "../../graphql/custom/mutations";
 import { GET_QUESTIONNAIRES } from "../../graphql/custom/queries";
+import { questionQuery } from "../../utils/Question";
 
 const STEPS = ["Create a Question", "Next Question", "Preview"];
 
@@ -129,54 +130,8 @@ const CreateQuestion = ({ toggle, questions, questionQuestionnaireId }) => {
   };
 
   const handleQuestionCreation = async () => {
-    const {
-      question,
-      order,
-      currentMode,
-      type,
-      nextQuestion,
-      dependentQuestion,
-      dependentQuestionOptions,
-      listItemOptions,
-    } = values;
-    let createQuestionQuery = {
-      qu: question,
-      type: type,
-      order: order,
-      questionQuestionnaireId,
-    };
-
-    if (currentMode === "dependent") {
-      const dependentQuestionQuery = {
-        id: dependentQuestion,
-        options: dependentQuestionOptions,
-      };
-      createQuestionQuery.isDependent = true;
-      createQuestionQuery.dependent = dependentQuestionQuery;
-      if (listItemOptions.length > 0)
-        createQuestionQuery.listOptions = listItemOptions;
-    }
-
-    if (currentMode === "self") {
-      createQuestionQuery.isSelf = true;
-      if (type === "TEXT" || type === "LIST") {
-        createQuestionQuery.listOptions = {
-          listValue: type,
-          nextQuestion: nextQuestion,
-        };
-      }
-    }
-    if (type === "RADIO") {
-      if (listItemOptions.length > 0)
-        createQuestionQuery.listOptions = listItemOptions;
-    }
-    if (type === "CHECKBOX") {
-      if (listItemOptions.length > 0)
-        createQuestionQuery.listOptions = listItemOptions.map((option) => ({
-          listValue: option?.listValue,
-          nextQuestion,
-        }));
-    }
+    const createQuestionQuery = questionQuery(values);
+    createQuestionQuery.questionQuestionnaireId = questionQuestionnaireId;
     await createQuestion({ variables: { input: createQuestionQuery } });
     toggle();
   };

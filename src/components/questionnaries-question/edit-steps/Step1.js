@@ -15,7 +15,6 @@ import { Box } from "@mui/system";
 const MODES = ["normal", "self", "dependent"];
 
 const Step1 = ({ values, handleInputChange, handleRadioButtonChange }) => {
-  console.log("values", values);
   return (
     <Box>
       <Grid container spacing={2} my={1} justifyContent="space-between">

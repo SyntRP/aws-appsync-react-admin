@@ -57,23 +57,9 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
       },
     ],
   });
-  const handleQuestionUpdateDialog = (quest) => {
-    const {
-      qu = "",
-      order = "",
 
-      type = "",
-
-      listOptions = [],
-      id,
-    } = quest;
-    setCurrentQuestion({
-      id,
-      qu,
-      order,
-      type,
-      listOptions,
-    });
+  const handleQuestionUpdateDialog = (question) => {
+    setCurrentQuestion(question);
     setUpdateOpen(true);
   };
   const handleSurveyDeleteDialog = (survey) => {
@@ -96,6 +82,7 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
     setCurrentQuestion({});
     updateToggleOpen(true);
   };
+
   const onClickDelete = async () => {
     const DeleteSurveyQuery = {
       id: currentQuestion?.id,
@@ -128,7 +115,8 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
         <Suspense fallback={<Loader />}>
           <UpdateQuestion
             toggle={handleQuestionToggleOpen}
-            question={currentQuestion}
+            currentQuestion={currentQuestion}
+            questions={questions}
           />
         </Suspense>
       </DynamicModel>

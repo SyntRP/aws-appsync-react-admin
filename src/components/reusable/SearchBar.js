@@ -30,7 +30,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
+  color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
@@ -47,7 +47,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SearchBar = ({ searchInput }) => {
   return (
-    <Box sx={{ display: "flex", justifyContent: "flex-end", pr: "2rem" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        pr: { xs: 0, md: "2rem" },
+      }}
+    >
       <Paper sx={{ p: 0.5, width: 350 }}>
         <Search>
           <SearchIconWrapper>
