@@ -87,7 +87,6 @@ const QuestionnarieCard = ({ questionnarie }) => {
   const onClickDelete = async () => {
     const DeleteQuery = {
       id: currentQuestionnarie?.id,
-
       deleted: true,
     };
     await deleteQuestionnaire({ variables: { input: DeleteQuery } });

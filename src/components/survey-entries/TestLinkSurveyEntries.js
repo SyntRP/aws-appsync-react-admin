@@ -12,9 +12,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { LIST_QUESTIONNARIES_NAME } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -25,7 +23,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 13,
   },
 }));
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -40,23 +38,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
+
+const TestLinkSurveyEntries = ({
+  surveyEntries,
+  questionnaries,
+  testlinkSurvey,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const LinkSurveyEntriesData = surveyEntries?.filter(
+  const TestLinkSurveyEntriesData = surveyEntries?.filter(
     (item) =>
-      item?.location?.location
+      item?.by?.name
         .toString()
         .toLowerCase()
-        .includes(qrSurvey.toString().toLowerCase()) ||
-      item?.location?.inchargeEmail
+        .includes(testlinkSurvey.toString().toLowerCase()) ||
+      item?.by?.email
         .toString()
         .toLowerCase()
-        .includes(qrSurvey.toString().toLowerCase())
+        .includes(testlinkSurvey.toString().toLowerCase())
   );
   const onGettingQuestionnaireById = (id) => {
     const que = questionnaries?.listQuestionnaires?.items?.find(
@@ -65,21 +68,23 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
 
     return que?.name ?? id;
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   return (
     <>
       {" "}
-      {LinkSurveyEntriesData?.length > 0 && (
+      {TestLinkSurveyEntriesData?.length > 0 && (
         <TableContainer component={Paper}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <StyledTableRow>
                 <StyledTableCell>S.NO</StyledTableCell>
 
-                <StyledTableCell>Location</StyledTableCell>
+                <StyledTableCell>Name</StyledTableCell>
                 <StyledTableCell>Email</StyledTableCell>
                 <StyledTableCell>Questionnaire</StyledTableCell>
                 <StyledTableCell>Start Time</StyledTableCell>
@@ -88,16 +93,14 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {LinkSurveyEntriesData?.slice(
+              {TestLinkSurveyEntriesData?.slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage
               )?.map((res, u) => (
                 <StyledTableRow key={u}>
                   <StyledTableCell>{u + 1}</StyledTableCell>
-                  <StyledTableCell>{res?.location?.location}</StyledTableCell>
-                  <StyledTableCell>
-                    {res?.location?.inchargeEmail}
-                  </StyledTableCell>
+                  <StyledTableCell>{res?.by?.name}</StyledTableCell>
+                  <StyledTableCell>{res?.by?.email}</StyledTableCell>
                   <StyledTableCell>
                     {onGettingQuestionnaireById(res?.questionnaireId)}
                   </StyledTableCell>
@@ -129,7 +132,7 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
               justifyContent: "center",
             }}
             component="div"
-            count={LinkSurveyEntriesData?.length}
+            count={TestLinkSurveyEntriesData?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
@@ -141,4 +144,4 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
   );
 };
 
-export default withSuspense(QrSurveyEntries);
+export default withSuspense(TestLinkSurveyEntries);

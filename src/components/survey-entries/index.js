@@ -20,6 +20,7 @@ import { useQuery } from "@apollo/client";
 import {
   LIST_QUESTIONNARIES_NAME,
   LIST_SURVEY_ENTRIES,
+  TEST_SURVEY_ENTRIES,
 } from "../../graphql/custom/queries";
 
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -27,8 +28,18 @@ import withSuspense from "../../helpers/hoc/withSuspense";
 import LinkSurveyEntries from "./LinkSurveyEntries";
 import QrSurveyEntries from "./QrSurveyEntries";
 import { Loader } from "../common/Loader";
-import IncompletedSurveyEntries from "./IncompletedSurveyEntries";
+
 import SearchBar from "../reusable/SearchBar";
+import { lazy } from "react";
+
+const IncompletedLinkSurveyEntries = lazy(() =>
+  import("./IncompletedLinkSurveyEntries")
+);
+const IncompletedQrSurveyEntries = lazy(() =>
+  import("./IncompletedQrSurevyEntries")
+);
+const TestLinkSurveyEntries = lazy(() => import("./TestLinkSurveyEntries"));
+const TestQrSurveyEntries = lazy(() => import("./TestQrSurveyEntries"));
 
 const TabPanel = (props) => {
   const { value, index, items, children, ...other } = props;
@@ -60,9 +71,10 @@ const TabPanel = (props) => {
 const SurveyEntries = () => {
   const [tabValue, setTabValue] = useState(0);
   const [surveyEntriesData, setSurveyEntriesData] = useState([]);
+  const [TestSurveyEntries, setTestSurveyEntries] = useState([]);
   const [surveySearched, setSurveySearched] = useState("");
-  
-  let variables = { filter: { archived: { ne: true } }, limit: 100 };
+
+  let variables = { limit: 10000 };
   const {
     loading: listSurveyEntriesLoading,
     error: listSurveyEntriesError,
@@ -70,6 +82,14 @@ const SurveyEntries = () => {
   } = useQuery(LIST_SURVEY_ENTRIES, {
     variables,
   });
+  const {
+    loading: TestSurveyEntriesLoading,
+    error: TestSurveyEntriesError,
+    data: TestSurveyEntriesData,
+  } = useQuery(TEST_SURVEY_ENTRIES, {
+    variables,
+  });
+  console.log("TestSurveyEntriesData", TestSurveyEntriesData);
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
   const handleSetResponses = (SurveyEntriesData) => {
     const {
@@ -77,8 +97,17 @@ const SurveyEntries = () => {
     } = SurveyEntriesData;
     if (items?.length > 0) setSurveyEntriesData(items);
   };
+  const handleSetTestResponses = (TestSurveyEntriesData) => {
+    const {
+      listSurveyEntriess: { items },
+    } = TestSurveyEntriesData;
+    if (items?.length > 0) setTestSurveyEntries(items);
+  };
 
   const surveyEntriesList = surveyEntriesData.filter(
+    (user) => user?.responses?.items?.length !== 0
+  );
+  const TestSurveyEntriesList = TestSurveyEntries.filter(
     (user) => user?.responses?.items?.length !== 0
   );
 
@@ -91,9 +120,15 @@ const SurveyEntries = () => {
       handleSetResponses(listSurveyEntriesData);
   }, [listSurveyEntriesLoading]);
 
-  if (listSurveyEntriesLoading) {
+  useEffect(() => {
+    if (!TestSurveyEntriesLoading && !TestSurveyEntriesError)
+      handleSetTestResponses(TestSurveyEntriesData);
+  }, [TestSurveyEntriesLoading]);
+
+  if (listSurveyEntriesLoading || TestSurveyEntriesLoading) {
     return <Loader />;
   }
+
   return (
     <div>
       <div sx={{ mt: 2 }}>
@@ -125,9 +160,12 @@ const SurveyEntries = () => {
             mb: 2,
           }}
         >
-          <Tab label=" Link SurveyEntries " />
-          <Tab label=" Qr Code SurveyEntries" />
-          <Tab label=" Incompleted Link SurveyEntries" />
+          <Tab label=" Link  " />
+          <Tab label=" Qr Code " />
+          <Tab label=" Incompleted Link " />
+          <Tab label=" Incompleted Qr code  " />
+          <Tab label=" Test link  " />
+          <Tab label=" Test Qr code  " />
         </Tabs>
       </Box>
       <TabPanel value={tabValue} index={0}>
@@ -158,9 +196,39 @@ const SurveyEntries = () => {
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <IncompletedSurveyEntries
+        <IncompletedLinkSurveyEntries
           questionnaries={questionariesName}
-          incompleteSurvey={surveySearched}
+          incompleteLinkSurvey={surveySearched}
+        />
+      </TabPanel>
+      <TabPanel value={tabValue} index={3}>
+        <IncompletedQrSurveyEntries
+          questionnaries={questionariesName}
+          incompleteQrSurvey={surveySearched}
+        />
+      </TabPanel>
+      <TabPanel value={tabValue} index={4}>
+        <TestLinkSurveyEntries
+          surveyEntries={TestSurveyEntriesList?.filter(
+            (user) => user?.by?.name
+          )?.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )}
+          questionnaries={questionariesName}
+          testlinkSurvey={surveySearched}
+        />
+      </TabPanel>
+      <TabPanel value={tabValue} index={5}>
+        <TestQrSurveyEntries
+          surveyEntries={TestSurveyEntriesList?.filter(
+            (user) => user?.location?.location
+          )?.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )}
+          questionnaries={questionariesName}
+          testQrSurvey={surveySearched}
         />
       </TabPanel>
     </div>

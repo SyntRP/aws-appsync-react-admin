@@ -104,7 +104,11 @@ const SurveyCard = ({ survey }) => {
     setArchivedOpen(true);
   };
   const handleSurveyShareDialog = (survey) => {
-    setCurrentSurvey(survey?.preQuestionnaire?.id);
+    const { id, name } = survey?.preQuestionnaire;
+    setCurrentSurvey({
+      id,
+      name,
+    });
     setShareOpen(true);
   };
   const handleupdateToggleOpen = () => {
@@ -170,7 +174,7 @@ const SurveyCard = ({ survey }) => {
         <Suspense fallback={<Loader />}>
           <ShareSurvey
             toggle={handleShareToggleOpen}
-            currentSurveyId={currentSurvey}
+            currentSurveyData={currentSurvey}
           />
         </Suspense>
       </DynamicModel>
