@@ -117,6 +117,7 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
             toggle={handleQuestionToggleOpen}
             currentQuestion={currentQuestion}
             questions={questions}
+            questionQuestionnaireId={questionnarieData?.id}
           />
         </Suspense>
       </DynamicModel>

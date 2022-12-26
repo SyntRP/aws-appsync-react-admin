@@ -21,9 +21,21 @@ import { questionQuery } from "../../utils/Question";
 
 const STEPS = ["Edit Question", "Next Question", "Preview"];
 
-const UpdateQuestion = ({ toggle, currentQuestion, questions }) => {
+const UpdateQuestion = ({
+  toggle,
+  currentQuestion,
+  questions,
+  questionQuestionnaireId,
+}) => {
   const [updateQuestion, { loading, error }] = useMutation(UPDATE_QUESTION, {
-    refetchQueries: [{ query: GET_QUESTIONNAIRES }],
+    refetchQueries: [
+      {
+        query: GET_QUESTIONNAIRES,
+        variables: {
+          id: questionQuestionnaireId,
+        },
+      },
+    ],
   });
 
   const { qu, order, type, isDependent, isSelf, listOptions, id, dependent } =

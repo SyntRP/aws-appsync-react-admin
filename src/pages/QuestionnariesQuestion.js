@@ -29,6 +29,7 @@ const QuestionnariesQuestionPage = () => {
     if (!loading && !error) {
       const { getQuestionnaire } = data;
       setQuestionnarieData({
+        id: getQuestionnaire?.id,
         name: getQuestionnaire?.name,
         description: getQuestionnaire?.description,
         createdAt: getQuestionnaire?.createdAt,
