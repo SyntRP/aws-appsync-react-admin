@@ -12,9 +12,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { LIST_QUESTIONNARIES_NAME } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -25,7 +23,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 13,
   },
 }));
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -40,23 +38,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
+
+const TestQrSurveyEntries = ({
+  surveyEntries,
+  questionnaries,
+  testQrSurvey,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const LinkSurveyEntriesData = surveyEntries?.filter(
+  const TestQrSurveyEntriesData = surveyEntries?.filter(
     (item) =>
       item?.location?.location
         .toString()
         .toLowerCase()
-        .includes(qrSurvey.toString().toLowerCase()) ||
+        .includes(testQrSurvey.toString().toLowerCase()) ||
       item?.location?.inchargeEmail
         .toString()
         .toLowerCase()
-        .includes(qrSurvey.toString().toLowerCase())
+        .includes(testQrSurvey.toString().toLowerCase())
   );
   const onGettingQuestionnaireById = (id) => {
     const que = questionnaries?.listQuestionnaires?.items?.find(
@@ -65,14 +68,16 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
 
     return que?.name ?? id;
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   return (
     <>
       {" "}
-      {LinkSurveyEntriesData?.length > 0 && (
+      {TestQrSurveyEntriesData?.length > 0 && (
         <TableContainer component={Paper}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -88,7 +93,7 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {LinkSurveyEntriesData?.slice(
+              {TestQrSurveyEntriesData?.slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage
               )?.map((res, u) => (
@@ -129,7 +134,7 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
               justifyContent: "center",
             }}
             component="div"
-            count={LinkSurveyEntriesData?.length}
+            count={TestQrSurveyEntriesData?.length}
             page={page}
             onPageChange={handleChangePage}
             rowsPerPage={rowsPerPage}
@@ -141,4 +146,4 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries, qrSurvey }) => {
   );
 };
 
-export default withSuspense(QrSurveyEntries);
+export default withSuspense(TestQrSurveyEntries);

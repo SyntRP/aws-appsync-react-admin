@@ -39,23 +39,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const LinkSurveyEntries = ({ surveyEntries, questionnaries ,linkSurvey}) => {
+const LinkSurveyEntries = ({ surveyEntries, questionnaries, linkSurvey }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const LinkSurveyEntriesData = surveyEntries?.filter((item) =>
-  item?.by?.name
-    .toString()
-    .toLowerCase()
-    .includes(linkSurvey.toString().toLowerCase()) ||
-    item?.by?.email
-    .toString()
-    .toLowerCase()
-    .includes(linkSurvey.toString().toLowerCase())
-)
+  const LinkSurveyEntriesData = surveyEntries?.filter(
+    (item) =>
+      item?.by?.name
+        .toString()
+        .toLowerCase()
+        .includes(linkSurvey.toString().toLowerCase()) ||
+      item?.by?.email
+        .toString()
+        .toLowerCase()
+        .includes(linkSurvey.toString().toLowerCase())
+  );
   const onGettingQuestionnaireById = (id) => {
     const que = questionnaries?.listQuestionnaires?.items?.find(
       (q) => q?.id === id
@@ -84,7 +85,7 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries ,linkSurvey}) => {
                 <StyledTableCell>Questionnaire</StyledTableCell>
                 <StyledTableCell>Start Time</StyledTableCell>
                 <StyledTableCell>Finish Time</StyledTableCell>
-                <StyledTableCell>Manage</StyledTableCell>
+                <StyledTableCell>View</StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
