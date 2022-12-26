@@ -9,6 +9,7 @@ import useForm from "../../helpers/hooks/useForm";
 const initialFormValues = {
   location: "",
   inchargeEmail: "",
+  deleted: false,
 };
 
 const CreateLocation = ({ toggle }) => {

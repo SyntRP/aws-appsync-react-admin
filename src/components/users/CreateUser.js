@@ -9,27 +9,13 @@ import useForm from "../../helpers/hooks/useForm";
 const initialFormValues = {
   name: "",
   email: "",
+  deleted: false,
 };
 
 const CreateUser = ({ toggle }) => {
   const [createSurveyUser, { loading, error }] = useMutation(
     CREATE_SURVEY_USER,
     {
-      //   update: (cache, { data: { createSurveyUser } }) => {
-      //     const { listSurveyUsers } = cache.readQuery({
-      //       query: LIST_SURVEY_USERS,
-      //     });
-      //     const data = {
-      //       listSurveyUsers: {
-      //         ...listSurveyUsers,
-      //         items: [createSurveyUser, ...listSurveyUsers.items],
-      //       },
-      //     };
-      //     cache.writeQuery({
-      //       query: LIST_SURVEY_USERS,
-      //       data,
-      //     });
-      //   },
       refetchQueries: [{ query: LIST_SURVEY_USERS }],
     }
   );

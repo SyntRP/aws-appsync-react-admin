@@ -51,6 +51,10 @@ const QrSurveyEntries = ({ surveyEntries, questionnaries ,qrSurvey}) => {
   item?.location?.location
     .toString()
     .toLowerCase()
+    .includes(qrSurvey.toString().toLowerCase()) ||
+  item?.location?.inchargeEmail
+    .toString()
+    .toLowerCase()
     .includes(qrSurvey.toString().toLowerCase())
 )
   const onGettingQuestionnaireById = (id) => {

@@ -1,3 +1,4 @@
+import { useQuery, useMutation } from "@apollo/client";
 import {
   Box,
   Breadcrumbs,
@@ -16,7 +17,6 @@ import {
 import { styled } from "@mui/material/styles";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useQuery } from "@apollo/client";
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Loader } from "../common/Loader";
 import { LIST_SURVEY_LOCATIONS } from "../../graphql/custom/queries";
@@ -24,6 +24,7 @@ import DynamicModel from "../reusable/DynamicModel";
 import useToggle from "../../helpers/hooks/useToggle";
 import DeleteModel from "../reusable/DeleteModel";
 import SearchBar from "../reusable/SearchBar";
+import { UPDATE_SURVEY_LOCATION } from "../../graphql/custom/mutations";
 
 const UpdateLocation = lazy(() => import("./UpdateLocation"));
 
@@ -69,12 +70,23 @@ const Locations = () => {
   const [search, setSearch] = useState({});
   const openUpdateDialog = Boolean(updateOpen) && Boolean(currentLocation?.id);
 
+  const [deleteLocation] = useMutation(UPDATE_SURVEY_LOCATION, {
+    refetchQueries: [
+      {
+        query: LIST_SURVEY_LOCATIONS,
+        variables: {
+          filter: { deleted: { ne: true } },
+        },
+      },
+    ],
+  });
+
   useEffect(() => {
     if (!loading && !error)
       setSurveyLocations(
         data?.listSurveyLocations?.items
           ?.slice()
-          ?.sort((a, b) => a?.order - b?.order)
+          ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       );
   }, [loading, data?.listSurveyLocations?.items]);
 
@@ -105,13 +117,26 @@ const Locations = () => {
     updateToggleOpen();
   };
   const handleLocationDeleteDialog = (loc) => {
-    setCurrentLocation(loc);
+    const { id, location } = loc;
+    setCurrentLocation({id, location});
     setDeleteModelOpen(true);
+  };
+  const onClickDelete = async () => {
+    const deleteLocationQuery = {
+      id: currentLocation?.id,
+      deleted: true,
+    };
+    await deleteLocation({ variables: { input: deleteLocationQuery } });
+    toggledeleteModelOpen(false);
   };
   const locationSearch = (searched) => {
     setSearch(
       surveyLocations.filter((item) =>
         item?.location
+          .toString()
+          .toLowerCase()
+          .includes(searched.toString().toLowerCase()) ||
+          item?.inchargeEmail
           .toString()
           .toLowerCase()
           .includes(searched.toString().toLowerCase())
@@ -137,7 +162,7 @@ const Locations = () => {
       <DeleteModel
         open={deleteModelOpen}
         toggle={toggledeleteModelOpen}
-        // onClickConfirm={onClickDelete}
+        onClickConfirm={onClickDelete}
         dialogTitle={`Remove this - ${currentLocation?.location} Location`}
         dialogContentText={`Are You Sure You Want to Remove this - ${currentLocation?.location} Location?`}
       />

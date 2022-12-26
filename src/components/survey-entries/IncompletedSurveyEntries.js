@@ -114,11 +114,16 @@ const IncompletedSurveyEntries = ({ questionnaries, incompleteSurvey }) => {
           </TableHead>
           <TableBody>
             {incompeletedSurveyEntriesData
-              ?.filter((user) =>
-                user?.by?.name
-                  .toString()
-                  .toLowerCase()
-                  .includes(incompleteSurvey.toString().toLowerCase())
+              ?.filter(
+                (user) =>
+                  user?.by?.name
+                    .toString()
+                    .toLowerCase()
+                    .includes(incompleteSurvey.toString().toLowerCase()) ||
+                  user?.by?.email
+                    .toString()
+                    .toLowerCase()
+                    .includes(incompleteSurvey.toString().toLowerCase())
               )
               ?.sort(
                 (a, b) =>

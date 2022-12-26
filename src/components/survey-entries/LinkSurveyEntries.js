@@ -50,6 +50,10 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries ,linkSurvey}) => {
   item?.by?.name
     .toString()
     .toLowerCase()
+    .includes(linkSurvey.toString().toLowerCase()) ||
+    item?.by?.email
+    .toString()
+    .toLowerCase()
     .includes(linkSurvey.toString().toLowerCase())
 )
   const onGettingQuestionnaireById = (id) => {
