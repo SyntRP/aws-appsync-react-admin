@@ -19,10 +19,13 @@ const CreateSurvey = lazy(() =>
 const Surveys = () => {
   const { open, toggleOpen } = useToggle();
   const { loading, error, data } = useQuery(LIST_SURVEYS, {
-    variables: { filter: { archived: { ne: true } }, limit: 100 },
+    variables: {
+      filter: { archived: { ne: true }, deleted: { ne: true } },
+      limit: 100,
+    },
   });
   const [surveys, setSurveys] = useState([]);
-  const [surveySearch , setSurveySearch] = useState("");
+  const [surveySearch, setSurveySearch] = useState("");
   const [page, setPage] = useState(1);
   const PER_PAGE = 5;
   const surveysList = surveys
@@ -71,7 +74,7 @@ const Surveys = () => {
           <CreateSurvey toggle={toggleOpen} surevy={surveys} />
         </Suspense>
       </DynamicModel>
-      <SearchBar searchInput={(e) => setSurveySearch(e.target.value)}/>
+      <SearchBar searchInput={(e) => setSurveySearch(e.target.value)} />
       {surveys.length > 0 ? (
         <>
           <Grid container spacing={2} alignItems="stretch" sx={{ p: "2rem" }}>

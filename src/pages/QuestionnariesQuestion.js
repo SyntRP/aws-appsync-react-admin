@@ -37,6 +37,7 @@ const QuestionnariesQuestionPage = () => {
       });
       setQuestions(
         data?.getQuestionnaire?.question?.items
+          ?.filter((qu) => qu?.deleted !== true)
           ?.slice()
           ?.sort((a, b) => a?.order - b?.order)
       );

@@ -10,12 +10,13 @@ import {
 import React from "react";
 
 const DeleteModel = ({
-  open,
+  open = false,
   toggle,
   dialogTitle,
   dialogContentText,
   onClickConfirm,
-  isClose = true,
+  isClose = false,
+  isActions = true,
 }) => {
   return (
     <>
@@ -27,21 +28,22 @@ const DeleteModel = ({
               {dialogContentText}
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            {isClose && (
-              <Button onClick={toggle} color="error">
-                Cancel
+          {isActions && (
+            <DialogActions>
+              {isClose && (
+                <Button onClick={toggle} variant="text" color="info">
+                  cancel
+                </Button>
+              )}
+              <Button
+                onClick={onClickConfirm}
+                variant="contained"
+                color="primary"
+              >
+                Delete
               </Button>
-            )}
-            <Button
-              onClick={onClickConfirm}
-              type="submit"
-              color="primary"
-              variant="contained"
-            >
-              Delete
-            </Button>
-          </DialogActions>
+            </DialogActions>
+          )}
         </FormControl>
       </Dialog>
     </>
