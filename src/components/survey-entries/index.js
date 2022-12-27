@@ -90,7 +90,7 @@ const SurveyEntries = () => {
   } = useQuery(TEST_SURVEY_ENTRIES, {
     variables,
   });
-  console.log("TestSurveyEntriesData", TestSurveyEntriesData);
+
   const { data: questionariesName } = useQuery(LIST_QUESTIONNARIES_NAME);
   const handleSetResponses = (SurveyEntriesData) => {
     const {
