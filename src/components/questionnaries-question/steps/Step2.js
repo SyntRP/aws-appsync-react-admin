@@ -47,7 +47,15 @@ const Step2 = ({
     }));
     setListItem(initialValue);
   };
-
+  const handleRemovingListItem = (listValue) => {
+    const filteredArray = listItemOptions?.filter(
+      (item) => item?.listValue !== listValue
+    );
+    setValues((prevState) => ({
+      ...prevState,
+      listItemOptions: filteredArray,
+    }));
+  };
   return (
     <>
       {currentMode === "self" && type === "TEXT" && (
@@ -79,6 +87,7 @@ const Step2 = ({
           setListItem={setListItem}
           getQuestionById={getQuestionById}
           handleAddingListItem={handleAddingListItem}
+          handleRemovingListItem={handleRemovingListItem}
           listItem={listItem}
           listItemOptions={listItemOptions}
         />
@@ -91,6 +100,7 @@ const Step2 = ({
             setListItem={setListItem}
             getQuestionById={getQuestionById}
             handleAddingListItem={handleAddingListItem}
+            handleRemovingListItem={handleRemovingListItem}
             listItem={listItem}
             listItemOptions={listItemOptions}
           />
@@ -104,6 +114,7 @@ const Step2 = ({
               setListItem={setListItem}
               getQuestionById={getQuestionById}
               handleAddingListItem={handleAddingListItem}
+              handleRemovingListItem={handleRemovingListItem}
               listItem={listItem}
               listItemOptions={listItemOptions}
             />
@@ -132,6 +143,7 @@ const Step2 = ({
             setListItem={setListItem}
             getQuestionById={getQuestionById}
             handleAddingListItem={handleAddingListItem}
+            handleRemovingListItem={handleRemovingListItem}
             listItem={listItem}
             listItemOptions={listItemOptions}
           />

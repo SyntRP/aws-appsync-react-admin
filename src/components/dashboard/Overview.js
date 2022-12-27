@@ -9,7 +9,7 @@ const Overview = ({
   surveyUsersCount,
 }) => {
   return (
-    <Grid container my={1}>
+    <Grid container>
       <Wrapper title="Total Survey" count={surveyCount} to="/surveys" />
       <Wrapper
         title="Total Entries"

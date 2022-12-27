@@ -1,26 +1,56 @@
-import { useMutation } from "@apollo/client";
-import { Button, Grid, TextField } from "@mui/material";
+import { useMutation, useQuery } from "@apollo/client";
+import { Alert, Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { useState } from "react";
 import { UPDATE_SURVEY_USER } from "../../graphql/custom/mutations";
 import { LIST_SURVEY_USERS } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
 const UpdateUser = ({ toggle, initialFormValues }) => {
-  const [updateSurveyUser, { loading, error }] = useMutation(
-    UPDATE_SURVEY_USER,
-    {
-      refetchQueries: [{ query: LIST_SURVEY_USERS }],
-    }
-  );
+  const [updateSurveyUser, { loading }] = useMutation(UPDATE_SURVEY_USER, {
+    refetchQueries: [{ query: LIST_SURVEY_USERS }],
+  });
   const { values, handleInputChange } = useForm(initialFormValues);
   const enableButton = Boolean(values.name) && Boolean(values.email);
+  const { data } = useQuery(LIST_SURVEY_USERS);
+  const [error, setError] = useState(null);
+  const [duplicate, setDuplicate] = useState(false);
+  const [userEmailDup, setUserEmailDup] = useState("");
+  const surveyUsers = data?.listSurveyUsers?.items?.filter(
+    (item) => item?.id !== values?.id
+  );
+  const isValidEmail = (e) =>
+    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(e);
+
+  const handleEmail = (e) => {
+    if (!isValidEmail(e.target.value)) {
+      setError("Email is invalid");
+    } else {
+      setError(null);
+    }
+    handleInputChange(e);
+    setDuplicate(false);
+  };
+  const UserEmail = async () => {
+    const findEmail = surveyUsers?.find((s) => s?.email === values.email);
+    if (findEmail) {
+      return true;
+    } else return false;
+  };
   const onClickUpdate = async () => {
-    await updateSurveyUser({ variables: { input: values } });
-    toggle();
+    let dup = await UserEmail();
+    if (dup) {
+      setDuplicate(true);
+      setUserEmailDup(`${values.email} already Exists. Give another Email `);
+    } else {
+      await updateSurveyUser({ variables: { input: values } });
+      toggle();
+    }
   };
   return (
     <Box>
+      {duplicate ? <Alert severity="error">{userEmailDup}</Alert> : null}
       <Grid container spacing={2} justifyContent="center" my={1}>
         <Grid item xs={12} cm={6}>
           <TextField
@@ -44,9 +74,10 @@ const UpdateUser = ({ toggle, initialFormValues }) => {
             color="secondary"
             name="email"
             fullWidth
-            onChange={handleInputChange}
+            onChange={handleEmail}
             value={values.email}
           />
+          {error ? <Alert severity="error">{error}</Alert> : null}
         </Grid>
       </Grid>
       <Box
