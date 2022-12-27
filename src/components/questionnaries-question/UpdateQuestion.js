@@ -11,12 +11,12 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import useForm from "../../helpers/hooks/useForm";
-import Step3 from "./edit-steps/Step3";
 import { UPDATE_QUESTION } from "../../graphql/custom/mutations";
 import { GET_QUESTIONNAIRES } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
+import Step3 from "./steps/Step3";
 import { questionQuery } from "../../utils/Question";
 
 const STEPS = ["Edit Question", "Next Question", "Preview"];
