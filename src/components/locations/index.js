@@ -13,6 +13,7 @@ import {
   tableCellClasses,
   Button,
   TablePagination,
+  Grid,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -167,7 +168,15 @@ const Locations = () => {
         dialogTitle={`Remove this - ${currentLocation?.location} Location`}
         dialogContentText={`Are You Sure You Want to Remove this - ${currentLocation?.location} Location?`}
       />
-      <SearchBar searchInput={(e) => locationSearch(e.target.value)} />
+      <Grid container spacing={2} sx={{ p: "0.5rem" }}>
+        <Grid item xs={6}>
+          <Typography variant="h6">Locations</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <SearchBar searchInput={(e) => locationSearch(e.target.value)} />
+        </Grid>
+      </Grid>
+
       {surveyLocations.length > 0 ? (
         <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">

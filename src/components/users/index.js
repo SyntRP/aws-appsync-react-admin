@@ -13,6 +13,7 @@ import {
   tableCellClasses,
   Button,
   TablePagination,
+  Grid,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -25,7 +26,6 @@ import useToggle from "../../helpers/hooks/useToggle";
 import DeleteModel from "../reusable/DeleteModel";
 import SearchBar from "../reusable/SearchBar";
 import { UPDATE_SURVEY_USER } from "../../graphql/custom/mutations";
-
 
 const UpdateUser = lazy(() => import("./UpdateUser"));
 
@@ -84,7 +84,10 @@ const Users = () => {
       setUsers(
         data?.listSurveyUsers?.items
           ?.slice()
-          ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          ?.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
       );
   }, [loading, data?.listSurveyUsers?.items]);
 
@@ -95,8 +98,8 @@ const Users = () => {
     return <>error</>;
   }
   const handleUserDeleteDialog = (user) => {
-    const { id,name } = user;
-    setCurrentUser({ id , name });
+    const { id, name } = user;
+    setCurrentUser({ id, name });
     setDeleteModelOpen(true);
   };
   const onClickDelete = async () => {
@@ -129,15 +132,16 @@ const Users = () => {
   };
   const userSearch = (searched) => {
     setSearch(
-      users.filter((item) =>
-        item?.name
-          .toString()
-          .toLowerCase()
-          .includes(searched.toString().toLowerCase()) ||
+      users.filter(
+        (item) =>
+          item?.name
+            .toString()
+            .toLowerCase()
+            .includes(searched.toString().toLowerCase()) ||
           item?.email
-          .toString()
-          .toLowerCase()
-          .includes(searched.toString().toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(searched.toString().toLowerCase())
       )
     );
   };
@@ -163,7 +167,15 @@ const Users = () => {
         dialogTitle={`Remove this - ${currentUser?.name} User`}
         dialogContentText={`Are You Sure You Want to Remove this ${currentUser?.name} User?`}
       />
-      <SearchBar searchInput={(e) => userSearch(e.target.value)} />
+      <Grid container spacing={2} sx={{ p: "0.5rem" }}>
+        <Grid item xs={6}>
+          <Typography variant="h6">Users</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <SearchBar searchInput={(e) => userSearch(e.target.value)} />
+        </Grid>
+      </Grid>
+
       {users.length > 0 ? (
         <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
