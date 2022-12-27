@@ -1,27 +1,73 @@
-import { useMutation } from "@apollo/client";
-import { Button, Grid, TextField } from "@mui/material";
+import { useMutation, useQuery } from "@apollo/client";
+import { Alert, Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { useState } from "react";
 import { UPDATE_SURVEY_LOCATION } from "../../graphql/custom/mutations";
 import { LIST_SURVEY_LOCATIONS } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
 const UpdateLocation = ({ toggle, initialFormValues }) => {
-  const [updateSurveyLocation, { loading, error }] = useMutation(
+  const [updateSurveyLocation, { loading }] = useMutation(
     UPDATE_SURVEY_LOCATION,
     {
       refetchQueries: [{ query: LIST_SURVEY_LOCATIONS }],
     }
   );
   const { values, handleInputChange } = useForm(initialFormValues);
+  const { data } = useQuery(LIST_SURVEY_LOCATIONS);
+  const [duplicate, setDuplicate] = useState(false);
+  const [locationDup, setLocationDup] = useState("");
+  const [error, setError] = useState(null);
+  const surveyLocations = data?.listSurveyLocations?.items?.filter(
+    (item) => item?.id !== values?.id
+  );
+
+  const isValidEmail = (e) =>
+    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(e);
+
+  const handleInchargeEmail = (e) => {
+    if (!isValidEmail(e.target.value)) {
+      setError("Email is invalid");
+    } else {
+      setError(null);
+    }
+    handleInputChange(e);
+  };
+  const handleLocation = (e) => {
+    handleInputChange(e);
+    setDuplicate(false);
+  };
+
+  const SurveyLocation = async () => {
+    let findEntries = surveyLocations?.find(
+      (s) => s?.location === values.location
+    );
+    if (findEntries) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const enableButton =
     Boolean(values.location) && Boolean(values.inchargeEmail);
+
   const onClickUpdate = async () => {
-    await updateSurveyLocation({ variables: { input: values } });
-    toggle();
+    let dup = await SurveyLocation();
+    if (dup) {
+      setDuplicate(true);
+      setLocationDup(
+        `${values.location} already Exists. Give another Location `
+      );
+    } else {
+      await updateSurveyLocation({ variables: { input: values } });
+      toggle();
+    }
   };
   return (
     <Box>
+      {duplicate ? <Alert severity="error">{locationDup}</Alert> : null}
       <Grid container spacing={2} justifyContent="center" my={1}>
         <Grid item xs={12} cm={6}>
           <TextField
@@ -32,7 +78,7 @@ const UpdateLocation = ({ toggle, initialFormValues }) => {
             color="secondary"
             name="location"
             fullWidth
-            onChange={handleInputChange}
+            onChange={handleLocation}
             value={values.location}
           />
         </Grid>
@@ -45,9 +91,10 @@ const UpdateLocation = ({ toggle, initialFormValues }) => {
             color="secondary"
             name="inchargeEmail"
             fullWidth
-            onChange={handleInputChange}
+            onChange={handleInchargeEmail}
             value={values.inchargeEmail}
           />
+          {error ? <Alert severity="error">{error}</Alert> : null}
         </Grid>
       </Grid>
       <Box
