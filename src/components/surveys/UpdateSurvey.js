@@ -1,12 +1,13 @@
-import { useMutation } from "@apollo/client";
-import { Button, Grid, TextField } from "@mui/material";
+import { useMutation, useQuery } from "@apollo/client";
+import { Alert, Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { useState } from "react";
 import { UPDATE_SURVEY } from "../../graphql/custom/mutations";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
-const UpdateSurvey = ({ toggle, initialFormValues, surveys }) => {
+const UpdateSurvey = ({ toggle, initialFormValues }) => {
   const [updateSurvey, { loading, error }] = useMutation(UPDATE_SURVEY, {
     query: LIST_SURVEYS,
     variables: {
@@ -14,17 +15,44 @@ const UpdateSurvey = ({ toggle, initialFormValues, surveys }) => {
       limit: 100,
     },
   });
+  const { data } = useQuery(LIST_SURVEYS);
   const { values, handleInputChange } = useForm(initialFormValues);
+  const [duplicate, setDuplicate] = useState(false);
+  const [surveyDup, setSurveyDup] = useState("");
+  const surveyData = data?.listSurveys?.items.filter(
+    (item) => item?.id !== values?.id
+  );
+
+  const handleUpdateSurveyName = (e) => {
+    handleInputChange(e);
+    setDuplicate(false);
+  };
+  const SurveyEntriesUpdate = async () => {
+    let findEntries = surveyData?.find((s) => s?.name .toLowerCase()=== values.name .toLowerCase());
+    if (findEntries) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const enableButton =
     Boolean(values.name) &&
     Boolean(values.description) &&
     Boolean(values.image);
+
   const onClickUpdate = async () => {
-    await updateSurvey({ variables: { input: values } });
-    toggle();
+    let dup = await SurveyEntriesUpdate();
+    if (dup) {
+      setDuplicate(true);
+      setSurveyDup(`${values.name} already Exists. Give another SurveyName `);
+    } else {
+      await updateSurvey({ variables: { input: values } });
+      toggle();
+    }
   };
   return (
     <Box>
+      {duplicate ? <Alert severity="error">{surveyDup}</Alert> : null}
       <Grid my={2} justifyContent="center">
         <Grid item xs={12} my={2}>
           <TextField
@@ -35,7 +63,7 @@ const UpdateSurvey = ({ toggle, initialFormValues, surveys }) => {
             color="secondary"
             name="name"
             fullWidth
-            onChange={handleInputChange}
+            onChange={handleUpdateSurveyName}
             value={values.name}
           />
         </Grid>

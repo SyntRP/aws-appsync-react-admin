@@ -41,7 +41,7 @@ const UpdateLocation = ({ toggle, initialFormValues }) => {
 
   const SurveyLocation = async () => {
     let findEntries = surveyLocations?.find(
-      (s) => s?.location === values.location
+      (s) => s?.location .toLowerCase() === values.location.toLowerCase()
     );
     if (findEntries) {
       return true;

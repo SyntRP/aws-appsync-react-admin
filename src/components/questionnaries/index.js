@@ -48,7 +48,7 @@ const Questionnaries = ({ questionnaires }) => {
         isActions={false}
       >
         <Suspense fallback={<Loader />}>
-          <CreateQuestionnarie toggle={toggleOpen} />
+          <CreateQuestionnarie toggle={toggleOpen} questionnaire ={questionnaires}/>
         </Suspense>
       </DynamicModel>
       <Grid container spacing={2} sx={{ p: "0.5rem" }}>

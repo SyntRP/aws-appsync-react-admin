@@ -46,6 +46,14 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries, linkSurvey }) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  const onGettingQuestionnaireById = (id) => {
+    const que = questionnaries?.listQuestionnaires?.items?.find(
+      (q) => q?.id === id
+    );
+
+    return que?.name ?? id;
+  };
+
   const LinkSurveyEntriesData = surveyEntries?.filter(
     (item) =>
       item?.by?.name
@@ -55,15 +63,18 @@ const LinkSurveyEntries = ({ surveyEntries, questionnaries, linkSurvey }) => {
       item?.by?.email
         .toString()
         .toLowerCase()
+        .includes(linkSurvey.toString().toLowerCase()) ||
+      onGettingQuestionnaireById(item?.questionnaireId)
+        .toString()
+        .toLowerCase()
         .includes(linkSurvey.toString().toLowerCase())
   );
-  const onGettingQuestionnaireById = (id) => {
-    const que = questionnaries?.listQuestionnaires?.items?.find(
-      (q) => q?.id === id
-    );
 
-    return que?.name ?? id;
-  };
+  if (!LinkSurveyEntriesData.length)
+    return <p style={{
+      textAlign:"center",
+      marginTop:"20px"
+    }}>No Search Results Found</p>;
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
