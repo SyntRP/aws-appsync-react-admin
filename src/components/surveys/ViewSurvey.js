@@ -50,7 +50,7 @@ const ViewSurvey = ({ currentSurveyData }) => {
 
         {preQuestionnaire?.name && (
           <Typography gutterBottom variant="button" component="div">
-            Associate Questionnaire : {preQuestionnaire?.name}
+            Associated Questionnaire : {preQuestionnaire?.name}
           </Typography>
         )}
       </CardContent>
