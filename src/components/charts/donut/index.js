@@ -9,6 +9,7 @@ import {
 } from "../../../config/ChartConfig";
 
 const SimpleDonutChart = ({ id, data, title, labels }) => {
+  console.log("data", data);
   const chartData = Object.entries(data)
     ?.map(([name, obj]) => ({
       ...obj,
