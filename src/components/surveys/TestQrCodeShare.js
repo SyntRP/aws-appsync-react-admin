@@ -142,12 +142,12 @@ const TestQrCodeShare = ({ toggle, surveyId }) => {
         >
           {data?.listSurveyLocations?.items?.map((user, u) => (
             <MenuItem key={u} value={user?.id}>
-              {user?.location}
+              {user?.location} - {user?.inchargeEmail}
             </MenuItem>
           ))}
         </Select>
 
-        <TextField
+        {/* <TextField
           margin="dense"
           id="InchargeEmail"
           label="Email"
@@ -155,7 +155,7 @@ const TestQrCodeShare = ({ toggle, surveyId }) => {
           onChange={(e) => handleEmail(e)}
           fullWidth
           type="email"
-        />
+        /> */}
       </FormControl>
       {alertSuccessEmail ? (
         <Alert severity="success">{emailSuccess}</Alert>
@@ -164,50 +164,53 @@ const TestQrCodeShare = ({ toggle, surveyId }) => {
       )}
       {alertError ? <Alert severity="error">{emailError}</Alert> : ""}{" "}
       <Box my={1}>
-        <Grid item container spacing={2} minHeight={160}>
-          <Grid
-            item
-            xs
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <QRCode
-              id="qr-gen"
-              value={surveyQrcodeTest}
-              size={280}
-              level={"H"}
-              includeMargin={true}
-            />
-          </Grid>
-          <Grid
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          ></Grid>
-          <Grid
-            item
-            xs
-            display="flex"
-            justifyContent="space-evenly"
-            alignItems="center"
-          >
-            <IconButton
-              color="primary"
-              aria-label="mailsend"
-              onClick={downloadQRCodeTest}
+        {surveyLocation && (
+          <Grid item container spacing={2} minHeight={160}>
+            <Grid
+              item
+              xs
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
             >
-              <DownloadForOfflineOutlinedIcon fontSize="large" />
-            </IconButton>
-            <IconButton
-              color="error"
-              aria-label="mailsend"
-              onClick={handleSendEmail}
+              <QRCode
+                id="qr-gen"
+                value={surveyQrcodeTest}
+                size={280}
+                level={"H"}
+                includeMargin={true}
+              />
+            </Grid>
+
+            <Grid
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            ></Grid>
+            <Grid
+              item
+              xs
+              display="flex"
+              justifyContent="space-evenly"
+              alignItems="center"
             >
-              <ForwardToInboxOutlinedIcon fontSize="large" />
-            </IconButton>
+              <IconButton
+                color="primary"
+                aria-label="mailsend"
+                onClick={downloadQRCodeTest}
+              >
+                <DownloadForOfflineOutlinedIcon fontSize="large" />
+              </IconButton>
+              <IconButton
+                color="error"
+                aria-label="mailsend"
+                onClick={handleSendEmail}
+              >
+                <ForwardToInboxOutlinedIcon fontSize="large" />
+              </IconButton>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Box>
     </Box>
   );

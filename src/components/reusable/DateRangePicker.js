@@ -25,7 +25,7 @@ const ResponsiveDateRangePicker = ({
             value={fromDate}
             maxDate={endDate ? endDate : undefined}
             onChange={(event) => {
-              setFromDate(event._d);
+              setFromDate(event?._d);
             }}
             renderInput={(params) => <TextField {...params} />}
           />
@@ -36,7 +36,7 @@ const ResponsiveDateRangePicker = ({
             value={endDate}
             minDate={fromDate ? fromDate : undefined}
             onChange={(event) => {
-              setEndDate(event._d);
+              setEndDate(event?._d);
             }}
             renderInput={(params) => <TextField {...params} />}
           />

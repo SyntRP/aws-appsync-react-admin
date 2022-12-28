@@ -168,11 +168,18 @@ const CreateQuestionnarie = ({ toggle, questionnaire }) => {
               value={surveyId}
               onChange={handleSurveyChange}
             >
-              {data?.listSurveys?.items.map((survey, s) => (
-                <MenuItem key={s} value={survey?.id}>
-                  {survey.name}
-                </MenuItem>
-              ))}
+              {data?.listSurveys?.items
+                ?.slice()
+                ?.sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                )
+                ?.map((survey, s) => (
+                  <MenuItem key={s} value={survey?.id}>
+                    {survey.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Grid>

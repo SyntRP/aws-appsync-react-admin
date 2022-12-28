@@ -13,6 +13,8 @@ import {
   Typography,
   Breadcrumbs,
   Link,
+  styled,
+  tableCellClasses,
 } from "@mui/material";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -31,6 +33,27 @@ import {
 } from "../../graphql/custom/queries";
 import { UPDATE_QUESTION } from "../../graphql/custom/mutations";
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:hover": {
+    boxShadow: "3px 2px 5px 2px #888888",
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 const UpdateQuestion = lazy(() => import("./UpdateQuestion"));
 
 const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
@@ -149,37 +172,37 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
       >
         <Table sx={{ minWidth: "350px" }} aria-label="questions table">
           <TableHead>
-            <TableRow>
-              <TableCell>Q.No</TableCell>
-              <TableCell>Question</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>List Options</TableCell>
-              <TableCell>Manage</TableCell>
-              <TableCell>Delete</TableCell>
-            </TableRow>
+            <StyledTableRow>
+              <StyledTableCell>Q.No</StyledTableCell>
+              <StyledTableCell>Question</StyledTableCell>
+              <StyledTableCell>Type</StyledTableCell>
+              <StyledTableCell>List Options</StyledTableCell>
+              <StyledTableCell>Manage</StyledTableCell>
+              <StyledTableCell>Delete</StyledTableCell>
+            </StyledTableRow>
           </TableHead>
           <TableBody>
             {questions
               ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((quest, i) => (
-                <TableRow key={i}>
-                  <TableCell component="th" scope="row">
+                <StyledTableRow key={i}>
+                  <StyledTableCell component="th" scope="row">
                     {quest?.order}
-                  </TableCell>
-                  <TableCell>{quest.qu}</TableCell>
+                  </StyledTableCell>
+                  <StyledTableCell>{quest.qu}</StyledTableCell>
                   {quest?.type === "LIST" && <TableCell>{"RATING"}</TableCell>}
                   {quest?.type !== "LIST" && (
-                    <TableCell>{quest.type}</TableCell>
+                    <StyledTableCell>{quest.type}</StyledTableCell>
                   )}
 
-                  <TableCell>
+                  <StyledTableCell>
                     {quest?.listOptions
                       ? quest.listOptions.map((option, l) => (
                           <li key={l}>{option?.listValue}</li>
                         ))
                       : "(Empty)"}
-                  </TableCell>
-                  <TableCell>
+                  </StyledTableCell>
+                  <StyledTableCell>
                     <Button
                       size="small"
                       color="secondary"
@@ -187,8 +210,8 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
                     >
                       <EditOutlinedIcon color="inherit" />
                     </Button>
-                  </TableCell>
-                  <TableCell>
+                  </StyledTableCell>
+                  <StyledTableCell>
                     <Button
                       size="small"
                       color="error"
@@ -196,8 +219,8 @@ const QuestionnariesQuestion = ({ questions, questionnarieData }) => {
                     >
                       <DeleteForeverOutlinedIcon />
                     </Button>
-                  </TableCell>
-                </TableRow>
+                  </StyledTableCell>
+                </StyledTableRow>
               ))}
           </TableBody>
         </Table>

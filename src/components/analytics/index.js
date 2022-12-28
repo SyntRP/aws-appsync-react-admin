@@ -5,13 +5,19 @@ import { LIST_QUESTIONNARIES_NAME } from "../../graphql/custom/queries";
 import SurveyByLocations from "./chart_report/SurveyByLocations";
 import ResponsiveDateRangePicker from "../reusable/DateRangePicker";
 import SimpleLineChart from "../charts/line";
-import SurveyByQuestionnarie from "./chart_report/SurveyByQuestionnarie";
 import { Loader } from "../common/Loader";
 import TestModeSwitch from "../reusable/TestModeSwitch";
-import SurveyByDate from "./chart_report/SurveyByDate";
+import LocationByQuestionnaire from "./chart_report/LocationByQuestionnaire";
+
 const QuestionnariesByLocation = lazy(() =>
   import("./chart_report/QuestionnariesByLocation")
 );
+const SurveyByQrCode = lazy(() => import("./chart_report/SurveyByQrCode"));
+const SurveyByQuestionnarie = lazy(() =>
+  import("./chart_report/SurveyByQuestionnarie")
+);
+const SurveyByLink = lazy(() => import("./chart_report/SurveyByLink"));
+const SurveyByDate = lazy(() => import("./chart_report/SurveyByDate"));
 
 // const SurveyByLocations = lazy(() =>
 //   import("./chart_report/SurveyByLocations")
@@ -42,6 +48,8 @@ const Analytics = ({ surveyEntriesData }) => {
   const [surveyEntries, setSurveyEntries] = useState(surveyEntriesData);
   const [tabValue, setTabValue] = useState(0);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedQuestionnarie, setSelectedQuestionnarie] = useState(null);
+
   const [fromDate, setFromDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -90,7 +98,7 @@ const Analytics = ({ surveyEntriesData }) => {
           bgcolor: "background.paper",
         }}
       >
-        {/* <Tabs
+        <Tabs
           value={tabValue}
           onChange={handleChange}
           textColor="primary"
@@ -107,9 +115,9 @@ const Analytics = ({ surveyEntriesData }) => {
           }}
         >
           <Tab label="Locations" />
-          <Tab label="Item Two" />
-          <Tab label="Item Three" />
-        </Tabs> */}
+          <Tab label="Survey type" />
+          <Tab label="Date" />
+        </Tabs>
         <Grid container spacing={3} mb={2} alignItems="flex-start">
           <Grid item xs={4} sm={2} md={1}>
             <Typography variant="button" color="primary">
@@ -157,23 +165,52 @@ const Analytics = ({ surveyEntriesData }) => {
               error={error}
             />
           </Grid>
+        </Grid>
+      </TabPanel>
+      <TabPanel value={tabValue} index={1}>
+        <Grid container spacing={2} alignItems="stretch">
           <Grid item xs={12} md={6}>
-            <SurveyByDate
+            <SurveyByQrCode
               data={surveyEntries}
-              loading={loading}
-              error={error}
+              questionariesName={questionariesName}
+              setSelectedQuestionnarie={setSelectedQuestionnarie}
+              fromDate={fromDate}
+              endDate={endDate}
+            />
+          </Grid>
+          {selectedQuestionnarie && (
+            <Grid item xs={12} md={6}>
+              <Suspense fallback={<Loader />}>
+                <LocationByQuestionnaire
+                  data={surveyEntries}
+                  questionariesName={questionariesName}
+                  loading={loading}
+                  error={error}
+                  selectedQuestionnarie={selectedQuestionnarie}
+                />
+              </Suspense>
+            </Grid>
+          )}
+          <Grid item xs={12} md={6}>
+            <SurveyByLink
+              data={surveyEntries}
+              questionariesName={questionariesName}
               fromDate={fromDate}
               endDate={endDate}
             />
           </Grid>
         </Grid>
       </TabPanel>
-
-      <TabPanel value={tabValue} index={1}>
-        2
-      </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        3
+        <Grid item xs={12} md={6}>
+          <SurveyByDate
+            data={surveyEntries}
+            loading={loading}
+            error={error}
+            fromDate={fromDate}
+            endDate={endDate}
+          />
+        </Grid>
       </TabPanel>
     </div>
   );
