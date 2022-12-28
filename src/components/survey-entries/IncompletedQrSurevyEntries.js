@@ -75,6 +75,10 @@ const IncompletedQrSurveyEntries = ({ incompleteQrSurvey }) => {
       item?.location?.inchargeEmail
         .toString()
         .toLowerCase()
+        .includes(incompleteQrSurvey.toString().toLowerCase()) ||
+      onGettingQuestionnaireById(item?.questionnaireId)
+        .toString()
+        .toLowerCase()
         .includes(incompleteQrSurvey.toString().toLowerCase())
   );
   const handleChangePage = (event, newPage) => {
@@ -104,6 +108,18 @@ const IncompletedQrSurveyEntries = ({ incompleteQrSurvey }) => {
   if (listIncompletedSurveyEntriesError) {
     return <>error</>;
   }
+
+  if (!incompleteQrEntries.length)
+  return (
+    <p
+      style={{
+        textAlign: "center",
+        marginTop: "20px",
+      }}
+    >
+      No Search Results Found
+    </p>
+  );
   return (
     <>
       {" "}

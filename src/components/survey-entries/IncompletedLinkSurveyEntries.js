@@ -76,6 +76,10 @@ const IncompletedLinkSurveyEntries = ({ incompleteLinkSurvey }) => {
         user?.by?.email
           .toString()
           .toLowerCase()
+          .includes(incompleteLinkSurvey.toString().toLowerCase()) ||
+        onGettingQuestionnaireById(user?.questionnaireId)
+          .toString()
+          .toLowerCase()
           .includes(incompleteLinkSurvey.toString().toLowerCase())
     )
     ?.sort(
@@ -109,6 +113,17 @@ const IncompletedLinkSurveyEntries = ({ incompleteLinkSurvey }) => {
   if (listIncompletedSurveyEntriesError) {
     return <>error</>;
   }
+  if (!incompleteLinkEntries.length)
+  return (
+    <p
+      style={{
+        textAlign: "center",
+        marginTop: "20px",
+      }}
+    >
+      No Search Results Found
+    </p>
+  );
   return (
     <>
       {" "}

@@ -7,6 +7,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
@@ -29,11 +30,11 @@ const initialFormValues = {
   endMsg:
     "Thank you for completing our survey. If you have requested a follow up,someone will be in touch with you soon.",
 };
-const CreateQuestionnarie = ({ toggle }) => {
-  const { loading, data } = useQuery(LIST_SURVEYS);
+const CreateQuestionnarie = ({ toggle, questionnaire }) => {
+  const { data } = useQuery(LIST_SURVEYS);
 
   const [createQuestionnaire] = useMutation(CREATE_QUESTIONNAIRE);
-  const [updateSurvey] = useMutation(UPDATE_SURVEY, {
+  const [updateSurvey , {loading}] = useMutation(UPDATE_SURVEY, {
     refetchQueries: [
       {
         query: LIST_QUESTIONNARIES,
@@ -43,9 +44,24 @@ const CreateQuestionnarie = ({ toggle }) => {
       },
     ],
   });
-
   const { values, handleInputChange } = useForm(initialFormValues);
   const [surveyId, setSurveyId] = useState("");
+  const [duplicate, setDuplicate] = useState(false);
+  const [questionnaireDup, setQuestionnaireDup] = useState("");
+
+  const handleChangeName = (e) => {
+    handleInputChange(e);
+    setDuplicate(false);
+  };
+
+  const QuestionnaireEntries = async (qname) => {
+    let findEntries = questionnaire?.find((s) => s?.name.toLowerCase() === qname.toLowerCase());
+    if (findEntries) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const enableButton =
     Boolean(values.name) &&
     Boolean(values.description) &&
@@ -58,16 +74,24 @@ const CreateQuestionnarie = ({ toggle }) => {
   };
 
   const onClickCreate = async () => {
-    const res = await createQuestionnaire({ variables: { input: values } });
-    const { data } = res;
-    if (data.createQuestionnaire) {
-      const surveyData = {
-        id: surveyId,
-        surveyPreQuestionnaireId: data?.createQuestionnaire?.id,
-      };
-      await updateSurvey({ variables: { input: surveyData } });
+    let dup = await QuestionnaireEntries(values.name);
+    if (dup) {
+      setDuplicate(true);
+      setQuestionnaireDup(
+        `${values.name} already Exists. Give another QuestionnaireName `
+      );
+    } else{
+      const res = await createQuestionnaire({ variables: { input: values } });
+      const { data } = res;
+      if (data.createQuestionnaire) {
+        const surveyData = {
+          id: surveyId,
+          surveyPreQuestionnaireId: data?.createQuestionnaire?.id,
+        };
+        await updateSurvey({ variables: { input: surveyData } });
+        toggle();
+      }
     }
-    toggle();
   };
 
   return (
@@ -75,6 +99,7 @@ const CreateQuestionnarie = ({ toggle }) => {
       <p>
         To create a new Questionnaire, please complete the following details.
       </p>
+      {duplicate ? <Alert severity="error">{questionnaireDup}</Alert> : null}
       <Grid justifyContent="center" my={1}>
         <Grid item xs={12} cm={6}>
           <TextField
@@ -86,7 +111,7 @@ const CreateQuestionnarie = ({ toggle }) => {
             variant="standard"
             color="secondary"
             value={values.name}
-            onChange={handleInputChange}
+            onChange={handleChangeName}
             fullWidth
           />
         </Grid>

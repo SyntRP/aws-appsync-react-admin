@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
-import { Button, Grid, TextField } from "@mui/material";
+import { Alert, Button, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
+import { useState } from "react";
 import { CREATE_SURVEY } from "../../graphql/custom/mutations";
 import { LIST_SURVEYS } from "../../graphql/custom/queries";
 
@@ -18,8 +19,8 @@ const initialFormValues = {
   deleted: false,
 };
 
-const CreateSurvey = ({ toggle }) => {
-  const [createSurvey, { loading, error }] = useMutation(CREATE_SURVEY, {
+const CreateSurvey = ({ toggle, surevy }) => {
+  const [createSurvey, { loading }] = useMutation(CREATE_SURVEY, {
     refetchQueries: [
       {
         query: LIST_SURVEYS,
@@ -31,17 +32,42 @@ const CreateSurvey = ({ toggle }) => {
     ],
   });
   const { values, handleInputChange } = useForm(initialFormValues);
+  const [duplicate, setDuplicate] = useState(false);
+  const [surveyDup, setSurveyDup] = useState("");
+
+  const handleChangeName = (e) => {
+    handleInputChange(e);
+    setDuplicate(false);
+  };
+
+  const SurveyEntries = async (sname) => {
+    let findEntries = surevy?.find(
+      (s) => s?.name.toLowerCase() === sname.toLowerCase()
+    );
+    if (findEntries) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const enableButton =
     Boolean(values.name) &&
     Boolean(values.description) &&
     Boolean(values.image);
   const onClickCreate = async () => {
-    await createSurvey({ variables: { input: values } });
-    toggle();
+    let dup = await SurveyEntries(values.name);
+    if (dup) {
+      setDuplicate(true);
+      setSurveyDup(`${values.name} already Exists. Give another SurveyName `);
+    } else {
+      await createSurvey({ variables: { input: values } });
+      toggle();
+    }
   };
   return (
     <Box>
+      {duplicate ? <Alert severity="error">{surveyDup}</Alert> : null}
       <Grid my={2} justifyContent="center">
         <Grid item xs={12} cm={6} my={2}>
           <TextField
@@ -52,7 +78,7 @@ const CreateSurvey = ({ toggle }) => {
             color="secondary"
             name="name"
             fullWidth
-            onChange={handleInputChange}
+            onChange={handleChangeName}
             value={values.name}
           />
         </Grid>

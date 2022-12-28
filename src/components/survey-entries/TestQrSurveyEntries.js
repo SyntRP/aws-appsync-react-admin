@@ -50,6 +50,13 @@ const TestQrSurveyEntries = ({
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  const onGettingQuestionnaireById = (id) => {
+    const que = questionnaries?.listQuestionnaires?.items?.find(
+      (q) => q?.id === id
+    );
+
+    return que?.name ?? id;
+  };
   const TestQrSurveyEntriesData = surveyEntries?.filter(
     (item) =>
       item?.location?.location
@@ -59,16 +66,23 @@ const TestQrSurveyEntries = ({
       item?.location?.inchargeEmail
         .toString()
         .toLowerCase()
+        .includes(testQrSurvey.toString().toLowerCase()) ||
+      onGettingQuestionnaireById(item?.questionnaireId)
+        .toString()
+        .toLowerCase()
         .includes(testQrSurvey.toString().toLowerCase())
   );
-  const onGettingQuestionnaireById = (id) => {
-    const que = questionnaries?.listQuestionnaires?.items?.find(
-      (q) => q?.id === id
+  if (!TestQrSurveyEntriesData.length)
+    return (
+      <p
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+        }}
+      >
+        No Search Results Found
+      </p>
     );
-
-    return que?.name ?? id;
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);

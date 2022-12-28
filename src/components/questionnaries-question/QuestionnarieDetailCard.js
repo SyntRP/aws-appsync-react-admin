@@ -40,7 +40,7 @@ const QuestionnarieDetailCard = ({ questionnarieData }) => {
               color="text.secondary"
               sx={{ color: "white" }}
             >
-              {moment(createdAt).format(" Do MMMM  YYYY, h:mm:ss a")}
+              {moment(createdAt).format(" Do MMMM  YYYY ")}
             </Typography>
             <Grid container spacing={1} sx={{ mt: "1rem", color: "white" }}>
               <Grid item xs={4} md={2}>
