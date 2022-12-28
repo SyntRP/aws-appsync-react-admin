@@ -1,49 +1,29 @@
-import { useMutation, useQuery, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   Alert, Button,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { useState } from "react";
 import {
   UPDATE_QUESTIONNAIRE,
   UPDATE_SURVEY,
 } from "../../graphql/custom/mutations";
 import {
   LIST_QUESTIONNARIES,
-  LIST_SURVEYS,
 } from "../../graphql/custom/queries";
 import withSuspense from "../../helpers/hoc/withSuspense";
 import useForm from "../../helpers/hooks/useForm";
 
 const EditQuestionnaire = ({ toggle, initialFormValues }) => {
   const { values, handleInputChange } = useForm(initialFormValues);
-  const { data } = useQuery(LIST_SURVEYS);
-  const currentSurvey = data?.listSurveys?.items?.find(
-    (item) => item?.preQuestionnaire?.id === values?.id
-  );
-  const [surveyId, setSurveyId] = useState(currentSurvey?.preQuestionnaire?.id);
+
+
   const [UpdateQuestionnaire, { loading }] = useMutation(UPDATE_QUESTIONNAIRE, {
     refetchQueries: [{ query: LIST_QUESTIONNARIES }],
   });
 
-
-  const [updateSurvey] = useMutation(UPDATE_SURVEY, {
-    refetchQueries: [
-      {
-        query: LIST_QUESTIONNARIES,
-        variables: {
-          filter: { archived: { ne: true }, deleted: { ne: true } },
-        },
-      },
-    ],
-  });
   const { data } = useQuery(LIST_QUESTIONNARIES);
   const [duplicate, setDuplicate] = useState(false);
   const [qustionnaireDup, setQuestionnaireDup] = useState("");
@@ -142,25 +122,7 @@ const EditQuestionnaire = ({ toggle, initialFormValues }) => {
             fullWidth
           />
         </Grid>
-        {/* <Grid item xs={12} cm={6}>
-          <FormControl fullWidth margin="dense">
-            <InputLabel>Link survey</InputLabel>
-            <Select
-              margin="dense"
-              fullWidth
-              variant="standard"
-              color="secondary"
-              value={surveyId}
-              onChange={handleSurveyChange}
-            >
-              {data?.listSurveys?.items.map((survey, s) => (
-                <MenuItem key={s} value={survey?.id}>
-                  {survey.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid> */}
+       
       </Grid>
       <Box
         sx={{
