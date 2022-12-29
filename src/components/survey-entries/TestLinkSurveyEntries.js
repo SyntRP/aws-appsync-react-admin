@@ -57,21 +57,23 @@ const TestLinkSurveyEntries = ({
 
     return que?.name ?? id;
   };
-  const TestLinkSurveyEntriesData = surveyEntries?.filter(
-    (item) =>
-      item?.by?.name
-        .toString()
-        .toLowerCase()
-        .includes(testlinkSurvey.toString().toLowerCase()) ||
-      item?.by?.email
-        .toString()
-        .toLowerCase()
-        .includes(testlinkSurvey.toString().toLowerCase()) ||
-      onGettingQuestionnaireById(item?.questionnaireId)
-        .toString()
-        .toLowerCase()
-        .includes(testlinkSurvey.toString().toLowerCase())
-  );
+  const TestLinkSurveyEntriesData = surveyEntries
+    ?.filter((data) => data?.by?.name)
+    ?.filter(
+      (item) =>
+        item?.by?.name
+          .toString()
+          .toLowerCase()
+          .includes(testlinkSurvey.toString().toLowerCase()) ||
+        item?.by?.email
+          .toString()
+          .toLowerCase()
+          .includes(testlinkSurvey.toString().toLowerCase()) ||
+        onGettingQuestionnaireById(item?.questionnaireId)
+          .toString()
+          .toLowerCase()
+          .includes(testlinkSurvey.toString().toLowerCase())
+    );
   if (!TestLinkSurveyEntriesData.length)
     return (
       <p

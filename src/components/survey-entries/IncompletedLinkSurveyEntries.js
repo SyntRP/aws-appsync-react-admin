@@ -67,6 +67,7 @@ const IncompletedLinkSurveyEntries = ({ incompleteLinkSurvey }) => {
     return que?.name ?? id;
   };
   const incompleteLinkEntries = incompeletedSurveyEntriesData
+    ?.filter((data) => data?.by?.name)
     ?.filter(
       (user) =>
         user?.by?.name
@@ -114,16 +115,16 @@ const IncompletedLinkSurveyEntries = ({ incompleteLinkSurvey }) => {
     return <>error</>;
   }
   if (!incompleteLinkEntries.length)
-  return (
-    <p
-      style={{
-        textAlign: "center",
-        marginTop: "20px",
-      }}
-    >
-      No Search Results Found
-    </p>
-  );
+    return (
+      <p
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+        }}
+      >
+        No Search Results Found
+      </p>
+    );
   return (
     <>
       {" "}

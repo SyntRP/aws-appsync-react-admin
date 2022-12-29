@@ -66,21 +66,23 @@ const IncompletedQrSurveyEntries = ({ incompleteQrSurvey }) => {
 
     return que?.name ?? id;
   };
-  const incompleteQrEntries = incompeletedSurveyEntriesData?.filter(
-    (item) =>
-      item?.location?.location
-        .toString()
-        .toLowerCase()
-        .includes(incompleteQrSurvey.toString().toLowerCase()) ||
-      item?.location?.inchargeEmail
-        .toString()
-        .toLowerCase()
-        .includes(incompleteQrSurvey.toString().toLowerCase()) ||
-      onGettingQuestionnaireById(item?.questionnaireId)
-        .toString()
-        .toLowerCase()
-        .includes(incompleteQrSurvey.toString().toLowerCase())
-  );
+  const incompleteQrEntries = incompeletedSurveyEntriesData
+    ?.filter((data) => data?.location?.location)
+    ?.filter(
+      (item) =>
+        item?.location?.location
+          .toString()
+          .toLowerCase()
+          .includes(incompleteQrSurvey.toString().toLowerCase()) ||
+        item?.location?.inchargeEmail
+          .toString()
+          .toLowerCase()
+          .includes(incompleteQrSurvey.toString().toLowerCase()) ||
+        onGettingQuestionnaireById(item?.questionnaireId)
+          .toString()
+          .toLowerCase()
+          .includes(incompleteQrSurvey.toString().toLowerCase())
+    );
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -110,16 +112,16 @@ const IncompletedQrSurveyEntries = ({ incompleteQrSurvey }) => {
   }
 
   if (!incompleteQrEntries.length)
-  return (
-    <p
-      style={{
-        textAlign: "center",
-        marginTop: "20px",
-      }}
-    >
-      No Search Results Found
-    </p>
-  );
+    return (
+      <p
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+        }}
+      >
+        No Search Results Found
+      </p>
+    );
   return (
     <>
       {" "}

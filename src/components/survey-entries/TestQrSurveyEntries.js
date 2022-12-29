@@ -57,21 +57,23 @@ const TestQrSurveyEntries = ({
 
     return que?.name ?? id;
   };
-  const TestQrSurveyEntriesData = surveyEntries?.filter(
-    (item) =>
-      item?.location?.location
-        .toString()
-        .toLowerCase()
-        .includes(testQrSurvey.toString().toLowerCase()) ||
-      item?.location?.inchargeEmail
-        .toString()
-        .toLowerCase()
-        .includes(testQrSurvey.toString().toLowerCase()) ||
-      onGettingQuestionnaireById(item?.questionnaireId)
-        .toString()
-        .toLowerCase()
-        .includes(testQrSurvey.toString().toLowerCase())
-  );
+  const TestQrSurveyEntriesData = surveyEntries
+    ?.filter((data) => data?.location?.location)
+    ?.filter(
+      (item) =>
+        item?.location?.location
+          .toString()
+          .toLowerCase()
+          .includes(testQrSurvey.toString().toLowerCase()) ||
+        item?.location?.inchargeEmail
+          .toString()
+          .toLowerCase()
+          .includes(testQrSurvey.toString().toLowerCase()) ||
+        onGettingQuestionnaireById(item?.questionnaireId)
+          .toString()
+          .toLowerCase()
+          .includes(testQrSurvey.toString().toLowerCase())
+    );
   if (!TestQrSurveyEntriesData.length)
     return (
       <p
